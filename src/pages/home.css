@@ -1,0 +1,96 @@
+header {
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    font-family: Rubik;
+    display: flex;
+}
+
+header > div {
+    user-select: none;
+    font-size: 75px;
+    font-family: Adventure;
+}
+
+#play {
+    font-size: 40px;
+    text-decoration: none;
+    margin: 35px 30px 0 50px;
+    color: #aaa;
+    transition: 0.2s;
+}
+
+#play:hover {
+    color: white;
+}
+
+#login {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    font-size: 40px;
+    text-decoration: none;
+    color: #9a49aa;
+    padding-inline: 35px;
+    padding-block: 10px;
+    height: min-content;
+    float: right;
+    border: 2px solid #9a49aa;
+    transition: 0.2s;
+}
+
+#login:hover {
+    border: 2px solid hsl(290, 100%, 50%);
+    color: hsl(290, 100%, 50%);
+}
+
+#welcomeMessage {
+    position: absolute;
+    top: max(22vh, 120px);
+    left: 5vw;
+    font-size: 12vh;
+    line-height: 12vh;
+}
+
+#welcomeDescription {
+    position: absolute;
+    top: calc(max(22vh, 120px) + 40vh);
+    left: 5vw;
+    font-size: 5vh;
+    max-width: 50vw;
+}
+
+#sources {
+    position: absolute;
+    top: calc(max(22vh, 120px) + 58vh);
+    left: 5.5vw;
+}
+
+#github, #discord {
+    margin: 10px;
+    font-size: 40px;
+    text-decoration: none;
+    color: #9a49aa;
+    padding-inline: 45px;
+    padding-block: 10px;
+    height: min-content;
+    border: 2px solid #9a49aa;
+    transition: 0.2s;
+}
+
+#github:hover, #discord:hover {
+    border: 2px solid hsl(290, 100%, 50%);
+    color: hsl(290, 100%, 50%);
+}
+
+#headerBackground {
+    background-color: #0b0c0d;
+    box-shadow: -8px 0px hsla(290, 100%, 50%, 0.5) inset, 0px 0px 20vw rgba(155, 74, 171, 0.5);
+    width: 70vw;
+    height: 130vh;
+    position: absolute;
+    z-index: -1;
+    top: -10vh;
+    left: -20vw;
+    transform: rotate(-15deg);
+}

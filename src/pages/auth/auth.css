@@ -1,0 +1,128 @@
+#navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: 70px;
+    background-color: #0b0c0d;
+    font-family: Adventure;
+    padding: 0 30px;
+}
+
+#navbar>a {
+    font-size: 50px;
+    font-weight: bolder;
+    font-family: inherit;
+    text-decoration: none;
+}
+
+#main {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* height: 50%; */
+    padding: 20px;
+    outline: 2px solid #9a49aa;
+    background: rgba(0, 0, 0, 50%);
+}
+
+#header {
+    /* width: 100%; */
+    text-align: center;
+    font-size: 50px;
+    font-family: Adventure;
+    margin-bottom: 25px;
+}
+
+.input {
+    margin: 15px;
+    border: 2px solid #9a49aa;
+    transition: 0.2s
+}
+
+.input input {
+    user-select: none;
+    border: none;
+    outline: none;
+    background: none;
+    width: calc(100% - 20px);
+    padding: 10px;
+    font-size: 20px;
+}
+
+.input:has(input:focus) {
+    border: 2px solid hsl(290, 100%, 50%);
+}
+
+.input input::placeholder {
+    color: white;
+}
+
+#submit {
+    transition: 0.2s;
+    display: block;
+    text-align: center;
+    margin: 10px auto 10px auto;
+    border: 2px solid #9a49aa;
+    outline: none;
+    background: none;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    width: 45%;
+}
+
+#submit:hover {
+    border: 2px solid hsl(290, 100%, 50%);
+}
+
+#submit:disabled {
+    border: 2px solid hsl(290, 0%, 50%);
+}
+
+#agreement {
+    margin: 15px;
+    align-items: center;
+    display: flex;
+    font-size: 14px;
+}
+
+#agreement > input {
+    align-items: center;
+    display: flex;
+    height: 24px;
+    width: 24px;
+    justify-content: center;
+}
+
+#agreement > div {
+    display: block;
+    width: calc(80% - 20px);
+    margin-left: 15px;
+}
+
+#errorMessage {
+    border: 2px solid red;
+    max-width: 330px;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 20px auto 20px auto;
+    padding: 10px;
+}
+
+#errorMessage > div {
+    width: 100%;
+    text-align: center;
+}

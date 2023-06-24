@@ -16,6 +16,13 @@
       "shell": {
         "all": false,
         "open": true
+      },
+      "http": {
+        "all": true,
+        "request": false,
+        "scope": [
+          "https://*"
+        ]
       }
     },
     "bundle": {
@@ -38,6 +45,7 @@
         "fullscreen": false,
         "resizable": true,
         "title": "BetterBlooket",
+        "label": "main",
         "width": 1200,
         "height": 675
       }

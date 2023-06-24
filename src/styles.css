@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css?family=Rubik');
+@font-face {
+  font-family: Adventure;
+  src: url("Adventure.otf");
+}
+* {
+  font-family: Rubik;
+  color: white;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background: #1c1e22;
+}
