@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { fetch, Body } from "@tauri-apps/api/http";
+import Fetch from "../utils/Fetch.js";
 const AuthContext = createContext();
 
 export function useAuth() {
@@ -15,11 +16,17 @@ function useLocalStorage(name) {
 }
 
 export const AuthProvider = ({ children }) => {
+    const [loading, setLoading] = useState(true);
     const [userData, setUserData] = useState(null);
     const [bisd, setBisd] = useLocalStorage("bisd");
+    const csrfFetch = useRef();
 
     useEffect(() => {
-        if (bisd.current) getLoggedIn();
+        async function run() {
+            if (bisd.current) await getLoggedIn();
+            setLoading(false);
+        }
+        run();
     }, [])
 
     async function login([name, password]) {
@@ -32,12 +39,12 @@ export const AuthProvider = ({ children }) => {
             if (!res.data.success) {
                 error = res.data.msg;
                 if ("name" === res.data.errType) {
-                    if (res.data.suspensionEnd) error = `${error} Suspension ends: ${eI()(res.data.suspensionEnd).format("MM-DD-YYYY hh:mm:ss")} UTC"`;
+                    if (res.data.suspensionEnd) error = `${error} Suspension ends: ${res.data.suspensionEnd}`;
                     if (res.data.suspendedReason && res.data.suspendedReason.includes("District")) error = `${error} Reason: ${res.data.suspendedReason} `;
                 }
             } else {
                 setBisd(res.headers['set-cookie']);
-                getLoggedIn();
+                await getLoggedIn();
             }
         } catch (e) {
             console.error(e);
@@ -49,11 +56,12 @@ export const AuthProvider = ({ children }) => {
     async function getLoggedIn() {
         const res = await fetch("https://dashboard.blooket.com/api/users/me", { headers: { Cookie: bisd.current } });
         setUserData(res.data);
+        csrfFetch.current = Fetch(bisd.current, (cookie) => (bisd.current += cookie));
     }
 
     return (
-        <AuthContext.Provider value={{ login, getLoggedIn, userData }}>
-            {children}
+        <AuthContext.Provider value={{ login, getLoggedIn, userData, csrfFetch }}>
+            {!loading && children}
         </AuthContext.Provider>
     )
 }

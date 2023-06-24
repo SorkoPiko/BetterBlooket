@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Login from "./Login";
 import { useAuth } from "../../context/AuthContext";
 // import "./auth.css";
 
 function Auth() {
+    const { login, userData } = window.useAuth = useAuth();
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
     useEffect(() => {
         import("./auth.css");
+        if (userData) navigate("/stats")
     }, [])
-    const { login } = window.useAuth = useAuth();
-    const [error, setError] = useState(null);
 
     return (<>
         <header id="navbar">
@@ -24,6 +27,7 @@ function Auth() {
                 setError(null);
                 const { error, result } = await login(event.target);
                 if (error) setError(error);
+                else navigate("/stats")
             }}>
                 <Login />
                 {error && <div id="errorMessage">
