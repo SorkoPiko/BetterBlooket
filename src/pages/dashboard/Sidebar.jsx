@@ -3,21 +3,12 @@ function Sidebar({ children }) {
     return (<>
         <div id="sidebarWrapper">
             <div id="sidebar">
-                <div style={{
-                    marginBottom: "25px"
-                }}>
+                <div style={{ marginBottom: "25px" }}>
                     <a href="/">
                         <div className="icon">
                             <img src="b.svg" alt="Blooket" height="30" />
                         </div>
-                        <div id="title" style={{
-                            position: "absolute",
-                            fontFamily: "Adventure",
-                            fontSize: "39px",
-                            top: "12px",
-                            left: "69px",
-                            color: "#9B4BAB",
-                        }}>looket</div>
+                        <div id="title" style={{ position: "absolute", fontFamily: "Adventure", fontSize: "39px", top: "12px", left: "69px", color: "#9B4BAB" }}>looket</div>
                     </a>
                 </div>
                 <ul>
@@ -45,7 +36,7 @@ function Sidebar({ children }) {
                         </div>
                         <div className="page">Discover</div></a>
                     </li>
-                    <li><a href="/set-creator">
+                    <li><a href="/create">
                         <div className="icon">
                             <i className="fa-solid fa-pen-to-square"></i>
                         </div>

@@ -22,7 +22,7 @@ function App() {
             <Route path="/blooks" element={<AuthRoute><Blooks /></AuthRoute>}></Route>
             <Route path="/market" element={<AuthRoute><Market /></AuthRoute>}></Route>
             <Route path="/discover" element={<AuthRoute><Discover /></AuthRoute>}></Route>
-            <Route path="/set-creator" element={<AuthRoute><SetCreator /></AuthRoute>}></Route>
+            <Route path="/create" element={<AuthRoute><SetCreator /></AuthRoute>}></Route>
             <Route path="/sets" element={<AuthRoute><Sets /></AuthRoute>}></Route>
             <Route path="/favorites" element={<AuthRoute><Favorites /></AuthRoute>}></Route>
             <Route path="/settings" element={<AuthRoute><Settings /></AuthRoute>}></Route>
