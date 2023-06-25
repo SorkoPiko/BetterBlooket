@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import Sidebar from "./SideBar";
-function Stats() {
+function Sets() {
     useEffect(() => {
-        // fetch stats
+        // fetch Sets
     }, []);
     return (<>
         <Sidebar>
-            stats
+            Sets
         </Sidebar>
     </>);
 }
-export default Stats;
+export default Sets;

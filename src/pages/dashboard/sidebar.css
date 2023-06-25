@@ -1,0 +1,128 @@
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #0b0c0d;
+    width: fit-content;
+    padding: 25px;
+    clip-path: polygon(0 0,
+            calc(100% - 15px) 0, 100% 15px,
+            100% calc(100% - 15px), calc(100% - 15px) 100%,
+            0 100%);
+    transition: 0.2s;
+    animation: closeBackground 0.2s;
+    z-index: 5;
+}
+
+
+#sidebar>ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: table;
+    table-layout: fixed;
+    height: calc(100% - 45px);
+}
+
+#sidebar li {
+    text-align: center;
+    display: table-row;
+    align-items: center;
+    margin-block: 10px;
+    font-size: 30px;
+}
+
+#sidebar li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    height: 100%;
+}
+
+#sidebar li a * {
+    color: #9a49aa;
+    transition: 0.2s;
+}
+
+#sidebar li a:hover * {
+    color: hsl(290, 100%, 50%);
+}
+
+#sidebar li a .page {
+    display: none;
+    margin: 15px;
+    margin-left: 30px;
+    width: max-content;
+    opacity: 0;
+    transition: 0.2s;
+}
+
+#sidebar:hover li a .page {
+    display: inline;
+    margin-left: 25px;
+    opacity: 1;
+    transition: 0.2s;
+}
+
+#sidebar:hover {
+    animation: openBackground 0.2s;
+    width: 250px;
+}
+
+.icon {
+    align-items: center;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 100px;
+    z-index: 1;
+}
+
+#shade {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    opacity: 0;
+    transition: 0.2s;
+    z-index: 2;
+}
+
+#sidebarWrapper:has(#sidebar:hover) #shade {
+    opacity: 0.35;
+}
+
+@keyframes open {
+    0% { opacity: 0 }
+    100% { opacity: 1 }
+}
+
+@keyframes openBackground {
+    0% { width: 100px }
+    100% { width: 250px }
+}
+
+@keyframes closeBackground {
+    0% { width: 250px }
+    100% { width: 50px }
+}
+
+#title {
+    opacity: 0;
+    transition: 0.2s;
+}
+
+#sidebar:hover #title {
+    opacity: 1;
+}

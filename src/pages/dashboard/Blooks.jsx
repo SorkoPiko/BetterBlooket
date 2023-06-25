@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import Sidebar from "./SideBar";
-function Stats() {
+function Blooks() {
     useEffect(() => {
-        // fetch stats
+        // fetch Blooks
     }, []);
     return (<>
         <Sidebar>
-            stats
+            blooks
         </Sidebar>
     </>);
 }
-export default Stats;
+export default Blooks;

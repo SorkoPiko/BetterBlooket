@@ -1,13 +1,10 @@
 import { useEffect } from "react";
 import Sidebar from "./SideBar";
-function Stats() {
-    useEffect(() => {
-        // fetch stats
-    }, []);
+function SetCreator() {
     return (<>
         <Sidebar>
-            stats
+            set creator
         </Sidebar>
     </>);
 }
-export default Stats;
+export default SetCreator;
