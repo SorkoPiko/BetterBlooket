@@ -96,26 +96,27 @@
     background-color: black;
     opacity: 0;
     transition: 0.2s;
-    z-index: 2;
+    z-index: 0;
 }
 
 #sidebarWrapper:has(#sidebar:hover) #shade {
     opacity: 0.35;
+    z-index: 2;
 }
 
 @keyframes open {
-    0% { opacity: 0 }
-    100% { opacity: 1 }
+    from { opacity: 0 }
+    to { opacity: 1 }
 }
 
 @keyframes openBackground {
-    0% { width: 100px }
-    100% { width: 250px }
+    from { width: 100px }
+    to { width: 250px }
 }
 
 @keyframes closeBackground {
-    0% { width: 250px }
-    100% { width: 50px }
+    from { width: 250px }
+    to { width: 50px }
 }
 
 #title {

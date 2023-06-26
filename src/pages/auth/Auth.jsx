@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Login from "./Login";
 import { useAuth } from "../../context/AuthContext";
 // import "./auth.css";
@@ -15,10 +15,10 @@ function Auth() {
 
     return (<>
         <header id="navbar">
-            <a href="/">
+            <Link to="/">
                 {/* <img></img> */}
                 Blooket
-            </a>
+            </Link>
         </header>
         <div id="main">
             <form id="form" onSubmit={async (event) => {

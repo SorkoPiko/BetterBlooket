@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { fetch, Body } from "@tauri-apps/api/http";
 import Fetch from "../utils/Fetch.js";
+import Protobuf from "../protobuf/protobuf.js";
 const AuthContext = createContext();
 
 export function useAuth() {
@@ -15,11 +16,17 @@ function useLocalStorage(name) {
     }];
 }
 
+function useUpdate(init) {
+    const ref = useRef(init);
+    return [ref.current, (val) => ref.current = val];
+}
+
 export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [userData, setUserData] = useState(null);
     const [bisd, setBisd] = useLocalStorage("bisd");
     const csrfFetch = useRef();
+    const [protobuf, setProtobuf] = useUpdate();
 
     useEffect(() => {
         async function run() {
@@ -27,7 +34,11 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
         }
         run();
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if (userData) console.log(`Logged in to ${userData?.name}`, userData);
+    }, [userData])
 
     async function login([name, password]) {
         const res = await fetch("https://id.blooket.com/api/users/login", {
@@ -43,7 +54,7 @@ export const AuthProvider = ({ children }) => {
                     if (res.data.suspendedReason && res.data.suspendedReason.includes("District")) error = `${error} Reason: ${res.data.suspendedReason} `;
                 }
             } else {
-                setBisd(res.headers['set-cookie']);
+                setBisd(res.headers['set-cookie'].split(' ')[0]);
                 await getLoggedIn();
             }
         } catch (e) {
@@ -54,13 +65,14 @@ export const AuthProvider = ({ children }) => {
     }
 
     async function getLoggedIn() {
-        const res = await fetch("https://dashboard.blooket.com/api/users/me", { headers: { Cookie: bisd.current } });
+        const res = await fetch("https://dashboard.blooket.com/api/users/stats", { headers: { Cookie: bisd.current } });
         setUserData(res.data);
-        csrfFetch.current = Fetch(bisd.current, (cookie) => (bisd.current += cookie));
+        setProtobuf(Protobuf(bisd.current));
+        // csrfFetch.current = Fetch(bisd.current, (cookie) => (bisd.current += cookie));
     }
 
     return (
-        <AuthContext.Provider value={{ login, getLoggedIn, userData, csrfFetch }}>
+        <AuthContext.Provider value={{ login, getLoggedIn, userData, csrfFetch, bisd, protobuf }}>
             {!loading && children}
         </AuthContext.Provider>
     )

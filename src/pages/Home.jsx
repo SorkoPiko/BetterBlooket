@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 // import "./home.css";
 
 function Home() {
@@ -9,7 +10,7 @@ function Home() {
                 <div>Blooket</div>
                 <a href="#" id="play">Join a Game</a> {/* todo */}
             </header>
-            <a href="/login" id="login">Login</a>
+            <Link to="/login" id="login">Login</Link>
             <div id="welcomeMessage">Improved<br />Blooket<br />Experience</div>
             <div id="welcomeDescription">An open-sourced Blooket client made in Tauri by OneMinesraft2</div>
             <div id="sources">

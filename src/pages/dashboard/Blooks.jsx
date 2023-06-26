@@ -1,12 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./SideBar";
+import { useAuth } from "../../context/AuthContext";
 function Blooks() {
+    const { protobuf } = useAuth();
+    const [blooks, setBlooks] = useState({});
     useEffect(() => {
-        // fetch Blooks
+        console.log({protobuf})
+        protobuf.listUnlockedBlooks({}).then(setBlooks);
     }, []);
     return (<>
         <Sidebar>
-            blooks
+            {JSON.stringify(blooks)}
         </Sidebar>
     </>);
 }
