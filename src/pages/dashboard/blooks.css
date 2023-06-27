@@ -1,0 +1,292 @@
+#selected {
+    position: absolute;
+    width: 20.83vw;
+    height: 21.25vw;
+    /* 24/5 */
+    top: 50%;
+    right: 2vw;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#blookBackground {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+#backgroundBottom {
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0 -9px rgba(0,0,0,.2);
+    z-index: 5;
+    border-radius: 10px;
+}
+
+#selectedBlook {
+    position: absolute;
+    width: 9.98vw;
+    margin-bottom: -0.9375vw;
+}
+
+#unlocks {
+    outline: 3px solid #9a49aa;
+    background-color: #0b0c0d;
+    position: absolute;
+    top: calc(25px + 29vh);
+    left: 25px;
+    bottom: 25px;
+    right: 24.83vw;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: grid;
+    padding: 10px;
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    /* Firefox */
+    justify-content: space-between;
+    align-content: flex-start;
+    box-sizing: border-box;
+    grid-template-columns: repeat(auto-fill, 7.5%);
+    gap: 0.5%;
+}
+
+#unlocks::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
+}
+
+.blook {
+    /* display: inline; */
+    margin: 0.5%;
+    /* width: 100%; */
+    /* justify-content: center; */
+    cursor: pointer;
+}
+
+#packButtons {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    right: 24.83vw;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: space-between;
+}
+
+.packButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 9%;
+    aspect-ratio: 1 / 1;
+    background-color: #0b0c0d;
+    /* outline: 2px solid #9a49aa; */
+    border-radius: 6%;
+    padding: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-block: 2.5px;
+}
+
+.packButton:hover {
+    background-color: #9a49aa;
+    scale: 0.9;
+}
+
+.packButton[data-selected="true"] {
+    background-color: #9a49aa;
+}
+
+.packButton[data-selected="true"] img {
+    color: #9a49aa;
+    filter: invert(1)
+        /* sepia(1) saturate(100) hue-rotate(290deg); */
+}
+
+.packButton img {
+    max-width: 80%;
+    max-height: 80%;
+}
+
+#packUnlocks {
+    outline: 3px solid #9a49aa;
+    background-color: #0b0c0d;
+    position: absolute;
+    top: calc(25px + 29vh);
+    left: 25px;
+    bottom: 25px;
+    right: 24.83vw;
+    overflow: hidden;
+    padding: 10px;
+}
+
+#packUnlocksWrapper {
+    position: relative;
+    width: 100%;
+    height: 80%;
+}
+
+.packBlook {
+    position: absolute;
+    /* width: 25%; */
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.packBlook:hover {
+    margin-top: -1%;
+}
+
+.packBlook img {
+    width: 100%;
+}
+
+#arrowsContainer {
+    position: relative;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#arrowsContainer button {
+    display: flex;
+    height: 75%;
+    aspect-ratio: 1 / 1;
+    background: none;
+    border: 3px solid #9a49aa;
+    color: #9a49aa;
+    margin-inline: 40px;
+    font-size: 200%;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 700;
+}
+
+#arrowsContainer button:hover {
+    /* scale: 1.1; */
+    border: 3px solid hsl(290, 100%, 50%);
+    color: hsl(290, 100%, 50%);
+}
+
+#blookName,
+#blookRarity,
+#numOwned,
+#filterButtons {
+    position: absolute;
+    font-family: Adventure;
+    font-size: 1.75vw;
+    z-index: 4;
+}
+
+#blookName {
+    text-shadow: 0 3px 3px rgba(0,0,0,.2);
+    /* font-size: 1.75vw; */
+    top: 7.5px;
+    white-space: nowrap;
+}
+
+#blookRarity {
+    top: calc(10% + 7.5px);
+    font-weight: 1100;
+    -webkit-text-stroke: #3a3a3a 1.5px
+}
+
+#numOwned {
+    bottom: 5%;
+    text-shadow: 0 3px 3px rgba(0,0,0,.2);
+}
+
+#filterButtons {
+    display: flex;
+    top: 110%;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    row-gap: 10px;
+    width: 100%;
+}
+
+#hiddenButton, #showPacks, #showFree {
+    text-align: center;
+    padding-left: 5%;
+    cursor: pointer;
+    border: 3px solid #9a49aa;
+    transition: 0.2s;
+    background: none;
+    padding: 5px 10px 5px 15px;
+    width: 80%;
+    font-size: 1vw;
+    font-family: Adventure;
+}
+
+#hiddenButton:hover, #showPacks:hover, #showFree:hover {
+    border: 3px solid hsl(290, 100%, 50%);
+}
+
+#allPacks {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.packContainer {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.packTop {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.packName {
+    position: absolute;
+    font-family: Adventure;
+    top: 13px;
+    left: 5px;
+    font-size: 26px;
+}
+
+.packTexture {
+    /* position: absolute;
+    top: 0;
+    left: 0; */
+    width: 100%;
+    height: 50px;
+    background-size: 50px 50px;
+    opacity: 0.15;
+}
+
+.packDivider {
+    margin-top: 10px;
+    width: calc(100% - 20px);
+    height: 3px;
+    background-color: white;
+}
+
+.packBlooks {
+    width: calc(100% - 20px);
+    display: grid;
+    justify-content: space-between;
+    align-content: flex-start;
+    box-sizing: border-box;
+    grid-template-columns: repeat(auto-fill, 3.5vw);
+    gap: 0.5%;
+}

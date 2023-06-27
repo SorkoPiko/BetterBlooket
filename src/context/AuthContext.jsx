@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { fetch, Body } from "@tauri-apps/api/http";
 import Fetch from "../utils/Fetch.js";
-import Protobuf from "../protobuf/protobuf.js";
+import Protobuf from "../protobuf.js";
 const AuthContext = createContext();
 
 export function useAuth() {
@@ -35,6 +35,10 @@ export const AuthProvider = ({ children }) => {
         }
         run();
     }, []);
+
+    useEffect(() => {
+        window.protobuf = protobuf;
+    }, [protobuf])
 
     useEffect(() => {
         if (userData) console.log(`Logged in to ${userData?.name}`, userData);
