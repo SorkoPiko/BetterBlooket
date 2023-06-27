@@ -13,11 +13,15 @@ function Blooks() {
     const [showHidden, setShowHidden] = useState(true);
     const [showPacks, setShowPacks] = useState(true);
     const [showFree, setShowFree] = useState(false);
+    const [hideLocked, setHideLocked] = useState(false);
     const [selected, setSelected] = useState(rand(Object.keys(allBlooks)));
     const [selectedIndex, setIndex] = useState(1);
     useEffect(() => {
         (async () => {
-            const unlocks = Object.entries(allBlooks).reduce((obj, [b, v]) => (obj[b] = v.numOwned || 1, obj), {}); // await protobuf.listUnlockedBlooks({});
+            let owned = await protobuf.listUnlockedBlooks({}).then(x => x.blooks)
+            let unlocks = owned.reduce((obj, { name, numOwned }) => (obj[name] = numOwned, obj), {});
+            // let unlocks = Object.keys(allBlooks).reduce((obj, blook) => (obj[blook] = Math.floor(Math.random() * 20),obj), {});
+            // console.log(unlocks, owned)
             setBlooks(unlocks);
             Object.keys(unlocks).length && setSelected(rand(Object.keys(unlocks)));
             for (const p in packs) {
@@ -39,14 +43,15 @@ function Blooks() {
         <div id="selected">
             <img id="blookBackground" src={packs[allBlooks[selected]?.realSet || allBlooks[selected]?.set]?.setBackground || GenericSetBackground} />
             <div id="backgroundBottom"></div>
-            <img id="selectedBlook" src={allBlooks[selected]?.mediaUrl} alt={selected} />
-            <div id="blookName">{selected}</div>
+            <img id="selectedBlook" data-locked={!blooks[selected]} style={!blooks[selected] ? { opacity: 0.75 } : {}} src={allBlooks[selected]?.mediaUrl} alt={selected} />
+            <div id="blookName">{!blooks[selected] ? "???" : selected}</div>
             <div id="blookRarity" style={{ color: rarityColors[allBlooks[selected]?.rarity] }}>{allBlooks[selected]?.rarity}</div>
-            <div id="numOwned">{freeBlooks.includes(selected) ? "Free Blook" : blooks[selected] + " Owned"}</div>
+            <div id="numOwned">{freeBlooks.includes(selected) ? "Free Blook" : (blooks[selected] || 0) + " Owned"}</div>
             <div id="filterButtons">
                 {pack != "Hidden" && <button id="hiddenButton" onClick={() => setShowHidden(h => !h)}>{showHidden ? "Hide" : "Show"} Hidden Blooks</button>}
                 {!pack && <button id="showPacks" onClick={() => setShowPacks(h => !h)}>{showPacks ? "Hide" : "Show"} Pack Names</button>}
                 {!pack && <button id="showFree" onClick={() => setShowFree(h => !h)}>{showFree ? "Hide" : "Show"} Free Packs</button>}
+                {!showPacks && <button id="hideLocked" onClick={() => setHideLocked(h => !h)}>{hideLocked ? "Hide" : "Show"} Locked Blooks</button>}
             </div>
         </div>
         <div id="packButtons">
@@ -70,7 +75,8 @@ function Blooks() {
                                 left: `calc(50% + ${Math.sign(i - selectedIndex) * (65 + x * 65)}%)`,
                                 width: `${-25 * x}%`,
                             }}>
-                                <img onClick={() => setIndex(ind => ind + (i - selectedIndex))} src={allBlooks[blook]?.mediaUrl} alt={blook} />
+                                <img data-locked={!blooks[blook]} onClick={() => setIndex(ind => ind + (i - selectedIndex))} src={allBlooks[blook]?.mediaUrl} alt={blook} />
+                                {/* {blooks[blook] == 0 && <i style={{fontSize:`${-2500 * x}%`}} className="fa-solid fa-lock"></i>} */}
                             </div>)
                         })}
                     </div>
@@ -80,27 +86,43 @@ function Blooks() {
                     </div>
                 </>)
                 : showPacks ? <div id="allPacks">
-                    {Object.keys(packs).filter(x => (showFree ? true : !packs[x].free) && (showHidden ? true : x != "Hidden")).map(x => (<div className="packContainer" key={"showPacks" + x}>
-                        <div className="packTop">
-                            <div className="packTexture" style={{ backgroundImage: `url(${packs[x].setTexture})` }}></div>
-                            <div className="packName">{x}</div>
-                            <div className="packDivider"></div>
-                        </div>
-                        <div className="packBlooks">
-                            {Object.keys(packs[x].blooks).map(x => (<>
-                                <div className="blook" key={x} onClick={() => setSelected(x)}>
-                                    <img src={allBlooks[x].mediaUrl} alt={x} />
-                                </div>
-                            </>))}
-                        </div>
-                    </div>))}
+                    {Object.keys(packs).filter(x => (showFree ? true : !packs[x].free) && (showHidden ? true : x != "Hidden")).map(x => {
+                        if (x == "Hidden") {
+                            let hide = true;
+                            for (const b in hidden) if (blooks[b]) {
+                                hide = false;
+                                break;
+                            }
+                            if (hide) return;
+                        }
+                        return (<div className="packContainer" key={"showPacks" + x}>
+                            <div className="packTop">
+                                <div className="packTexture" style={{ backgroundImage: `url(${packs[x].setTexture})` }}></div>
+                                <div className="packName">{x}</div>
+                                <div className="packDivider"></div>
+                            </div>
+                            <div className="packBlooks">
+                                {Object.keys(packs[x].blooks).map(blook => {
+                                    if (allBlooks[blook].set == "Hidden") if (!showHidden || !blooks[blook]) return;
+                                    return (<>
+                                        <div className="blook" key={blook} onClick={() => setSelected(blook)}>
+                                            <img data-locked={!blooks[blook] && !packs[x]?.free} src={allBlooks[blook].mediaUrl} alt={blook} />
+                                            {(blooks[blook] || packs[x]?.free) ? ((!packs[allBlooks[blook]?.set || allBlooks[blook]?.set]?.free && allBlooks[blook]?.set !== "Color") && <div className="count" style={{ backgroundColor: rarityColors[allBlooks[blook]?.rarity] }}>{blooks[blook]}</div>) : <i className="fa-solid fa-lock"></i>}
+                                        </div>
+                                    </>)
+                                })}
+                            </div>
+                        </div>)
+                    })}
                 </div>
-                    : Object.keys(blooks).map(blook => {
-                        if (!showHidden && allBlooks[blook].set == "Hidden") return;
-                        if (!showFree && packs[allBlooks[blook].set]?.free) return;
-                        else return <>
+                    : Object.keys(allBlooks).map(blook => {
+                        if (allBlooks[blook]?.set == "Hidden") if (!showHidden || !blooks[blook]) return;
+                        if (!showFree && packs[allBlooks[blook]?.set]?.free) return;
+                        if (!hideLocked && !blooks[blook] && !packs[allBlooks[blook]?.set]?.free) return;
+                        return <>
                             <div className="blook" key={blook} onClick={() => setSelected(blook)}>
-                                <img src={allBlooks[blook].mediaUrl} alt={blook} />
+                                <img data-locked={!blooks[blook] && !packs[allBlooks[blook]?.set]?.free} src={allBlooks[blook].mediaUrl} alt={blook} />
+                                {(blooks[blook] || packs[allBlooks[blook]?.set]?.free) ? ((!packs[allBlooks[blook]?.set || allBlooks[blook]?.set]?.free && allBlooks[blook]?.set !== "Color") && <div className="count" style={{ backgroundColor: rarityColors[allBlooks[blook]?.rarity] }}>{blooks[blook]}</div>) : <i className="fa-solid fa-lock"></i>}
                             </div>
                         </>
                     })

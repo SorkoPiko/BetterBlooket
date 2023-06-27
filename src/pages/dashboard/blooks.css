@@ -21,7 +21,7 @@
 #backgroundBottom {
     width: 100%;
     height: 100%;
-    box-shadow: inset 0 -9px rgba(0,0,0,.2);
+    box-shadow: inset 0 -9px rgba(0, 0, 0, .2);
     z-index: 5;
     border-radius: 10px;
 }
@@ -66,6 +66,36 @@
     /* width: 100%; */
     /* justify-content: center; */
     cursor: pointer;
+    position: relative;
+}
+
+.blook i,
+.packBlook i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.25vw;
+    opacity: 0.75;
+}
+
+img[data-locked="true"] {
+    filter: brightness(0)
+}
+
+.count {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15px;
+    height: 15px;
+    left: -5px;
+    bottom: 0;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: bolder;
+    /* -webkit-text-stroke: #3a3a3a 1px */
 }
 
 #packButtons {
@@ -192,7 +222,7 @@
 }
 
 #blookName {
-    text-shadow: 0 3px 3px rgba(0,0,0,.2);
+    text-shadow: 0 3px 3px rgba(0, 0, 0, .2);
     /* font-size: 1.75vw; */
     top: 7.5px;
     white-space: nowrap;
@@ -206,7 +236,7 @@
 
 #numOwned {
     bottom: 5%;
-    text-shadow: 0 3px 3px rgba(0,0,0,.2);
+    text-shadow: 0 3px 3px rgba(0, 0, 0, .2);
 }
 
 #filterButtons {
@@ -219,7 +249,10 @@
     width: 100%;
 }
 
-#hiddenButton, #showPacks, #showFree {
+#hiddenButton,
+#showPacks,
+#showFree,
+#hideLocked {
     text-align: center;
     padding-left: 5%;
     cursor: pointer;
@@ -232,7 +265,10 @@
     font-family: Adventure;
 }
 
-#hiddenButton:hover, #showPacks:hover, #showFree:hover {
+#hiddenButton:hover,
+#showPacks:hover,
+#showFree:hover,
+#hideLocked:hover {
     border: 3px solid hsl(290, 100%, 50%);
 }
 
