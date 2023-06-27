@@ -79,6 +79,7 @@ export default (bisd) => createPromiseClient({
             options.headers.cookie = cookie;
             options.headers["content-length"] = String(body.byteLength);
             options.headers["content-type"] = "application/proto";
+            options.headers.origin = "https://dashboard.blooket.com";
             res = await fetch(url, options);
         } catch (e) { console.warn(e, arguments) }
         res.json = () => res.data;
