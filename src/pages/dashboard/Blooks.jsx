@@ -50,8 +50,8 @@ function Blooks() {
             <div id="filterButtons">
                 {pack != "Hidden" && <button id="hiddenButton" onClick={() => setShowHidden(h => !h)}>{showHidden ? "Hide" : "Show"} Hidden Blooks</button>}
                 {!pack && <button id="showPacks" onClick={() => setShowPacks(h => !h)}>{showPacks ? "Hide" : "Show"} Pack Names</button>}
-                {!pack && <button id="showFree" onClick={() => setShowFree(h => !h)}>{showFree ? "Hide" : "Show"} Free Packs</button>}
-                {!showPacks && <button id="hideLocked" onClick={() => setHideLocked(h => !h)}>{hideLocked ? "Hide" : "Show"} Locked Blooks</button>}
+                {!pack && <button id="showFree" onClick={() => setShowFree(h => !h)}>{showFree ? "Hide" : "Show"} Free Blooks</button>}
+                {!pack && !showPacks && <button id="hideLocked" onClick={() => setHideLocked(h => !h)}>{hideLocked ? "Hide" : "Show"} Locked Blooks</button>}
             </div>
         </div>
         <div id="packButtons">
