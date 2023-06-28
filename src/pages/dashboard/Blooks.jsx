@@ -104,12 +104,10 @@ function Blooks() {
                             <div className="packBlooks">
                                 {Object.keys(packs[x].blooks).map(blook => {
                                     if (allBlooks[blook].set == "Hidden") if (!showHidden || !blooks[blook]) return;
-                                    return (<>
-                                        <div className="blook" key={"showPacks" + blook} onClick={() => setSelected(blook)}>
-                                            <img data-locked={!blooks[blook] && !packs[x]?.free} src={allBlooks[blook].mediaUrl} alt={blook} />
-                                            {(blooks[blook] || packs[x]?.free) ? ((!packs[allBlooks[blook]?.set || allBlooks[blook]?.set]?.free && allBlooks[blook]?.set !== "Color") && <div className="count" style={{ backgroundColor: rarityColors[allBlooks[blook]?.rarity] }}>{blooks[blook]}</div>) : <i className="fa-solid fa-lock"></i>}
-                                        </div>
-                                    </>)
+                                    return (<div className="blook" key={"showPacks" + blook} onClick={() => setSelected(blook)}>
+                                        <img data-locked={!blooks[blook] && !packs[x]?.free} src={allBlooks[blook].mediaUrl} alt={blook} />
+                                        {(blooks[blook] || packs[x]?.free) ? ((!packs[allBlooks[blook]?.set || allBlooks[blook]?.set]?.free && allBlooks[blook]?.set !== "Color") && <div className="count" style={{ backgroundColor: rarityColors[allBlooks[blook]?.rarity] }}>{blooks[blook]}</div>) : <i className="fa-solid fa-lock"></i>}
+                                    </div>)
                                 })}
                             </div>
                         </div>)
