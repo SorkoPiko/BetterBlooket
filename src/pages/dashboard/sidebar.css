@@ -22,7 +22,7 @@
     margin: 0;
     display: table;
     table-layout: fixed;
-    height: calc(100% - 45px);
+    height: 100%;
 }
 
 #sidebar li {
