@@ -47,6 +47,10 @@ export const AuthProvider = ({ children }) => {
 
     async function login([name, password]) {
         const res = await fetch("https://id.blooket.com/api/users/login", {
+            headers: {
+                Origin: "https://id.blooket.com",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)"
+            },
             body: Body.json({ name: name.value, password: password.value }),
             method: "post"
         });
@@ -70,7 +74,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     async function getLoggedIn() {
-        const res = await fetch("https://dashboard.blooket.com/api/users/me", { headers: { Cookie: bisd.current, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " } });
+        const res = await fetch("https://dashboard.blooket.com/api/users/me", { headers: { Cookie: bisd.current, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" } });
         setUserData(res.data);
         setProtobuf(Protobuf(bisd.current, csrf.current, setCsrf));
         // csrfFetch.current = Fetch(bisd.current, (cookie) => (bisd.current += cookie));

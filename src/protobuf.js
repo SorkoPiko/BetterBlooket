@@ -13,7 +13,7 @@ const blook = proto3.makeMessageType("dashboardservice.v1.ProfileBlook", () => [
     { no: 7, name: "color", kind: "scalar", T: ScalarType.STRING }
 ])
 
-let csrfToken, cookie, queue = new Queue(1, 300);
+let csrfToken, queue = new Queue(1, 300);
 export default (bisd, csrf, cb) => createPromiseClient({
     typeName: "dashboardservice.v1.DashboardService",
     methods: {
@@ -81,6 +81,7 @@ export default (bisd, csrf, cb) => createPromiseClient({
             options.headers.cookie = `${bisd} ${csrf}`;
             options.headers["content-length"] = String(body.byteLength);
             options.headers["content-type"] = "application/proto";
+            options.headers["user-agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)";
             options.headers.origin = "https://dashboard.blooket.com";
             res = await fetch(url, options);
         } catch (e) { console.warn(e, arguments) }
