@@ -10,7 +10,7 @@ function Sidebar({ children }) {
                             <div className="icon">
                                 <div style={{ backgroundColor: "var(--accent1)", mask: "url(b.svg)", WebkitMask: "url(b.svg)", height: "30px", aspectRatio: "26 / 30" }}></div>
                             </div>
-                            <div id="title" style={{ position: "absolute", fontFamily: "Adventure", fontSize: "39px", top: "7px", left: "43px", color: "var(--accent1)" }}>looket</div>
+                            <div id="title" style={{ position: "absolute", fontFamily: "Adventure", fontSize: "39px", top: "calc(50% - 2px)", left: "43px", transform: "translateY(-50%)", color: "var(--accent1)" }}>looket</div>
                             <div className="page" style={{ opacity: "0" }}>Home</div>
                         </Link>
                     </li>
