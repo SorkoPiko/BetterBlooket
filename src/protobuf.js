@@ -2,6 +2,7 @@ import { createConnectTransport } from "@bufbuild/connect-web";
 import { createPromiseClient } from "@bufbuild/connect";
 import { MethodKind, proto3, ScalarType } from "@bufbuild/protobuf";
 import { fetch, Body, ResponseType } from "@tauri-apps/api/http";
+import Queue from "./queue";
 const blook = proto3.makeMessageType("dashboardservice.v1.ProfileBlook", () => [
     { no: 1, name: "name", kind: "scalar", T: ScalarType.STRING },
     { no: 2, name: "svg_url", kind: "scalar", T: ScalarType.STRING },
@@ -11,8 +12,9 @@ const blook = proto3.makeMessageType("dashboardservice.v1.ProfileBlook", () => [
     { no: 6, name: "team_name", kind: "scalar", T: ScalarType.STRING },
     { no: 7, name: "color", kind: "scalar", T: ScalarType.STRING }
 ])
-let csrfToken, cookie;
-export default (bisd) => createPromiseClient({
+
+let csrfToken, cookie, queue = new Queue(1, 300);
+export default (bisd, csrf, cb) => createPromiseClient({
     typeName: "dashboardservice.v1.DashboardService",
     methods: {
         me: {
@@ -75,8 +77,8 @@ export default (bisd) => createPromiseClient({
             options.responseType = ResponseType.Binary;
             options.body = Body.bytes(options.body);
             if (!options.headers) options.headers = {};
-            if (csrfToken) options.headers["x-csrf-token"] = csrfToken;
-            options.headers.cookie = cookie;
+            if (csrfToken) options.headers["X-CSRF-Token"] = csrfToken;
+            options.headers.cookie = `${bisd} ${csrf}`;
             options.headers["content-length"] = String(body.byteLength);
             options.headers["content-type"] = "application/proto";
             options.headers.origin = "https://dashboard.blooket.com";
@@ -88,27 +90,41 @@ export default (bisd) => createPromiseClient({
         return res;
     },
     interceptors: [((async function () {
-        let res = await fetch("https://dashboard.blooket.com/apipbinit");
+        let symbol = Symbol("csrfinitializer");
+        await queue.wait(symbol, -1);
+        let res = await fetch("https://dashboard.blooket.com/apipbinit", {
+            headers: { cookie: bisd }
+        });
         let token = res.headers["x-csrf-token"];
         if (!token) throw Error("no CSRF token found when initializing");
         csrfToken = token;
-        cookie = res.headers["set-cookie"].split(' ')[0] + ' ' + bisd;
+        if (res.headers["set-cookie"]) {
+            csrf = res.headers["set-cookie"].split(' ')[0];
+            cb(res.headers["set-cookie"].split(' ')[0]);
+        }
+        queue.end(symbol);
     })(), function (next) {
-        return function (req) {
+        return async function (req) {
+            if(queue.queueWaiting.size() > 5) console.warn("/logout");
+            let symbol = Symbol("csrfinterceptor");
+            await queue.wait(symbol, -1);
             if (!csrfToken) throw Error("could not make request without csrf token");
             let r = next(req);
             return new Promise((resolve, reject) => {
                 r.then(res => {
                     let token = res.header.get("X-CSRF-Token");
+                    if (res.header.get("set-cookie")) console.log(res.header.get("set-cookie"), cb(res.header.get("set-cookie").split(' ')[0]))
                     if (!token) throw Error("token not found in response");
                     csrfToken = token;
                     resolve(res);
                 }).catch(res => {
+                    console.warn(res)
+                    if (res.metadata.get("set-cookie")) console.log(res.metadata.get("set-cookie"), 69, cb(res.metadata.get("set-cookie").split(' ')[0]))
                     let token = res.metadata.get("X-CSRF-Token");
                     if (!token) throw Error("token not found in response");
                     csrfToken = token;
                     reject(res);
-                })
+                }).finally(() => queue.end(symbol));
             })
         }
     })]

@@ -9,7 +9,7 @@ import { useAuth } from "./context/AuthContext";
 window.tfetch = fetch;
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
+    // <React.StrictMode> // strict mode makes useEffect render twice on dev server, breaking protobuf
         <BrowserRouter><App /></BrowserRouter>
-    </React.StrictMode>
+    // </React.StrictMode>
 );

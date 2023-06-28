@@ -25,19 +25,20 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [userData, setUserData] = useState(null);
     const [bisd, setBisd] = useLocalStorage("bisd");
+    const [csrf, setCsrf] = useLocalStorage("csrf");
     const csrfFetch = useRef();
     const [protobuf, setProtobuf] = useUpdate();
 
     useEffect(() => {
-        async function run() {
+        (async function () {
             if (bisd.current) await getLoggedIn();
             setLoading(false);
-        }
-        run();
+        })();
     }, []);
 
     useEffect(() => {
         window.protobuf = protobuf;
+        if (protobuf) protobuf.me({}).then(console.log)
     }, [protobuf])
 
     useEffect(() => {
@@ -69,9 +70,9 @@ export const AuthProvider = ({ children }) => {
     }
 
     async function getLoggedIn() {
-        const res = await fetch("https://dashboard.blooket.com/api/users/stats", { headers: { Cookie: bisd.current } });
+        const res = await fetch("https://dashboard.blooket.com/api/users/me", { headers: { Cookie: bisd.current, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " } });
         setUserData(res.data);
-        setProtobuf(Protobuf(bisd.current));
+        setProtobuf(Protobuf(bisd.current, csrf.current, setCsrf));
         // csrfFetch.current = Fetch(bisd.current, (cookie) => (bisd.current += cookie));
     }
 
