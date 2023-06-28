@@ -30,18 +30,18 @@ header > div {
     right: 40px;
     font-size: 40px;
     text-decoration: none;
-    color: #9a49aa;
+    color: var(--accent1);
     padding-inline: 35px;
     padding-block: 10px;
     height: min-content;
     float: right;
-    border: 2px solid #9a49aa;
+    border: 2px solid var(--accent1);
     transition: 0.2s;
 }
 
 #login:hover {
-    border: 2px solid hsl(290, 100%, 50%);
-    color: hsl(290, 100%, 50%);
+    border: 2px solid var(--highlight1);
+    color: var(--highlight1);
 }
 
 #welcomeMessage {
@@ -70,17 +70,17 @@ header > div {
     margin: 10px;
     font-size: 40px;
     text-decoration: none;
-    color: #9a49aa;
+    color: var(--accent1);
     padding-inline: 45px;
     padding-block: 10px;
     height: min-content;
-    border: 2px solid #9a49aa;
+    border: 2px solid var(--accent1);
     transition: 0.2s;
 }
 
 #github:hover, #discord:hover {
-    border: 2px solid hsl(290, 100%, 50%);
-    color: hsl(290, 100%, 50%);
+    border: 2px solid var(--highlight1);
+    color: var(--highlight1);
 }
 
 #headerBackground {

@@ -7,9 +7,20 @@ function Sidebar({ children }) {
                 <div style={{ marginBottom: "25px" }}>
                     <Link to="/">
                         <div className="icon">
+                            {/* <object data="b.svg" type="image/svg+xml" height="30"></object> */}
                             <img src="b.svg" alt="Blooket" height="30" />
+                            {/* <svg class="svg-class">
+                                <use xlinkHref="b.svg" />
+                            </svg> */}
+                            {/* <div style={{
+                                backgroundColor: "var(--accent1)",
+                                mask: "url(b.svg)",
+                                WebkitMask: "url(b.svg)",
+                                height: "30px",
+                                aspectRatio: "26 / 30"
+                            }}></div> */}
                         </div>
-                        <div id="title" style={{ position: "absolute", fontFamily: "Adventure", fontSize: "39px", top: "12px", left: "69px", color: "#9B4BAB" }}>looket</div>
+                        <div id="title" style={{ position: "absolute", fontFamily: "Adventure", fontSize: "39px", top: "12px", left: "69px", color: "var(--accent1)" }}>looket</div>
                     </Link>
                 </div>
                 <ul>

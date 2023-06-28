@@ -33,8 +33,8 @@
 }
 
 #unlocks {
-    outline: 3px solid #9a49aa;
-    background-color: #0b0c0d;
+    outline: 3px solid var(--accent1);
+    background-color: var(--main1);
     position: absolute;
     top: calc(25px + 29vh);
     left: 25px;
@@ -116,8 +116,8 @@ img[data-locked="true"] {
     align-items: center;
     width: 9%;
     aspect-ratio: 1 / 1;
-    background-color: #0b0c0d;
-    /* outline: 2px solid #9a49aa; */
+    background-color: var(--main2);
+    /* outline: 2px solid var(--accent1); */
     border-radius: 6%;
     padding: 5px;
     cursor: pointer;
@@ -126,16 +126,16 @@ img[data-locked="true"] {
 }
 
 .packButton:hover {
-    background-color: #9a49aa;
+    background-color: var(--accent1);
     scale: 0.9;
 }
 
 .packButton[data-selected="true"] {
-    background-color: #9a49aa;
+    background-color: var(--accent1);
 }
 
 .packButton[data-selected="true"] img {
-    color: #9a49aa;
+    color: var(--accent1);
     filter: invert(1)
         /* sepia(1) saturate(100) hue-rotate(290deg); */
 }
@@ -146,7 +146,7 @@ img[data-locked="true"] {
 }
 
 #packUnlocks {
-    outline: 3px solid #9a49aa;
+    outline: 3px solid var(--accent1);
     background-color: #0b0c0d;
     position: absolute;
     top: calc(25px + 29vh);
@@ -194,8 +194,8 @@ img[data-locked="true"] {
     height: 75%;
     aspect-ratio: 1 / 1;
     background: none;
-    border: 3px solid #9a49aa;
-    color: #9a49aa;
+    border: 3px solid var(--accent1);
+    color: var(--accent1);
     margin-inline: 40px;
     font-size: 200%;
     align-items: center;
@@ -207,8 +207,8 @@ img[data-locked="true"] {
 
 #arrowsContainer button:hover {
     /* scale: 1.1; */
-    border: 3px solid hsl(290, 100%, 50%);
-    color: hsl(290, 100%, 50%);
+    border: 3px solid var(--highlight1);
+    color: var(--highlight1);
 }
 
 #blookName,
@@ -256,7 +256,7 @@ img[data-locked="true"] {
     text-align: center;
     padding-left: 5%;
     cursor: pointer;
-    border: 3px solid #9a49aa;
+    border: 3px solid var(--accent1);
     transition: 0.2s;
     background: none;
     padding: 5px 10px 5px 15px;
@@ -269,7 +269,7 @@ img[data-locked="true"] {
 #showPacks:hover,
 #showFree:hover,
 #hideLocked:hover {
-    border: 3px solid hsl(290, 100%, 50%);
+    border: 3px solid var(--highlight1);
 }
 
 #allPacks {

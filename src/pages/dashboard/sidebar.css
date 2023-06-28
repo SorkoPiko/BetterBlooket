@@ -3,7 +3,7 @@
     top: 0;
     left: 0;
     bottom: 0;
-    background-color: #0b0c0d;
+    background-color: var(--main2);
     width: fit-content;
     padding: 25px;
     clip-path: polygon(0 0,
@@ -41,12 +41,12 @@
 }
 
 #sidebar li a * {
-    color: #9a49aa;
+    color: var(--accent1);
     transition: 0.2s;
 }
 
 #sidebar li a:hover * {
-    color: hsl(290, 100%, 50%);
+    color: var(--highlight1);
 }
 
 #sidebar li a .page {

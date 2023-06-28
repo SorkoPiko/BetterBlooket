@@ -5,7 +5,7 @@
     right: 0;
     z-index: 100;
     height: 70px;
-    background-color: #0b0c0d;
+    background-color: var(--main2);
     font-family: Adventure;
     padding: 0 30px;
 }
@@ -32,7 +32,7 @@
     transform: translate(-50%, -50%);
     /* height: 50%; */
     padding: 20px;
-    outline: 2px solid #9a49aa;
+    outline: 2px solid var(--accent1);
     background: rgba(0, 0, 0, 50%);
 }
 
@@ -46,7 +46,7 @@
 
 .input {
     margin: 15px;
-    border: 2px solid #9a49aa;
+    border: 2px solid var(--accent1);
     transition: 0.2s
 }
 
@@ -61,7 +61,7 @@
 }
 
 .input:has(input:focus) {
-    border: 2px solid hsl(290, 100%, 50%);
+    border: 2px solid var(--highlight1);
 }
 
 .input input::placeholder {
@@ -73,7 +73,7 @@
     display: block;
     text-align: center;
     margin: 10px auto 10px auto;
-    border: 2px solid #9a49aa;
+    border: 2px solid var(--accent1);
     outline: none;
     background: none;
     padding: 10px;
@@ -83,7 +83,7 @@
 }
 
 #submit:hover {
-    border: 2px solid hsl(290, 100%, 50%);
+    border: 2px solid var(--highlight1);
 }
 
 #submit:disabled {
