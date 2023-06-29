@@ -16,7 +16,7 @@ function validateBlook(e) {
 
 export default function CustomBlook({ code, className, blookClassName, style, tip }) {
     var l = code.split("#");
-    if (!validateBlook(code)) return <div className={`${u.a.blookContainer} ${className}`} style={style} data-tip={tip || null}>
+    if (!validateBlook(code)) return <div className={`blookContainer ${className}`} style={style} data-tip={tip || null}>
         <img src="https://blooket.s3.us-east-2.amazonaws.com/blooks/colors/lightBlueBlook.svg" alt="Blook" draggable={false} className={`blook ${blookClassName}`} />
     </div>
     // i honestly dont feel like dealing with this
