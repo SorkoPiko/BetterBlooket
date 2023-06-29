@@ -1,6 +1,8 @@
 import { invoke } from "@tauri-apps/api";
 import { useEffect, useRef, useState } from "react";
+import CustomBlook from "../../blooks/CustomBlook";
 import Sidebar from "./SideBar";
+import "./stats.css";
 function Stats() {
     const [stats, setStats] = useState({});
     const profile = useRef({ name: "MllereA", blook: { name: "King" } });
@@ -218,7 +220,11 @@ function Stats() {
     }, []);
     return (<>
         <Sidebar>
-            stats
+            <CustomBlook className="blookContainer customBlook" code="0#11#11#0#12$8#12#0#11#2#1#2$0" />
+            <CustomBlook className="blookContainer customBlook" code="0#30#12#0#3$3#3#0#13#0#3#0$0" />
+            <CustomBlook className="blookContainer customBlook" code="0#12#9#6#0$0#0#0#2#2#0#4$0" />
+            <CustomBlook className="blookContainer customBlook" code="0#0#9#16#0$0#0#0#2#2#0#4$0" />
+            <CustomBlook className="blookContainer customBlook" code="5#7#0#0#6$0#14#5#16#3#0#9$0" />
         </Sidebar>
     </>);
 }
