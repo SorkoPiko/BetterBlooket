@@ -1,3 +1,4 @@
+import { invoke } from "@tauri-apps/api";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Login from "./Login";
@@ -10,7 +11,15 @@ function Auth() {
     const navigate = useNavigate();
     useEffect(() => {
         import("./auth.css");
-        if (userData) navigate("/stats")
+        if (userData) navigate("/stats");
+        invoke('set_activity', {
+            state: "Log In",
+            timestampStart: Date.now(),
+            largeImage: "icon1024",
+            largeText: "BetterBlooket",
+            smallImage: "empty",
+            smallText: "empty"
+        });
     }, [])
 
     return (<>

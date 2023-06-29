@@ -1,9 +1,19 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-// import "./home.css";
+import "./home.css";
+import { invoke } from "@tauri-apps/api";
 
 function Home() {
-    useEffect(() => { import("./home.css") }, []);
+    useEffect(() => {
+        invoke('set_activity', {
+            state: "Home",
+            timestampStart: Date.now(),
+            largeImage: "icon1024",
+            largeText: "BetterBlooket",
+            smallImage: "empty",
+            smallText: "empty"
+        });
+    }, []);
     return (<>
         <div id="mainHome" style={{ height: "100vh", width: "100%", overflow: "hidden", position: "relative" }}>
             <header id="header">

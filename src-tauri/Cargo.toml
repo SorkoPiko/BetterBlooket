@@ -16,6 +16,7 @@ tauri-build = { version = "1.4", features = [] }
 tauri = { version = "1.4", features = [ "http-all", "shell-open"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+declarative-discord-rich-presence = { git = "https://github.com/KPidS/declarative-discord-rich-presence" }
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem

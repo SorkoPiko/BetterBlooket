@@ -1,3 +1,4 @@
+import { invoke } from "@tauri-apps/api";
 import { useEffect, useRef, useState } from "react";
 import Sidebar from "./SideBar";
 function Stats() {
@@ -205,7 +206,15 @@ function Stats() {
             "xp": 0,
             "xpAvailable": 287,
             "customBlooks": []
-        })
+        });
+        invoke('set_activity', {
+            state: "Stats",
+            timestampStart: Date.now(),
+            largeImage: "icon1024",
+            largeText: "BetterBlooket",
+            smallImage: "empty",
+            smallText: "empty"
+        });
     }, []);
     return (<>
         <Sidebar>

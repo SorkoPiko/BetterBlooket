@@ -1,3 +1,4 @@
+import { invoke } from "@tauri-apps/api";
 import { useEffect } from "react";
 import Sidebar from "./SideBar";
 import { market } from "../../blooks/packs";
@@ -9,7 +10,14 @@ function imgUrl(url) {
 }
 function Market() {
     useEffect(() => {
-        // fetch market
+        invoke('set_activity', {
+            state: "Market",
+            timestampStart: Date.now(),
+            largeImage: "icon1024",
+            largeText: "BetterBlooket",
+            smallImage: "empty",
+            smallText: "empty"
+        });
     }, []);
     return (<>
         <Sidebar>

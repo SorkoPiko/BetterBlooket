@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import allBlooks, { freeBlooks, rarityColors } from "../../blooks/allBlooks";
 import packs, { GenericSetBackground } from "../../blooks/packs";
 import hidden from "../../blooks/packs/hidden";
+import { invoke } from "@tauri-apps/api";
 import "./blooks.css";
 const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
 function Blooks() {
@@ -28,7 +29,15 @@ function Blooks() {
                 packs[p].allBlooks = { ...packs[p].blooks };
                 for (const h in hidden) if (hidden[h].realSet == p) packs[p].allBlooks[h] = hidden[h];
             }
-        })()
+        })();
+        invoke('set_activity', {
+            state: "Blooks",
+            timestampStart: Date.now(),
+            largeImage: "icon1024",
+            largeText: "BetterBlooket",
+            smallImage: "empty",
+            smallText: "empty"
+        });
     }, []);
     useEffect(() => {
         if (pack) setSelected(Object.keys(showHidden ? packs[pack].allBlooks : packs[pack].blooks)[selectedIndex]);
