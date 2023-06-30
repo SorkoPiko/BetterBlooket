@@ -1,3 +1,7 @@
+export const icons = {
+    General: ({ className }) => <img className={className} src="emptyIcon.svg" alt="icon" />,
+    Gameplay: ({ className }) => <i className={`${className} fa-solid fa-gamepad`}></i>
+}
 export default {
     General: {
         "Blooks Unlocked": "numUnlocks",

@@ -2,13 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import CustomBlook from "../../blooks/CustomBlook";
 import banners from "../../blooks/banners";
 import titles from "../../blooks/titles";
-import statistics from "../../blooks/stats";
+import statistics, { icons } from "../../blooks/stats";
 import Sidebar from "./SideBar";
 import "./stats.css";
 import allBlooks from "../../blooks/allBlooks";
 import { setActivity } from "../../discordRPC";
+import { formatBigNumber, formatNumber, getOrdinal } from "../../utils/numbers";
 function Stats() {
     const [stats, setStats] = useState({});
+    const [blookUsage, setBlookUsage] = useState([]);
     useEffect(() => {
         setStats({
             "_id": "630c2e356fa5f4c8d863a6e1",
@@ -331,39 +333,105 @@ function Stats() {
             ]
         });
         setActivity({
-            state: "Stats",
+            state: "i dont like working on this page",
             timestampStart: Date.now(),
         });
     }, []);
+    useEffect(() => {
+        if (stats.blookUsage) setBlookUsage(Object.entries(stats.blookUsage).sort((a, b) => b[1] - a[1]));
+    }, [stats])
     return (<>
         <Sidebar>
             <div id="profile">
-                <div id="blook" className="blookContainer">
-                    <img src={allBlooks[stats.blook || "Chick"].url} alt={(stats.blook || "Chick") + " Blook"} draggable={false} className="blook" />
-                </div>
-                <div id="banner">
-                    {stats.banner
-                        ? <img src={banners[stats.banner].url} alt={banners[stats.banner].name} id="bannerImg" draggable={false} />
-                        : <img src={banners.starter.url} alt="Starter Banner" id="bannerImg" draggable={false} />}
-                    <div id="username">{stats.name}</div>
-                    <div id="userTitle">{titles[stats.title]?.name || "Newbie"}</div>
+                <div id="profileWrapper">
+                    <div id="blook" className="blookContainer">
+                        <img src={allBlooks[stats.blook || "Chick"].url} alt={(stats.blook || "Chick") + " Blook"} draggable={false} className="blook" />
+                    </div>
+                    <div id="banner">
+                        {stats.banner
+                            ? <img src={banners[stats.banner].url} alt={banners[stats.banner].name} id="bannerImg" draggable={false} />
+                            : <img src={banners.starter.url} alt="Starter Banner" id="bannerImg" draggable={false} />}
+                        <div id="nameHolder">
+                            <div id="username">{stats.name}</div>
+                            <div id="userTitle">{titles[stats.title]?.name || "Newbie"}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="stats">
-                {Object.keys(statistics).map(category => <div key={category} className="statsCategory">
-                    <div className="statsHeader">{category}</div>
-                    {Object.keys(statistics[category]).map(stat => <div key={stat} className="stat">
-                        <div className="statName">{stat}</div>
-                        <div className="statValue">{stats[statistics[category][stat]] != null ? stats[statistics[category][stat]] : statistics[category][stat]}</div>
-                    </div>)}
+            <div id="bottomHalf">
+                <div id="blookUsage">
+                    <div id="usageHeader">Blook Usage</div>
+                    <div id="usageStart">0</div>
+                    <div id="usageTip">Plays</div>
+                    <div id="usageEnd">{blookUsage[0]?.[1]}</div>
+                    <div id="usageWrapper">
+                        {blookUsage.map(([blook, usage]) => {
+                            return <div key={`${blook} Usage`} className="blookUse">
+                                <img className="usageBlook" src={allBlooks[blook].url} alt={blook} style={{ width: "50px" }} />
+                                <div className="usageBarWrapper">
+                                    <div className="usageBar" style={{ backgroundColor: allBlooks[blook].color, transform: `scaleX(${usage / blookUsage[0][1]})` }}></div>
+                                </div>
+                            </div>
+                        })}
+                    </div>
                 </div>
-                )}
+                <div id="gameHistory">
+                    <div id="historyHeader">Game History</div>
+                    <div id="historyWrapper">
+                        {(stats.gameHistory || [])?.map(({ blookUsed, name, place }, i) => {
+                            return <div key={i} className="pastGame">
+                                {allBlooks[blookUsed] ? <img className="pastBlook" src={allBlooks[blookUsed].url} alt={blookUsed} /> : <CustomBlook className="pastBlook" code={blookUsed} />}
+                                <div className="pastInfo">
+                                    <div className="pastInfoLeft">
+                                        <div className="pastName">{name}</div>
+                                        <div className="pastPlace">{place + getOrdinal(place)}</div>
+                                    </div>
+                                    {stats.gameHistory[i].candy != null ? formatBigNumber(stats.gameHistory[i].candy)
+                                        : stats.gameHistory[i].gold != null ? formatBigNumber(stats.gameHistory[i].gold)
+                                        : stats.gameHistory[i].xp != null ? formatBigNumber(stats.gameHistory[i].xp)
+                                        : stats.gameHistory[i].toys != null ? formatBigNumber(stats.gameHistory[i].toys)
+                                        : stats.gameHistory[i].shamrocks != null ? formatBigNumber(stats.gameHistory[i].shamrocks)
+                                        : stats.gameHistory[i].snow != null ? formatBigNumber(stats.gameHistory[i].snow)
+                                        : stats.gameHistory[i].cash != null ? `$${formatBigNumber(stats.gameHistory[i].cash)}`
+                                        : stats.gameHistory[i].crypto != null ? `₿ ${formatBigNumber(stats.gameHistory[i].crypto)}`
+                                        : stats.gameHistory[i].weight != null ? `${formatBigNumber(stats.gameHistory[i].weight)} lbs`
+                                        : stats.gameHistory[i].classicPoints != null ? formatNumber(stats.gameHistory[i].classicPoints)
+                                        : stats.gameHistory[i].wins != null ? `${stats.gameHistory[i].wins} ${1 === stats.gameHistory[i].wins ? "Win" : "Wins"}`
+                                        : stats.gameHistory[i].result != null ? stats.gameHistory[i].result
+                                        : stats.gameHistory[i].guests != null ? formatNumber(stats.gameHistory[i].guests)
+                                        : stats.gameHistory[i].dmg != null ? formatNumber(stats.gameHistory[i].dmg)
+                                        : stats.gameHistory[i].numBlooks != null ? formatNumber(stats.gameHistory[i].numBlooks)
+                                        : stats.gameHistory[i].fossils != null ? formatNumber(stats.gameHistory[i].fossils)
+                                        : null}
+                                </div>
+                            </div>
+                        })}
+                    </div>
+                </div>
+                <div id="stats">
+                    {Object.keys(statistics).map(category => {
+                        const Icon = icons[category];
+                        return <div key={category} className="statsCategory">
+                            <div className="statsHeader">{<Icon className="statIcon" />}{category}</div>
+                            {Object.keys(statistics[category]).map(stat => {
+                                let value = stats[statistics[category][stat]];
+                                return (<div key={stat} className="stat">
+                                    <div className="statName">{stat}</div>
+                                    <div className="statValue">{value != null ? (
+                                        typeof value == "number" ? value > 9999999999 ? formatBigNumber(value) : formatNumber(value) : value
+                                    ) : statistics[category][stat]}</div>
+                                </div>)
+                            })}
+                        </div>
+                    })}
+                </div>
             </div>
-            <div id="customBlooks">
-                {(stats.customBlooks || []).map(code => (
-                    code ? <CustomBlook key={code} className="blookContainer customBlook" code={code} /> : <div>empty</div>
+            {/* <div id="customBlooks">
+                {(stats.customBlooks || []).map((code, i) => (
+                    code ? <CustomBlook key={code} className="blookContainer customBlook" code={code} /> : <div key={i}>empty</div>
                 ))}
-            </div>
+            </div> */}
+            {/* <div style={{position:"absolute", top: "50%", left: "0", right: "0", bottom: "0", background:"white", zIndex: "-1"}}></div> */}
         </Sidebar>
     </>);
 }
