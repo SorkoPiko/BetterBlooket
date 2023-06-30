@@ -1,17 +1,13 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./home.css";
-import { invoke } from "@tauri-apps/api";
+import { setActivity } from "../discordRPC";
 
 function Home() {
     useEffect(() => {
-        invoke('set_activity', {
+        setActivity({
             state: "Home",
             timestampStart: Date.now(),
-            largeImage: "icon1024",
-            largeText: "BetterBlooket",
-            smallImage: "empty",
-            smallText: "empty"
         });
     }, []);
     return (<>

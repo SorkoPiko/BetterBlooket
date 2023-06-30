@@ -4,8 +4,8 @@ import { useAuth } from "../../context/AuthContext";
 import allBlooks, { freeBlooks, rarityColors } from "../../blooks/allBlooks";
 import packs, { GenericSetBackground } from "../../blooks/packs";
 import hidden from "../../blooks/packs/hidden";
-import { invoke } from "@tauri-apps/api";
 import "./blooks.css";
+import { setActivity } from "../../discordRPC";
 const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
 function Blooks() {
     const { protobuf } = useAuth();
@@ -30,13 +30,9 @@ function Blooks() {
                 for (const h in hidden) if (hidden[h].realSet == p) packs[p].allBlooks[h] = hidden[h];
             }
         })();
-        invoke('set_activity', {
+        setActivity({
             state: "Blooks",
             timestampStart: Date.now(),
-            largeImage: "icon1024",
-            largeText: "BetterBlooket",
-            smallImage: "empty",
-            smallText: "empty"
         });
     }, []);
     useEffect(() => {

@@ -1,8 +1,8 @@
-import { invoke } from "@tauri-apps/api";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Login from "./Login";
 import { useAuth } from "../../context/AuthContext";
+import { setActivity } from "../../discordRPC";
 // import "./auth.css";
 
 function Auth() {
@@ -12,13 +12,9 @@ function Auth() {
     useEffect(() => {
         import("./auth.css");
         if (userData) navigate("/stats");
-        invoke('set_activity', {
+        setActivity({
             state: "Log In",
             timestampStart: Date.now(),
-            largeImage: "icon1024",
-            largeText: "BetterBlooket",
-            smallImage: "empty",
-            smallText: "empty"
         });
     }, [])
 

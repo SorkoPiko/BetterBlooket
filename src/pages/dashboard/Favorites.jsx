@@ -1,15 +1,11 @@
 import { useEffect } from "react";
-import { invoke } from "@tauri-apps/api";
 import Sidebar from "./SideBar";
+import { setActivity } from "../../discordRPC";
 function Favorites() {
     useEffect(() => {
-        invoke('set_activity', {
+        setActivity ({
             state: "Favorites",
             timestampStart: Date.now(),
-            largeImage: "icon1024",
-            largeText: "BetterBlooket",
-            smallImage: "empty",
-            smallText: "empty"
         });
     }, []);
     return (<>

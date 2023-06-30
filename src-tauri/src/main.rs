@@ -53,7 +53,7 @@ fn main() {
 
             discord_ipc_client.enable();
         
-            if let Err(why) = discord_ipc_client.set_activity(Activity::new().state("real")) {
+            if let Err(why) = discord_ipc_client.set_activity(Activity::new().state("Starting up...")) {
                   println!("Failed to set presence: {}", why);
               }
               app.manage(discord_ipc_client);

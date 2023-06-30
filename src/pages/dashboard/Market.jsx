@@ -1,8 +1,8 @@
-import { invoke } from "@tauri-apps/api";
 import { useEffect } from "react";
 import Sidebar from "./SideBar";
 import { market } from "../../blooks/packs";
 import "./market.css";
+import { setActivity } from "../../discordRPC";
 function imgUrl(url) {
     if (!url) return url;
     let i = url.indexOf("upload/");
@@ -10,13 +10,9 @@ function imgUrl(url) {
 }
 function Market() {
     useEffect(() => {
-        invoke('set_activity', {
+        setActivity({
             state: "Market",
             timestampStart: Date.now(),
-            largeImage: "icon1024",
-            largeText: "BetterBlooket",
-            smallImage: "empty",
-            smallText: "empty"
         });
     }, []);
     return (<>

@@ -1,4 +1,3 @@
-import { invoke } from "@tauri-apps/api";
 import { useEffect, useRef, useState } from "react";
 import CustomBlook from "../../blooks/CustomBlook";
 import banners from "../../blooks/banners";
@@ -7,6 +6,7 @@ import statistics from "../../blooks/stats";
 import Sidebar from "./SideBar";
 import "./stats.css";
 import allBlooks from "../../blooks/allBlooks";
+import { setActivity } from "../../discordRPC";
 function Stats() {
     const [stats, setStats] = useState({});
     useEffect(() => {
@@ -330,13 +330,9 @@ function Stats() {
                 ""
             ]
         });
-        invoke('set_activity', {
+        setActivity({
             state: "Stats",
             timestampStart: Date.now(),
-            largeImage: "icon1024",
-            largeText: "BetterBlooket",
-            smallImage: "empty",
-            smallText: "empty"
         });
     }, []);
     return (<>

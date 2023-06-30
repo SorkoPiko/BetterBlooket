@@ -46,8 +46,8 @@
         "resizable": true,
         "title": "BetterBlooket",
         "label": "main",
-        "width": 1200,
-        "height": 675
+        "width": 1280,
+        "height": 720
       }
     ]
   }
