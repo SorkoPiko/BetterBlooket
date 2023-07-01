@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import CustomBlook from "../../blooks/CustomBlook";
 import banners from "../../blooks/banners";
 import titles from "../../blooks/titles";
@@ -9,9 +9,12 @@ import allBlooks from "../../blooks/allBlooks";
 import { setActivity } from "../../discordRPC";
 import { formatBigNumber, formatNumber, getOrdinal } from "../../utils/numbers";
 import { useAuth } from "../../context/AuthContext";
+import { getLevel, items } from "../../blooks/classPass";
+import parts from "../../blooks/parts";
 function Stats() {
     const [stats, setStats] = useState({});
     const [blookUsage, setBlookUsage] = useState([]);
+    const [classPass, setClassPass] = useState({ level: 0, xp: 0 });
     // const {http: {get}} = useAuth();
     useEffect(() => {
         setStats({
@@ -336,52 +339,98 @@ function Stats() {
         });
         // get("https://dashboard.blooket.com/api/users/stats").then(({data}) => setStats(data));
         setActivity({
-            state: "i dont like working on this page",
-            timestampStart: Date.now(),
+            state: "Adding ClassPass to stats page",
+            timestampStart: 1688218175567 || Date.now(),
         });
     }, []);
+    const currentPart = useRef();
     useEffect(() => {
         if (stats.blookUsage) setBlookUsage(Object.entries(stats.blookUsage).sort((a, b) => b[1] - a[1]));
-    }, [stats])
+        if (stats.xp) setClassPass(getLevel(stats.xp));
+    }, [stats]);
+    useEffect(() => {
+        currentPart.current?.scrollIntoViewIfNeeded?.();
+        console.log(classPass, currentPart.current);
+        window.classPass = classPass;
+    }, [classPass]);
     return (<>
         <Sidebar>
-            <div id="profile">
-                <div id="profileWrapper">
-                    <div id="blook" className="blookContainer">
-                        <img src={allBlooks[stats.blook || "Chick"].url} alt={(stats.blook || "Chick") + " Blook"} draggable={false} className="blook" />
+            <div id="topHalf">
+                <div id="topLeft">
+                    <div id="profile">
+                        <div id="profileWrapper">
+                            <div id="blook" className="blookContainer">
+                                <img src={allBlooks[stats.blook || "Chick"].url} alt={(stats.blook || "Chick") + " Blook"} draggable={false} className="blook" />
+                            </div>
+                            <div id="banner">
+                                {stats.banner
+                                    ? <img src={banners[stats.banner].url} alt={banners[stats.banner].name} id="bannerImg" draggable={false} />
+                                    : <img src={banners.starter.url} alt="Starter Banner" id="bannerImg" draggable={false} />}
+                                <div id="nameHolder">
+                                    <div id="username">{stats.name}</div>
+                                    <div id="userTitle">{titles[stats.title]?.name || "Newbie"}</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div id="banner">
-                        {stats.banner
-                            ? <img src={banners[stats.banner].url} alt={banners[stats.banner].name} id="bannerImg" draggable={false} />
-                            : <img src={banners.starter.url} alt="Starter Banner" id="bannerImg" draggable={false} />}
-                        <div id="nameHolder">
-                            <div id="username">{stats.name}</div>
-                            <div id="userTitle">{titles[stats.title]?.name || "Newbie"}</div>
+                    <div id="classPassWrapper">
+                        <div id="classPass">
+                            {items.map((item, level) => {
+                                console.log({level}, 69)
+                                return item.partType && <Fragment key={`part${level}`}>
+                                    <div data-passed={classPass.level >= level + 1} ref={Math.min(level + 1, 100) == classPass.level ? currentPart : null} style={{ left: `${level * 25}%` }} className="classPassPart">
+                                        <img src={parts[item.partType][item.part].url} alt={item.partType} />
+                                    </div>
+                                    <div data-xp-needed={(level == classPass.level) ? `${classPass.xp} / ${items[classPass.level].xp}` : ""} style={{ left: `${level * 25}%` }} className="levelWrapper">
+                                        <div data-passed={classPass.level >= level + 1} className="partLevel">{level + 1}</div>
+                                    </div>
+                                </Fragment>
+                            })}
+                            <div id="classPassBar">
+                                <div style={{
+                                    width: `calc(calc(${classPass?.level}% - 1.5vw) + ${classPass?.level == 100 ? 1 : classPass?.xp / items[classPass?.level]?.xp - .5}%)`
+                                }} id="barInner"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div id="customBlooks">
+                    {/* {(stats.customBlooks || []).map((code, i) => (
+                        code ? <CustomBlook key={code} className="blookContainer customBlook" code={code} /> : <div key={i}>empty</div>
+                    ))} */}
+                </div>  {/* this is filler until i start working on the custom blook viewer */}
             </div>
             <div id="bottomHalf">
                 <div id="blookUsage">
                     <div id="usageHeader">Blook Usage</div>
                     <div id="usageStart">0</div>
                     <div id="usageTip">Plays</div>
-                    <div id="usageEnd">{blookUsage[0]?.[1] || 0}</div>
+                    <div id="usageEnd">{blookUsage[0]?.[1] || 1}</div>
                     <div id="usageWrapper">
-                        {blookUsage.map(([blook, usage]) => {
-                            return <div key={`${blook} Usage`} className="blookUse">
+                        {blookUsage.length ? blookUsage.map(([blook, usage]) => {
+                            return <div key={`${blook} Usage`} s className="blookUse">
                                 <img className="usageBlook" src={allBlooks[blook].url} alt={blook} style={{ width: "50px" }} />
                                 <div className="usageBarWrapper">
                                     <div className="usageBar" style={{ backgroundColor: allBlooks[blook].color, transform: `scaleX(${usage / blookUsage[0][1]})` }}></div>
                                 </div>
                             </div>
-                        })}
+                        }) : <div style={{
+                            position: "absolute",
+                            display: "flex",
+                            top: 0,
+                            right: 0,
+                            bottom: 0,
+                            left: 0,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "20px"
+                        }}>No Games Played Yet</div>}
                     </div>
                 </div>
                 <div id="gameHistory">
                     <div id="historyHeader">Game History</div>
                     <div id="historyWrapper">
-                        {(stats.gameHistory || [])?.map(({ blookUsed, name, place }, i) => {
+                        {stats.gameHistory?.length ? stats.gameHistory.map(({ blookUsed, name, place }, i) => {
                             return <div key={i} className="pastGame">
                                 {allBlooks[blookUsed] ? <img className="pastBlook" src={allBlooks[blookUsed].url} alt={blookUsed} /> : <CustomBlook className="pastBlook" blookClassName="pastCustomBlook" code={blookUsed} />}
                                 <div className="pastInfo">
@@ -391,24 +440,34 @@ function Stats() {
                                     </div>
                                     {stats.gameHistory[i].candy != null ? formatBigNumber(stats.gameHistory[i].candy)
                                         : stats.gameHistory[i].gold != null ? formatBigNumber(stats.gameHistory[i].gold)
-                                        : stats.gameHistory[i].xp != null ? formatBigNumber(stats.gameHistory[i].xp)
-                                        : stats.gameHistory[i].toys != null ? formatBigNumber(stats.gameHistory[i].toys)
-                                        : stats.gameHistory[i].shamrocks != null ? formatBigNumber(stats.gameHistory[i].shamrocks)
-                                        : stats.gameHistory[i].snow != null ? formatBigNumber(stats.gameHistory[i].snow)
-                                        : stats.gameHistory[i].cash != null ? `$${formatBigNumber(stats.gameHistory[i].cash)}`
-                                        : stats.gameHistory[i].crypto != null ? `₿ ${formatBigNumber(stats.gameHistory[i].crypto)}`
-                                        : stats.gameHistory[i].weight != null ? `${formatBigNumber(stats.gameHistory[i].weight)} lbs`
-                                        : stats.gameHistory[i].classicPoints != null ? formatNumber(stats.gameHistory[i].classicPoints)
-                                        : stats.gameHistory[i].wins != null ? `${stats.gameHistory[i].wins} ${1 === stats.gameHistory[i].wins ? "Win" : "Wins"}`
-                                        : stats.gameHistory[i].result != null ? stats.gameHistory[i].result
-                                        : stats.gameHistory[i].guests != null ? formatNumber(stats.gameHistory[i].guests)
-                                        : stats.gameHistory[i].dmg != null ? formatNumber(stats.gameHistory[i].dmg)
-                                        : stats.gameHistory[i].numBlooks != null ? formatNumber(stats.gameHistory[i].numBlooks)
-                                        : stats.gameHistory[i].fossils != null ? formatNumber(stats.gameHistory[i].fossils)
-                                        : null}
+                                            : stats.gameHistory[i].xp != null ? formatBigNumber(stats.gameHistory[i].xp)
+                                                : stats.gameHistory[i].toys != null ? formatBigNumber(stats.gameHistory[i].toys)
+                                                    : stats.gameHistory[i].shamrocks != null ? formatBigNumber(stats.gameHistory[i].shamrocks)
+                                                        : stats.gameHistory[i].snow != null ? formatBigNumber(stats.gameHistory[i].snow)
+                                                            : stats.gameHistory[i].cash != null ? `$${formatBigNumber(stats.gameHistory[i].cash)}`
+                                                                : stats.gameHistory[i].crypto != null ? `₿ ${formatBigNumber(stats.gameHistory[i].crypto)}`
+                                                                    : stats.gameHistory[i].weight != null ? `${formatBigNumber(stats.gameHistory[i].weight)} lbs`
+                                                                        : stats.gameHistory[i].classicPoints != null ? formatNumber(stats.gameHistory[i].classicPoints)
+                                                                            : stats.gameHistory[i].wins != null ? `${stats.gameHistory[i].wins} ${1 === stats.gameHistory[i].wins ? "Win" : "Wins"}`
+                                                                                : stats.gameHistory[i].result != null ? stats.gameHistory[i].result
+                                                                                    : stats.gameHistory[i].guests != null ? formatNumber(stats.gameHistory[i].guests)
+                                                                                        : stats.gameHistory[i].dmg != null ? formatNumber(stats.gameHistory[i].dmg)
+                                                                                            : stats.gameHistory[i].numBlooks != null ? formatNumber(stats.gameHistory[i].numBlooks)
+                                                                                                : stats.gameHistory[i].fossils != null ? formatNumber(stats.gameHistory[i].fossils)
+                                                                                                    : null}
                                 </div>
                             </div>
-                        })}
+                        }) : <div style={{
+                            position: "absolute",
+                            display: "flex",
+                            top: 0,
+                            right: 0,
+                            bottom: 0,
+                            left: 0,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "20px"
+                        }}>No Games Played Yet</div>}
                     </div>
                 </div>
                 <div id="stats">
@@ -429,11 +488,6 @@ function Stats() {
                     })}
                 </div>
             </div>
-            {/* <div id="customBlooks">
-                {(stats.customBlooks || []).map((code, i) => (
-                    code ? <CustomBlook key={code} className="blookContainer customBlook" code={code} /> : <div key={i}>empty</div>
-                ))}
-            </div> */}
             {/* <div style={{position:"absolute", top: "50%", left: "0", right: "0", bottom: "0", background:"white", zIndex: "-1"}}></div> */}
         </Sidebar>
     </>);

@@ -36,7 +36,7 @@ function Blooks() {
         });
     }, []);
     useEffect(() => {
-        if (pack) setSelected(Object.keys(showHidden ? packs[pack].allBlooks : packs[pack].blooks)[selectedIndex]);
+        if (pack) setSelected(Object.keys((showHidden ? packs[pack]?.allBlooks : packs[pack]?.blooks) || {})[selectedIndex]);
     }, [pack, selectedIndex]);
     useEffect(() => {
         if (pack) setIndex(Math.min(Object.keys(showHidden ? packs[pack].allBlooks : packs[pack].blooks).length - 1, selectedIndex));
