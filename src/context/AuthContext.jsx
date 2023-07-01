@@ -80,8 +80,14 @@ export const AuthProvider = ({ children }) => {
         // csrfFetch.current = Fetch(bisd.current, (cookie) => (bisd.current += cookie));
     }
 
+    const http = {
+        async get(url) {
+            return fetch(url, { headers: { Cookie: bisd.current, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" } });
+        }
+    }
+
     return (
-        <AuthContext.Provider value={{ login, getLoggedIn, userData, csrfFetch, bisd, protobuf }}>
+        <AuthContext.Provider value={{ login, getLoggedIn, userData, csrfFetch, bisd, protobuf, http }}>
             {!loading && children}
         </AuthContext.Provider>
     )

@@ -8,9 +8,11 @@ import "./stats.css";
 import allBlooks from "../../blooks/allBlooks";
 import { setActivity } from "../../discordRPC";
 import { formatBigNumber, formatNumber, getOrdinal } from "../../utils/numbers";
+import { useAuth } from "../../context/AuthContext";
 function Stats() {
     const [stats, setStats] = useState({});
     const [blookUsage, setBlookUsage] = useState([]);
+    // const {http: {get}} = useAuth();
     useEffect(() => {
         setStats({
             "_id": "630c2e356fa5f4c8d863a6e1",
@@ -332,6 +334,7 @@ function Stats() {
                 ""
             ]
         });
+        // get("https://dashboard.blooket.com/api/users/stats").then(({data}) => setStats(data));
         setActivity({
             state: "i dont like working on this page",
             timestampStart: Date.now(),
@@ -363,7 +366,7 @@ function Stats() {
                     <div id="usageHeader">Blook Usage</div>
                     <div id="usageStart">0</div>
                     <div id="usageTip">Plays</div>
-                    <div id="usageEnd">{blookUsage[0]?.[1]}</div>
+                    <div id="usageEnd">{blookUsage[0]?.[1] || 0}</div>
                     <div id="usageWrapper">
                         {blookUsage.map(([blook, usage]) => {
                             return <div key={`${blook} Usage`} className="blookUse">
@@ -380,7 +383,7 @@ function Stats() {
                     <div id="historyWrapper">
                         {(stats.gameHistory || [])?.map(({ blookUsed, name, place }, i) => {
                             return <div key={i} className="pastGame">
-                                {allBlooks[blookUsed] ? <img className="pastBlook" src={allBlooks[blookUsed].url} alt={blookUsed} /> : <CustomBlook className="pastBlook" code={blookUsed} />}
+                                {allBlooks[blookUsed] ? <img className="pastBlook" src={allBlooks[blookUsed].url} alt={blookUsed} /> : <CustomBlook className="pastBlook" blookClassName="pastCustomBlook" code={blookUsed} />}
                                 <div className="pastInfo">
                                     <div className="pastInfoLeft">
                                         <div className="pastName">{name}</div>

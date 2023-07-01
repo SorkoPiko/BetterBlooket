@@ -194,7 +194,7 @@
     bottom: 0;
     left: 0; */
     /* margin: 10px; */
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     /* width: calc(25% - 50px);
     height: calc(50% - 60px); */
     /* border: 3px solid var(--accent1); */
@@ -202,29 +202,12 @@
     padding: 33px 13px 8px 13px;
 }
 
-#blookUsage::-webkit-scrollbar {
-    width: 10px;
-    background-color: var(--main1);
-    border-radius: 10px;
-    border: 2px solid var(--main2)
-}
-
-#blookUsage::-webkit-scrollbar-thumb {
-    background-color: hsl(290, 48%, 40%, 50%);
-    border-radius: 10px;
-    border: 2px solid var(--main2);
-}
-
-#blookUsage::-webkit-scrollbar-thumb:hover {
-    background-color: hsl(290, 48%, 40%, 75%);
-}
-
 #blookUsage::before {
     content: "";
     position: absolute;
     background-color: white;
-    left: 110px;
-    right: 40px;
+    left: 100px;
+    right: 60px;
     top: 90px;
     height: 2px;
 }
@@ -249,7 +232,7 @@
     font-size: 12px;
     position: absolute;
     top: 85px;
-    left: 90px;
+    left: 85px;
 }
 
 #usageEnd {
@@ -259,15 +242,15 @@
     font-size: 12px;
     position: absolute;
     top: 85px;
-    right: 15px;
+    right: 40px;
 }
 
 #usageTip {
     position: absolute;
     top: 75px;
     font-size: 10px;
-    left: 90px;
-    right: 15px;
+    left: 85px;
+    right: 40px;
     text-align: center;
 }
 
@@ -276,6 +259,25 @@
     left: 13px;
     right: 13px;
     top: 103px;
+    bottom: 0;
+    overflow-y: scroll;
+}
+
+#usageWrapper::-webkit-scrollbar {
+    width: 10px;
+    background-color: var(--main1);
+    border-radius: 10px;
+    border: 2px solid var(--main2)
+}
+
+#usageWrapper::-webkit-scrollbar-thumb {
+    background-color: hsl(290, 48%, 40%, 50%);
+    border-radius: 10px;
+    border: 2px solid var(--main2);
+}
+
+#usageWrapper::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(290, 48%, 40%, 75%);
 }
 
 .blookUse {
@@ -317,29 +319,12 @@
     bottom: 0;
     left: 25%; */
     /* margin: 10px; */
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     /* width: calc(25% - 50px);
     height: calc(50% - 60px); */
     /* border: 3px solid var(--accent1); */
     border-radius: 5px;
     padding: 33px 13px 8px 13px;
-}
-
-#gameHistory::-webkit-scrollbar {
-    width: 10px;
-    background-color: var(--main1);
-    border-radius: 10px;
-    border: 2px solid var(--main2)
-}
-
-#gameHistory::-webkit-scrollbar-thumb {
-    background-color: hsl(290, 48%, 40%, 50%);
-    border-radius: 10px;
-    border: 2px solid var(--main2);
-}
-
-#gameHistory::-webkit-scrollbar-thumb:hover {
-    background-color: hsl(290, 48%, 40%, 75%);
 }
 
 #historyHeader {
@@ -359,7 +344,26 @@
     position: absolute;
     left: 13px;
     right: 13px;
-    top: 103px;
+    top: 68px;
+    bottom: 0px;
+    overflow-y: scroll;
+}
+
+#historyWrapper::-webkit-scrollbar {
+    width: 10px;
+    background-color: var(--main1);
+    border-radius: 10px;
+    border: 2px solid var(--main2)
+}
+
+#historyWrapper::-webkit-scrollbar-thumb {
+    background-color: hsl(290, 48%, 40%, 50%);
+    border-radius: 10px;
+    border: 2px solid var(--main2);
+}
+
+#historyWrapper::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(290, 48%, 40%, 75%);
 }
 
 .pastGame {
@@ -373,6 +377,11 @@
 }
 
 .pastBlook {
+    width: 50px;
+    margin-left: 5px;
+}
+
+.pastCustomBlook {
     width: 50px;
     margin-left: 5px;
 }
