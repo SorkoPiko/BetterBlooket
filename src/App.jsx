@@ -12,6 +12,7 @@ import SetCreator from "./pages/dashboard/SetCreator";
 import Sets from "./pages/dashboard/Sets";
 import Favorites from "./pages/dashboard/Favorites";
 import Settings from "./pages/dashboard/Settings";
+import Play from "./pages/play/Play";
 
 function App() {
     return <AuthProvider>
@@ -26,6 +27,7 @@ function App() {
             <Route path="/sets" element={<AuthRoute><Sets /></AuthRoute>}></Route>
             <Route path="/favorites" element={<AuthRoute><Favorites /></AuthRoute>}></Route>
             <Route path="/settings" element={<AuthRoute><Settings /></AuthRoute>}></Route>
+            <Route path="/play" element={<Play />}></Route>
             <Route path="/*" element={<Navigate to="/"></Navigate>}></Route>
         </Routes>
     </AuthProvider>

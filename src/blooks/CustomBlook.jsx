@@ -1,7 +1,7 @@
 import SVG from "react-inlinesvg";
 import parts, { colors } from "./parts";
 
-function validateBlook(e) {
+export function validateBlook(e) {
     const t = e.split("#");
     if (t.length !== 11 || !parts.base[t[0]] || !parts.clothing[t[1]] || !parts.eyes[t[2]] || !parts.glasses[t[3]])
         return false;

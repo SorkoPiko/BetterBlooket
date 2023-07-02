@@ -339,8 +339,8 @@ function Stats() {
         });
         // get("https://dashboard.blooket.com/api/users/stats").then(({data}) => setStats(data));
         setActivity({
-            state: "Adding ClassPass to stats page",
-            timestampStart: 1688218175567 || Date.now(),
+            state: "Procrastinating",
+            timestampStart: 1688241474453 || Date.now(),
         });
     }, []);
     const currentPart = useRef();
