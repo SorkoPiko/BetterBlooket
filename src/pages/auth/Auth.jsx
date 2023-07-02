@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Login from "./Login";
 import { useAuth } from "../../context/AuthContext";
-import { setActivity } from "../../discordRPC";
+import { setActivity } from "../../utils/discordRPC";
 // import "./auth.css";
 
 function Auth() {

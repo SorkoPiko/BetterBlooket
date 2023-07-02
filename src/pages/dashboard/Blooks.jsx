@@ -5,7 +5,7 @@ import allBlooks, { freeBlooks, rarityColors } from "../../blooks/allBlooks";
 import packs, { GenericSetBackground } from "../../blooks/packs";
 import hidden from "../../blooks/packs/hidden";
 import "./blooks.css";
-import { setActivity } from "../../discordRPC";
+import { setActivity } from "../../utils/discordRPC";
 const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
 function Blooks() {
     const { protobuf } = useAuth();

@@ -6,7 +6,7 @@ import statistics, { icons } from "../../blooks/stats";
 import Sidebar from "./SideBar";
 import "./stats.css";
 import allBlooks from "../../blooks/allBlooks";
-import { setActivity } from "../../discordRPC";
+import { setActivity } from "../../utils/discordRPC";
 import { formatBigNumber, formatNumber, getOrdinal } from "../../utils/numbers";
 import { useAuth } from "../../context/AuthContext";
 import { getLevel, items } from "../../blooks/classPass";
@@ -350,7 +350,6 @@ function Stats() {
     }, [stats]);
     useEffect(() => {
         currentPart.current?.scrollIntoViewIfNeeded?.();
-        console.log(classPass, currentPart.current);
         window.classPass = classPass;
     }, [classPass]);
     return (<>
@@ -376,7 +375,6 @@ function Stats() {
                     <div id="classPassWrapper">
                         <div id="classPass">
                             {items.map((item, level) => {
-                                console.log({level}, 69)
                                 return item.partType && <Fragment key={`part${level}`}>
                                     <div data-passed={classPass.level >= level + 1} ref={Math.min(level + 1, 100) == classPass.level ? currentPart : null} style={{ left: `${level * 25}%` }} className="classPassPart">
                                         <img src={parts[item.partType][item.part].url} alt={item.partType} />

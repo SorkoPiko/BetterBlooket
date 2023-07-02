@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Sidebar from "./SideBar";
 import { market } from "../../blooks/packs";
 import "./market.css";
-import { setActivity } from "../../discordRPC";
+import { setActivity } from "../../utils/discordRPC";
 function imgUrl(url) {
     if (!url) return url;
     let i = url.indexOf("upload/");

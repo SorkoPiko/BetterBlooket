@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Sidebar from "./SideBar";
-import { setActivity } from "../../discordRPC";
+import { setActivity } from "../../utils/discordRPC";
 function Sets() {
     useEffect(() => {
         setActivity({

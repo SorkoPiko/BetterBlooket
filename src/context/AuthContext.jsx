@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { fetch, Body } from "@tauri-apps/api/http";
 import Fetch from "../utils/Fetch.js";
-import Protobuf from "../protobuf.js";
+import Protobuf from "../utils/protobuf.js";
 const AuthContext = createContext();
 
 export function useAuth() {

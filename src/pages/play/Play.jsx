@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { setActivity } from "../../discordRPC";
+import { setActivity } from "../../utils/discordRPC";
 function Play() {
     useEffect(() => {
         setActivity({

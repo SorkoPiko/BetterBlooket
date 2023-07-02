@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./home.css";
-import { setActivity } from "../discordRPC";
+import { setActivity } from "../utils/discordRPC";
 
 function Home() {
     useEffect(() => {
