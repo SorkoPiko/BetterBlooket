@@ -390,11 +390,11 @@
 #classPassWrapper {
     border-radius: 5px;
     position: absolute;
-    top: 9vw;
+    top: calc(9vw + 5px);
     left: 0;
     bottom: 0;
     right: 5px;
-    margin: 10px;
+    margin: 5px;
     background-color: var(--main2);
     padding-inline: 20px;
 }
@@ -494,4 +494,56 @@
     background-color: var(--accent1);
     box-shadow: inset 0px -4px rgba(0, 0, 0, .25);
     height: 100%;
+}
+
+#customBlooks {
+    overflow: hidden;
+    background-color: var(--main2);
+    border: 3px solid var(--accent1);
+    margin: 5px;
+}
+
+.emptyBlook {
+    filter: brightness(0) invert(1);
+    opacity: 0;
+}
+
+#customArrowsContainer {
+    position: relative;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#customArrowsContainer button {
+    display: flex;
+    height: 75%;
+    aspect-ratio: 1 / 1;
+    background: none;
+    border: 3px solid var(--accent1);
+    color: var(--accent1);
+    margin-inline: 10px;
+    font-size: 200%;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 700;
+}
+
+#customArrowsContainer button i {
+    color: inherit
+}
+
+#customArrowsContainer button:hover:not(:disabled) {
+    /* scale: 1.1; */
+    border: 3px solid var(--highlight1);
+    color: var(--highlight1);
+}
+
+#customArrowsContainer button:disabled {
+    filter: saturate(0);
+    cursor: unset;
 }
