@@ -69,11 +69,11 @@ function Stats() {
                     <div id="profile">
                         <div id="profileWrapper">
                             <div id="blook" className="blookContainer">
-                                <img src={allBlooks[stats.blook || "Chick"].url} alt={(stats.blook || "Chick") + " Blook"} draggable={false} className="blook" />
+                                <img src={allBlooks[stats.blook || "Chick"]?.url} alt={(stats.blook || "Chick") + " Blook"} draggable={false} className="blook" />
                             </div>
                             <div id="banner">
                                 {stats.banner
-                                    ? <img src={banners[stats.banner].url} alt={banners[stats.banner].name} id="bannerImg" draggable={false} />
+                                    ? <img src={banners[stats.banner]?.url} alt={banners[stats.banner]?.name} id="bannerImg" draggable={false} />
                                     : <img src={banners.starter.url} alt="Starter Banner" id="bannerImg" draggable={false} />}
                                 <div id="nameHolder">
                                     <div id="username">{stats.name}</div>
@@ -86,11 +86,11 @@ function Stats() {
                         <div id="classPass">
                             {items.map((item, level) => {
                                 return item.partType && <Fragment key={`part${level}`}>
-                                    <div data-passed={classPass.level >= level + 1} ref={Math.min(level + 1, 100) == classPass.level ? currentPart : null} style={{ left: `${level * 25}%` }} className="classPassPart">
+                                    <div data-passed={classPass?.level >= level + 1} ref={Math.min(level + 1, 100) == classPass?.level ? currentPart : null} style={{ left: `${level * 25}%` }} className="classPassPart">
                                         <img src={parts[item.partType][item.part].url} alt={item.partType} />
                                     </div>
-                                    <div data-xp-needed={(level == classPass.level) ? `${classPass.xp} / ${items[classPass.level].xp}` : ""} style={{ left: `${level * 25}%` }} className="levelWrapper">
-                                        <div data-passed={classPass.level >= level + 1} className="partLevel">{level + 1}</div>
+                                    <div data-xp-needed={(level == classPass?.level) ? `${classPass?.xp} / ${items[classPass?.level].xp}` : ""} style={{ left: `${level * 25}%` }} className="levelWrapper">
+                                        <div data-passed={classPass?.level >= level + 1} className="partLevel">{level + 1}</div>
                                     </div>
                                 </Fragment>
                             })}
@@ -130,10 +130,7 @@ function Stats() {
                         }} disabled={!(showExtras ? extraBlooks : stats.customBlooks)?.[selectedIndex]}><i className="fa fa-trash" /></button>
                         <button onClick={() => setIndex(ind => Math.min((showExtras ? extraBlooks : stats.customBlooks).length - 1, ind + 1))}>{">"}</button>
                     </div>
-                    {/* {(stats.customBlooks || []).map((code, i) => (
-                        code ? <CustomBlook key={code} className="blookContainer customBlook" code={code} /> : <div key={i}>empty</div>
-                    ))} */}
-                </div>  {/* this is filler until i start working on the custom blook viewer */}
+                </div>
             </div>
             <div id="bottomHalf">
                 <div id="blookUsage">
@@ -144,9 +141,9 @@ function Stats() {
                     <div id="usageWrapper">
                         {blookUsage.length ? blookUsage.map(([blook, usage]) => {
                             return <div key={`${blook} Usage`} s className="blookUse">
-                                <img className="usageBlook" src={allBlooks[blook].url} alt={blook} style={{ width: "50px" }} />
+                                <img className="usageBlook" src={allBlooks[blook]?.url} alt={blook} style={{ width: "50px" }} />
                                 <div className="usageBarWrapper">
-                                    <div className="usageBar" style={{ backgroundColor: allBlooks[blook].color, transform: `scaleX(${usage / blookUsage[0][1]})` }}></div>
+                                    <div className="usageBar" style={{ backgroundColor: allBlooks[blook]?.color, transform: `scaleX(${usage / blookUsage[0][1]})` }}></div>
                                 </div>
                             </div>
                         }) : <div style={{
@@ -223,7 +220,6 @@ function Stats() {
                     })}
                 </div>
             </div>
-            {/* <div style={{position:"absolute", top: "50%", left: "0", right: "0", bottom: "0", background:"white", zIndex: "-1"}}></div> */}
         </Sidebar>
     </>);
 }
