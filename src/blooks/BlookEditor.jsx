@@ -34,7 +34,7 @@ function BlookEditor({ blookParts, close, startCode }) {
     })());
     const { current: classPass } = useRef(items.filter(({ partType }) => partType).map(({ partType, part }) => `${partType}-${part}`));
     useEffect(() => {
-        blookParts && Object.entries(blookParts).forEach(([part, unlocked]) => unlocked.forEach(e => unlocks[part].push(e)));
+        if (blookParts) for (const [part, unlocked] of Object.entries(blookParts)) unlocked.forEach(e => unlocks[part]?.push(e));
         setUnlocks(unlocks);
     }, []);
     const { base, clothing, eyes, glasses, hair, hairColor, hat, item, mouth, nose, cheeks, eyebrows, eyebrowsColor } = selectedParts;

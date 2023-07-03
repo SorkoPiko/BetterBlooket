@@ -23,12 +23,31 @@
         "scope": [
           "https://*"
         ]
+      },
+      "fs": {
+        "all": true,
+        "copyFile": false,
+        "createDir": false,
+        "exists": false,
+        "readDir": false,
+        "readFile": false,
+        "removeDir": false,
+        "removeFile": false,
+        "renameFile": false,
+        "scope": [
+          "$APPDATA/*",
+          "$APPDATA/data/*"
+        ],
+        "writeFile": false
+      },
+      "path": {
+        "all": true
       }
     },
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.oneminesraft2.jod",
+      "identifier": "com.minesraft2.betterblooket",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
