@@ -43,7 +43,7 @@
     height: 100%;
     aspect-ratio: 13 / 15;
     z-index: 1;
-    top: 50%;
+    top: 57.5%;
     left: 0;
     transform: translateY(-57.5%) rotate(-10deg);
 }
@@ -471,6 +471,7 @@
     border-radius: 50%;
     box-sizing: border-box;
     z-index: 1;
+    /* opacity: 0.5; */
 }
 
 .partLevel[data-passed="true"] {
@@ -484,7 +485,7 @@
     bottom: calc(1.5vw + 15px);
     left: 0;
     width: 2500%;
-    clip-path: polygon(0 0, 0 100%, 99.5% 100%, 99.5% 0);
+    clip-path: polygon(0 0, 0 100%, 99.325% 100%, 99.325% 0);
     overflow: hidden;
     height: 10px;
     background-color: var(--main1);
@@ -504,8 +505,8 @@
 }
 
 .emptyBlook {
-    filter: brightness(0) invert(1);
-    opacity: 0;
+    filter: brightness(0);
+    /* opacity: 0; */
 }
 
 #customArrowsContainer {

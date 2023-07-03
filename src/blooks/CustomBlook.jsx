@@ -51,7 +51,7 @@ export default function CustomBlook({ code, className, blookClassName, style, ti
         }} />}
         <SVG src={eyes.url} title="Blook Eyes" className="part" preProcessor={e => {
             let t = e;
-            if (eyes.changes) Object.entries(eyes.changes).forEach(([o, r]) => t = t.replaceAll(o, tones[r]));
+            if (eyes.changes) for (const [o, r] of Object.entries(eyes.changes)) t = t.replaceAll(o, tones[r]);
             return t;
         }} />
         {eyebrows.url && <SVG src={eyebrows.url} title="Blook Eyebrows" className="part" preProcessor={e => e.replaceAll("#3f1c12", colors[w[1]][0])} />}
