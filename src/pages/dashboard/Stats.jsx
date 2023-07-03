@@ -112,7 +112,7 @@ function Stats() {
                             }}>
                                 <div onClick={() => setIndex(ind => ind + (i - selectedIndex))} style={{ position: "relative" }}>
                                     <CustomBlook key={code} className={`${code ? "" : "emptyBlook"}`} code={code || "0#0#0#0#0$0#0#0#0#0#0#0$0"} />
-                                    {!code && <i className="fas fa-ban" style={{ fontSize: `${-7.5 * x}vw`, transition: "0.5s", top: "60%", transform: "translate(-50%, -60%)" }}></i>}
+                                    {!code && <i className="fas fa-plus" style={{ fontSize: `${-7.5 * x}vw`, transition: "0.5s", top: "60%", transform: "translate(-50%, -60%)" }}></i>}
                                 </div>
                             </div>)
                         })}
