@@ -106,7 +106,7 @@ function BlookEditor({ blookParts, close, startCode }) {
                 </div>
                 <div className="customBlookPreview">
                     <div className="circle"></div>
-                    {loading ? <CustomBlook code={""} className="blookPreview"></CustomBlook> : <CustomBlook code={code} className="blookPreview"></CustomBlook>}
+                    <CustomBlook code={loading ? "" : code} className="blookPreview"></CustomBlook>
                 </div>
                 <div className="buttonRow">
                     <div className="button" tabIndex={0} onClick={() => close(true, code)}>

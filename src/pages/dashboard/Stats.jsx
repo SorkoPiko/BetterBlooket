@@ -32,14 +32,18 @@ function Stats() {
     const [editing, setEditing] = useState(false);
     const [extraBlooks, setExtraBlooks] = useState([]);
     const [showExtras, setShowExtras] = useState(false);
-    const { http: { get } } = useAuth();
+    const [customBlooks, setCustomBlooks] = useState([]);
+    const { http: { get }, protobuf: { saveCustomBlook } } = useAuth();
     const currentPart = useRef();
     useEffect(() => {
         setIndex(showExtras ? 0 : 2);
     }, [showExtras])
     useEffect(() => {
         getExtraBlooks().then(setExtraBlooks);
-        get("https://dashboard.blooket.com/api/users/stats").then(({ data }) => setStats(data));
+        get("https://dashboard.blooket.com/api/users/stats").then(({ data }) => {
+            setStats(data);
+            setCustomBlooks(data.customBlooks);
+        });
         setActivity({
             state: "Stats",
             timestampStart: Date.now(),
@@ -55,12 +59,13 @@ function Stats() {
     }, [classPass]);
     return (<>
         <Sidebar>
-            {editing && <BlookEditor blookParts={showExtras ? Object.entries(parts).reduce((a, [b, c]) => (a[b] = c.map((x, i) => i), a), {}) : stats.blookParts} startCode={(showExtras ? extraBlooks : stats.customBlooks)[selectedIndex]} close={async function (save, code) {
-                if (save) {
-                    if (showExtras) {
-                        await writeFile("customBlooks.json", JSON.stringify((extraBlooks[selectedIndex] = code, extraBlooks)));
-                        getExtraBlooks().then(setExtraBlooks);
-                    }
+            {editing && <BlookEditor blookParts={showExtras ? Object.entries(parts).reduce((a, [b, c]) => (a[b] = c.map((x, i) => i), a), {}) : stats.blookParts} startCode={(showExtras ? extraBlooks : customBlooks)[selectedIndex]} close={async function (save, customCode) {
+                if (save) if (showExtras) {
+                    await writeFile("customBlooks.json", JSON.stringify((extraBlooks[selectedIndex] = customCode, extraBlooks)));
+                    getExtraBlooks().then(setExtraBlooks);
+                } else {
+                    await saveCustomBlook({ customCode, saveSlotIndex: selectedIndex });
+                    setCustomBlooks(blooks => (blooks[selectedIndex] = customCode, [...blooks]));
                 }
                 setEditing(false);
             }} />}
@@ -104,7 +109,7 @@ function Stats() {
                 </div>
                 <div id="customBlooks">
                     <div id="packUnlocksWrapper">
-                        {(showExtras ? extraBlooks : (stats.customBlooks || [])).map((code, i) => {
+                        {(showExtras ? extraBlooks : (customBlooks || [])).map((code, i) => {
                             let x = -Math.pow(Math.E, -.45 * Math.abs(i - selectedIndex));
                             return (<div className="packBlook" key={i} data-place={i} style={{
                                 left: `calc(50% + ${Math.sign(i - selectedIndex) * (65 + x * 65)}%)`,
@@ -126,9 +131,12 @@ function Stats() {
                                 extraBlooks.splice(selectedIndex, 1);
                                 await writeFile("customBlooks.json", JSON.stringify(extraBlooks));
                                 getExtraBlooks().then(setExtraBlooks);
+                            } else {
+                                await saveCustomBlook({ customCode: "", saveSlotIndex: selectedIndex });
+                                setCustomBlooks(blooks => (blooks[selectedIndex] = "", [...blooks]));
                             }
-                        }} disabled={!(showExtras ? extraBlooks : stats.customBlooks)?.[selectedIndex]}><i className="fa fa-trash" /></button>
-                        <button onClick={() => setIndex(ind => Math.min((showExtras ? extraBlooks : stats.customBlooks).length - 1, ind + 1))}>{">"}</button>
+                        }} disabled={!(showExtras ? extraBlooks : customBlooks)?.[selectedIndex]}><i className="fa fa-trash" /></button>
+                        <button onClick={() => setIndex(ind => Math.min((showExtras ? extraBlooks : customBlooks).length - 1, ind + 1))}>{">"}</button>
                     </div>
                 </div>
             </div>
@@ -172,21 +180,21 @@ function Stats() {
                                     </div>
                                     {stats.gameHistory[i].candy != null ? formatBigNumber(stats.gameHistory[i].candy)
                                         : stats.gameHistory[i].gold != null ? formatBigNumber(stats.gameHistory[i].gold)
-                                        : stats.gameHistory[i].xp != null ? formatBigNumber(stats.gameHistory[i].xp)
-                                        : stats.gameHistory[i].toys != null ? formatBigNumber(stats.gameHistory[i].toys)
-                                        : stats.gameHistory[i].shamrocks != null ? formatBigNumber(stats.gameHistory[i].shamrocks)
-                                        : stats.gameHistory[i].snow != null ? formatBigNumber(stats.gameHistory[i].snow)
-                                        : stats.gameHistory[i].cash != null ? `$${formatBigNumber(stats.gameHistory[i].cash)}`
-                                        : stats.gameHistory[i].crypto != null ? `₿ ${formatBigNumber(stats.gameHistory[i].crypto)}`
-                                        : stats.gameHistory[i].weight != null ? `${formatBigNumber(stats.gameHistory[i].weight)} lbs`
-                                        : stats.gameHistory[i].classicPoints != null ? formatNumber(stats.gameHistory[i].classicPoints)
-                                        : stats.gameHistory[i].wins != null ? `${stats.gameHistory[i].wins} ${1 === stats.gameHistory[i].wins ? "Win" : "Wins"}`
-                                        : stats.gameHistory[i].result != null ? stats.gameHistory[i].result
-                                        : stats.gameHistory[i].guests != null ? formatNumber(stats.gameHistory[i].guests)
-                                        : stats.gameHistory[i].dmg != null ? formatNumber(stats.gameHistory[i].dmg)
-                                        : stats.gameHistory[i].numBlooks != null ? formatNumber(stats.gameHistory[i].numBlooks)
-                                        : stats.gameHistory[i].fossils != null ? formatNumber(stats.gameHistory[i].fossils)
-                                        : null}
+                                            : stats.gameHistory[i].xp != null ? formatBigNumber(stats.gameHistory[i].xp)
+                                                : stats.gameHistory[i].toys != null ? formatBigNumber(stats.gameHistory[i].toys)
+                                                    : stats.gameHistory[i].shamrocks != null ? formatBigNumber(stats.gameHistory[i].shamrocks)
+                                                        : stats.gameHistory[i].snow != null ? formatBigNumber(stats.gameHistory[i].snow)
+                                                            : stats.gameHistory[i].cash != null ? `$${formatBigNumber(stats.gameHistory[i].cash)}`
+                                                                : stats.gameHistory[i].crypto != null ? `₿ ${formatBigNumber(stats.gameHistory[i].crypto)}`
+                                                                    : stats.gameHistory[i].weight != null ? `${formatBigNumber(stats.gameHistory[i].weight)} lbs`
+                                                                        : stats.gameHistory[i].classicPoints != null ? formatNumber(stats.gameHistory[i].classicPoints)
+                                                                            : stats.gameHistory[i].wins != null ? `${stats.gameHistory[i].wins} ${1 === stats.gameHistory[i].wins ? "Win" : "Wins"}`
+                                                                                : stats.gameHistory[i].result != null ? stats.gameHistory[i].result
+                                                                                    : stats.gameHistory[i].guests != null ? formatNumber(stats.gameHistory[i].guests)
+                                                                                        : stats.gameHistory[i].dmg != null ? formatNumber(stats.gameHistory[i].dmg)
+                                                                                            : stats.gameHistory[i].numBlooks != null ? formatNumber(stats.gameHistory[i].numBlooks)
+                                                                                                : stats.gameHistory[i].fossils != null ? formatNumber(stats.gameHistory[i].fossils)
+                                                                                                    : null}
                                 </div>
                             </div>
                         }) : <div style={{
