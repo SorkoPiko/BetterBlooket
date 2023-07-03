@@ -14,7 +14,7 @@ function Home() {
         <div id="mainHome" style={{ height: "100vh", width: "100%", overflow: "hidden", position: "relative" }}>
             <header id="header">
                 <div>Blooket</div>
-                <a href="/play" id="play">Join a Game</a> {/* todo */}
+                <a href="/play" id="play">Join a Game</a>
             </header>
             <Link to="/login" id="login">Login</Link>
             <div id="welcomeMessage">Improved<br />Blooket<br />Experience</div>

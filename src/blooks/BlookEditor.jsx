@@ -8,16 +8,16 @@ import "./blookEditor.css";
 function BlookEditor({ blookParts, close, startCode }) {
     const [partSelected, setPartSelected] = useState("base");
     const [unlocks, setUnlocks] = useState({
-        clothing: Array(50).fill().map((x, i) => i) || [0],
-        eyes: Array(50).fill().map((x, i) => i) || [0],
-        glasses: Array(50).fill().map((x, i) => i) || [0],
-        hair: Array(50).fill().map((x, i) => i) || [0],
-        hat: Array(50).fill().map((x, i) => i) || [0],
-        item: Array(50).fill().map((x, i) => i) || [0],
-        mouth: Array(50).fill().map((x, i) => i) || [0],
-        nose: Array(50).fill().map((x, i) => i) || [0],
-        cheeks: Array(50).fill().map((x, i) => i) || [0],
-        eyebrows: Array(50).fill().map((x, i) => i) || [0]
+        clothing: [0],
+        eyes: [0],
+        glasses: [0],
+        hair: [0],
+        hat: [0],
+        item: [0],
+        mouth: [0],
+        nose: [0],
+        cheeks: [0],
+        eyebrows: [0]
     });
     const [selectedParts, setSelectedParts] = useState((() => {
         if (!startCode || !validateBlook(startCode))
