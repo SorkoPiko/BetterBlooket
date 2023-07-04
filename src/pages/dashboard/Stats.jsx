@@ -70,7 +70,7 @@ function Stats() {
                         <img src={allBlooks[blook].url} alt={blook} />
                     </div>))}
                 </div>
-            </div> : changingProfile ? <div onClick={(e) => e.target.id == "profileChooseWrapper" && setChangingProfile(null)}  id="profileChooseWrapper">
+            </div> : changingProfile ? <div onClick={(e) => e.target.id == "profileChooseWrapper" && setChangingProfile(null)} id="profileChooseWrapper">
                 <div>
                     <div id="profileChooseButtons">
                         <button onClick={() => setChangingProfile("banner")}>Banners</button>
@@ -79,11 +79,13 @@ function Stats() {
                     <div id="profileChoose">
                         {changingProfile == "banner" ? stats.banners ? Object.values(stats.banners).map(banner => (<div onClick={async () => {
                             await put("https://dashboard.blooket.com/api/users/change/banner", { banner: banner.slug });
+                            setStats(s => ({ ...s, banner: banner.slug }));
                             setChangingProfile("");
                         }} key={banner.slug}>
                             <img src={banner.url} alt={banner.name} />
                         </div>)) : "No Banners Unlocked" : stats.titles ? Object.entries(titles).filter(([title]) => "newbie" === title || stats.titles?.includes(t)).map(([title, { name }]) => (<div onClick={async () => {
                             await put("https://dashboard.blooket.com/api/users/change/title", { title });
+                            setStats(s => ({ ...s, title }));
                             setChangingProfile("");
                         }} key={title}>
                             {name}
