@@ -14,7 +14,7 @@ function Blooks() {
     const [showHidden, setShowHidden] = useState(true);
     const [showPacks, setShowPacks] = useState(true);
     const [showFree, setShowFree] = useState(false);
-    const [hideLocked, setHideLocked] = useState(false);
+    const [showLocked, setShowLocked] = useState(true);
     const [selected, setSelected] = useState(rand(Object.keys(allBlooks)));
     const [selectedIndex, setIndex] = useState(0);
     useEffect(() => {
@@ -56,7 +56,7 @@ function Blooks() {
                 {pack != "Hidden" && <button id="hiddenButton" onClick={() => setShowHidden(h => !h)}>{showHidden ? "Hide" : "Show"} Hidden Blooks</button>}
                 {!pack && <button id="showPacks" onClick={() => setShowPacks(h => !h)}>{showPacks ? "Hide" : "Show"} Pack Names</button>}
                 {!pack && <button id="showFree" onClick={() => setShowFree(h => !h)}>{showFree ? "Hide" : "Show"} Free Blooks</button>}
-                {!pack && !showPacks && <button id="hideLocked" onClick={() => setHideLocked(h => !h)}>{hideLocked ? "Hide" : "Show"} Locked Blooks</button>}
+                {!pack && !showPacks && <button id="hideLocked" onClick={() => setShowLocked(h => !h)}>{showLocked ? "Hide" : "Show"} Locked Blooks</button>}
             </div>
         </div>
         <div id="blooksLeft">
@@ -123,7 +123,7 @@ function Blooks() {
                             {Object.keys(allBlooks).map(blook => {
                                 if (allBlooks[blook]?.set == "Hidden") if (!showHidden || !blooks[blook]) return;
                                 if (!showFree && packs[allBlooks[blook]?.set]?.free) return;
-                                if (!hideLocked && !blooks[blook] && !packs[allBlooks[blook]?.set]?.free) return;
+                                if (!showLocked && !blooks[blook] && !packs[allBlooks[blook]?.set]?.free) return;
                                 return <div className="blook" key={blook} onClick={() => setSelected(blook)}>
                                     <img data-locked={!blooks[blook] && !packs[allBlooks[blook]?.set]?.free} src={allBlooks[blook].mediaUrl} alt={blook} />
                                     {(blooks[blook] || packs[allBlooks[blook]?.set]?.free) ? ((!packs[allBlooks[blook]?.set || allBlooks[blook]?.set]?.free && allBlooks[blook]?.set !== "Color") && <div className="count" style={{ backgroundColor: rarityColors[allBlooks[blook]?.rarity] }}>{blooks[blook]}</div>) : <i className="fa-solid fa-lock"></i>}
