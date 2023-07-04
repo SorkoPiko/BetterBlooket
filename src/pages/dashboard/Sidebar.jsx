@@ -14,6 +14,12 @@ function Sidebar({ children }) {
                             <div className="page" style={{ opacity: "0" }}>Home</div>
                         </Link>
                     </li>
+                    <li><Link to="/play">
+                        <div className="icon">
+                            <i className="fa-solid fa-play"></i>
+                        </div>
+                        <div className="page">Play</div></Link>
+                    </li>
                     <li><Link to="/stats">
                         <div className="icon">
                             <i className="fa-solid fa-chart-column"></i>

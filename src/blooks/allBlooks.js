@@ -236,6 +236,7 @@ export const rarityColors = {
     Epic: "#be0000",
     Legendary: "#ff910f",
     Chroma: "#00ccff",
+    Unique: "#008080",
     Mystical: "#a335ee"
 }
 
