@@ -33,8 +33,8 @@ function Stats() {
     const [extraBlooks, setExtraBlooks] = useState([]);
     const [showExtras, setShowExtras] = useState(false);
     const [customBlooks, setCustomBlooks] = useState([]);
-    const [changingProfile, setChangingProfile] = useState();
-    const { http: { get }, protobuf: { saveCustomBlook, changeUserBlook } } = useAuth();
+    const [changingProfile, setChangingProfile] = useState("choose");
+    const { http: { get, put }, protobuf: { saveCustomBlook, changeUserBlook } } = useAuth();
     const currentPart = useRef();
     useEffect(() => {
         setIndex(showExtras ? 0 : 2);
@@ -60,7 +60,7 @@ function Stats() {
     }, [classPass]);
     return (<>
         <Sidebar>
-            {changingProfile == "blook" ? <div id="profileBlooksWrapper">
+            {changingProfile == "blook" ? <div onClick={(e) => e.target.id == "profileBlooksWrapper" && setChangingProfile(null)} id="profileBlooksWrapper">
                 <div>
                     {Object.keys(allBlooks).filter(blook => freeBlooks.includes(blook) || stats.unlocks?.[blook]).map(blook => (<div onClick={async () => {
                         await changeUserBlook({ blook });
@@ -70,7 +70,27 @@ function Stats() {
                         <img src={allBlooks[blook].url} alt={blook} />
                     </div>))}
                 </div>
-            </div> : <></>}
+            </div> : changingProfile ? <div onClick={(e) => e.target.id == "profileChooseWrapper" && setChangingProfile(null)}  id="profileChooseWrapper">
+                <div>
+                    <div id="profileChooseButtons">
+                        <button onClick={() => setChangingProfile("banner")}>Banners</button>
+                        <button onClick={() => setChangingProfile("title")}>Titles</button>
+                    </div>
+                    <div id="profileChoose">
+                        {changingProfile == "banner" ? stats.banners ? Object.values(stats.banners).map(banner => (<div onClick={async () => {
+                            await put("https://dashboard.blooket.com/api/users/change/banner", { banner: banner.slug });
+                            setChangingProfile("");
+                        }} key={banner.slug}>
+                            <img src={banner.url} alt={banner.name} />
+                        </div>)) : "No Banners Unlocked" : stats.titles ? Object.entries(titles).filter(([title]) => "newbie" === title || stats.titles?.includes(t)).map(([title, { name }]) => (<div onClick={async () => {
+                            await put("https://dashboard.blooket.com/api/users/change/title", { title });
+                            setChangingProfile("");
+                        }} key={title}>
+                            {name}
+                        </div>)) : "No Titles Unlocked"}
+                    </div>
+                </div>
+            </div> : null}
             {editing && <BlookEditor blookParts={showExtras ? Object.entries(parts).reduce((a, [b, c]) => (a[b] = c.map((x, i) => i), a), {}) : stats.blookParts} startCode={(showExtras ? extraBlooks : customBlooks)[selectedIndex]} close={async function (save, customCode) {
                 if (save) if (showExtras) {
                     await writeFile("customBlooks.json", JSON.stringify((extraBlooks[selectedIndex] = customCode, extraBlooks)));
@@ -90,7 +110,7 @@ function Stats() {
                             }}>
                                 <img src={allBlooks[stats.blook || "Chick"]?.url} alt={(stats.blook || "Chick") + " Blook"} draggable={false} className="blook" />
                             </div>
-                            <div id="banner">
+                            <div id="banner" onClick={() => setChangingProfile("banner")}>
                                 {stats.banner
                                     ? <img src={banners[stats.banner]?.url} alt={banners[stats.banner]?.name} id="bannerImg" draggable={false} />
                                     : <img src={banners.starter.url} alt="Starter Banner" id="bannerImg" draggable={false} />}

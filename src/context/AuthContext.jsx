@@ -83,6 +83,13 @@ export const AuthProvider = ({ children }) => {
     const http = {
         async get(url) {
             return fetch(url, { headers: { Cookie: bisd.current, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" } });
+        },
+        async put(url, body) {
+            return fetch(url, {
+                headers: { Cookie: bisd.current, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" },
+                method: "PUT",
+                body: Body.json(body)
+            });
         }
     }
 

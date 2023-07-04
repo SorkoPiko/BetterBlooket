@@ -51,6 +51,7 @@
 #profile #banner {
     position: absolute;
     height: 100%;
+    cursor: pointer;
 }
 
 #profile #banner img {
@@ -526,7 +527,7 @@
     border: 3px solid var(--accent1);
     color: var(--accent1);
     margin-inline: 10px;
-    font-size: 200%;
+    font-size: 150%;
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -598,4 +599,92 @@
     width: 65px;
     aspect-ratio: 13 / 15;
     cursor: pointer;
+}
+
+
+
+#profileChooseWrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 5;
+    background-color: #000a;
+}
+
+#profileChooseWrapper>div {
+    background: var(--main2);
+    width: 50%;
+    height: 75%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    border: 3px solid var(--accent1);
+    display: grid;
+    grid-template-rows: 1fr 10fr;
+}
+
+#profileChooseButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#profileChooseButtons button {
+    background: none;
+    border: 3px solid var(--accent1);
+    width: 100%;
+    margin: 10px;
+    font-size: 30px;
+    font-weight: 700;
+    padding-block: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#profileChooseButtons button:hover {
+    border: 3px solid var(--highlight1);
+}
+
+#profileChoose {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-size: 30px;
+    overflow-y: scroll;
+    padding: 10px 0px 10px 10px
+}
+
+#profileChoose div {
+    width: 45%;
+    aspect-ratio: 50 / 11;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+
+#profileChoose::-webkit-scrollbar {
+    width: 10px;
+    background-color: var(--main1);
+    border-radius: 10px;
+    border: 2px solid var(--main2)
+}
+
+#profileChoose::-webkit-scrollbar-thumb {
+    background-color: hsl(290, 48%, 40%, 50%);
+    border-radius: 10px;
+    border: 2px solid var(--main2);
+}
+
+#profileChoose::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(290, 48%, 40%, 75%);
 }
