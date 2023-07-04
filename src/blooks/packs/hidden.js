@@ -494,6 +494,15 @@ export default {
         teamName: "MODS",
         color: "#f6a9cb"
     },
+    "Wise Owl": {
+        url: "https://blooket.s3.us-east-2.amazonaws.com/blooks/bonus/other/wiseOwl.svg",
+        mediaUrl: "https://media.blooket.com/image/upload/v1688339287/Blooks/wiseOwl.svg",
+        set: "Hidden",
+        realSet: "Forest Animal",
+        rarity: "Unique",
+        teamName: "Wise Winners",
+        color: "#a55a30"
+    },
     "Spooky Ghost": {
         url: "https://blooket.s3.us-east-2.amazonaws.com/blooks/bonus/mysticals/spookyGhost.svg",
         mediaUrl: "https://media.blooket.com/image/upload/v1681884681/Blooks/spookyGhost.svg",

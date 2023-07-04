@@ -94,6 +94,8 @@ export function price(blook) {
         case "Ice Crab":
         case "Teal Platypus":
             return 300;
+        case "Wise Owl":
+            return 500;
         case "Elf":
         case "Witch":
         case "Wizard":

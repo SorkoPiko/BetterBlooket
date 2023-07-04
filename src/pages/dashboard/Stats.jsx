@@ -5,7 +5,7 @@ import titles from "../../blooks/titles";
 import statistics, { icons } from "../../blooks/stats";
 import Sidebar from "./SideBar";
 import "./stats.css";
-import allBlooks from "../../blooks/allBlooks";
+import allBlooks, { freeBlooks } from "../../blooks/allBlooks";
 import { setActivity } from "../../utils/discordRPC";
 import { formatBigNumber, formatNumber, getOrdinal } from "../../utils/numbers";
 import { useAuth } from "../../context/AuthContext";
@@ -33,7 +33,8 @@ function Stats() {
     const [extraBlooks, setExtraBlooks] = useState([]);
     const [showExtras, setShowExtras] = useState(false);
     const [customBlooks, setCustomBlooks] = useState([]);
-    const { http: { get }, protobuf: { saveCustomBlook } } = useAuth();
+    const [changingProfile, setChangingProfile] = useState();
+    const { http: { get }, protobuf: { saveCustomBlook, changeUserBlook } } = useAuth();
     const currentPart = useRef();
     useEffect(() => {
         setIndex(showExtras ? 0 : 2);
@@ -59,6 +60,17 @@ function Stats() {
     }, [classPass]);
     return (<>
         <Sidebar>
+            {changingProfile == "blook" ? <div id="profileBlooksWrapper">
+                <div>
+                    {Object.keys(allBlooks).filter(blook => freeBlooks.includes(blook) || stats.unlocks?.[blook]).map(blook => (<div onClick={async () => {
+                        await changeUserBlook({ blook });
+                        setStats(s => ({ ...s, blook }));
+                        setChangingProfile(null);
+                    }}>
+                        <img src={allBlooks[blook].url} alt={blook} />
+                    </div>))}
+                </div>
+            </div> : <></>}
             {editing && <BlookEditor blookParts={showExtras ? Object.entries(parts).reduce((a, [b, c]) => (a[b] = c.map((x, i) => i), a), {}) : stats.blookParts} startCode={(showExtras ? extraBlooks : customBlooks)[selectedIndex]} close={async function (save, customCode) {
                 if (save) if (showExtras) {
                     await writeFile("customBlooks.json", JSON.stringify((extraBlooks[selectedIndex] = customCode, extraBlooks)));
@@ -73,7 +85,9 @@ function Stats() {
                 <div id="topLeft">
                     <div id="profile">
                         <div id="profileWrapper">
-                            <div id="blook" className="blookContainer">
+                            <div id="blook" className="blookContainer" onClick={() => {
+                                setChangingProfile("blook");
+                            }}>
                                 <img src={allBlooks[stats.blook || "Chick"]?.url} alt={(stats.blook || "Chick") + " Blook"} draggable={false} className="blook" />
                             </div>
                             <div id="banner">
@@ -228,7 +242,7 @@ function Stats() {
                     })}
                 </div>
             </div>
-        </Sidebar>
+        </Sidebar >
     </>);
 }
 export default Stats;
