@@ -33,7 +33,7 @@ function Stats() {
     const [extraBlooks, setExtraBlooks] = useState([]);
     const [showExtras, setShowExtras] = useState(false);
     const [customBlooks, setCustomBlooks] = useState([]);
-    const [changingProfile, setChangingProfile] = useState("choose");
+    const [changingProfile, setChangingProfile] = useState("");
     const { http: { get, put }, protobuf: { saveCustomBlook, changeUserBlook } } = useAuth();
     const currentPart = useRef();
     useEffect(() => {
