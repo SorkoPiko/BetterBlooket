@@ -3,15 +3,14 @@
     top: 0;
     left: 0;
     bottom: 0;
+    right: calc(100% - 100px);
     background-color: var(--main2);
-    width: fit-content;
     padding: 25px;
     clip-path: polygon(0 0,
             calc(100% - 15px) 0, 100% 15px,
             100% calc(100% - 15px), calc(100% - 15px) 100%,
             0 100%);
     transition: 0.2s;
-    animation: closeBackground 0.2s;
     z-index: 5;
 }
 
@@ -66,8 +65,7 @@
 }
 
 #sidebar:hover {
-    animation: openBackground 0.2s;
-    width: 250px;
+    right: calc(100% - 300px);
 }
 
 .icon {
@@ -102,21 +100,6 @@
 #sidebarWrapper:has(#sidebar:hover) #shade {
     opacity: 0.35;
     z-index: 2;
-}
-
-@keyframes open {
-    from { opacity: 0 }
-    to { opacity: 1 }
-}
-
-@keyframes openBackground {
-    from { width: 100px }
-    to { width: 250px }
-}
-
-@keyframes closeBackground {
-    from { width: 250px }
-    to { width: 50px }
 }
 
 #title {
