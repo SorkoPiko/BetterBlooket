@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./SideBar";
 import packs, { market, packTop, token } from "../../blooks/packs";
 import "./market.css";
@@ -6,21 +6,54 @@ import { setActivity } from "../../utils/discordRPC";
 import { useAuth } from "../../context/AuthContext";
 import allBlooks, { rarityColors } from "../../blooks/allBlooks";
 import { Textfit } from "react-textfit";
-import CustomBlook from "../../blooks/CustomBlook";
+import { Game, Scale, WEBGL } from "phaser";
+import Particles from "../../blooks/Particles";
+import { useRef } from "react";
 function imgUrl(url) {
     if (!url) return url;
     let i = url.indexOf("upload/");
     return -1 === i ? url : (i += 7, "".concat(url.slice(0, i)).concat("f_auto,q_auto:best").concat(url.slice(i - 1, url.length)))
 }
+
+function weighted(entries) {
+    let totalWeight = 0;
+    for (const [item, weight] of entries) totalWeight += weight;
+    const choice = Math.random() * totalWeight;
+    let weightCount = 0;
+    for (const [item, weight] of entries) {
+        weightCount += weight;
+        if (weightCount >= choice) return item;
+    }
+}
+
+function useGame(config, containerRef) {
+    const [game, setGame] = useState();
+    const oldConfig = useRef(config);
+    useEffect(() => {
+        if ((!game && containerRef.current) || config != oldConfig.current) {
+            oldConfig.current = config;
+            const newGame = new Game({ ...config, parent: containerRef.current });
+            setGame(newGame);
+        }
+        return () => game?.destroy(true);
+    }, [config, containerRef, game]);
+    return game;
+}
+
+
 function Market() {
     const [tokens, setTokens] = useState(0);
     const [opening, setOpening] = useState(false);
     const [startOpen, setStartOpen] = useState(false);
-    const [selected, setSelected] = useState("Space");
+    const [selected, setSelected] = useState("Outback");
     const [amount, setAmount] = useState(1);
     const [blooks, setBlooks] = useState([]);
     const [isNew, setIsNew] = useState([]);
     const [showing, setShowing] = useState(-1);
+    const [game, setGame] = useState(null);
+    const gameRef = useRef(null);
+    const shownParticles = useRef(false);
+    useGame(game, gameRef);
     const { http: { get } } = useAuth();
     useEffect(() => {
         window.setStartOpen = setStartOpen;
@@ -30,6 +63,12 @@ function Market() {
             timestampStart: Date.now(),
         });
     }, []);
+    useEffect(() => {
+        if (startOpen && game?.scene?.game && !shownParticles.current) {
+            game.scene.game.events.emit("start-particles", allBlooks[blooks[showing]]?.rarity);
+            shownParticles.current = true;
+        }
+    }, [blooks]);
     return (<>
         <Sidebar>
             <div id="marketHeader">Market</div>
@@ -56,6 +95,7 @@ function Market() {
                     return (<div key={blook}>
                         {/* {blook} */}
                         <img src={allBlooks[blook].url} alt={blook} />
+                        <div style={{ fontSize: "1rem" }}>{blook}</div>
                         <div style={{ color: rarityColors[allBlooks[blook].rarity] }}>{chance}%</div>
                     </div>)
                 })}
@@ -63,41 +103,55 @@ function Market() {
             <div id="packOpener">
                 <form onSubmit={async e => {
                     e.preventDefault();
+                    if (!amount) return;
                     setOpening(true);
                     setBlooks(Array(amount));
                     setIsNew(Array(amount));
                     setShowing(0);
+                    setGame({
+                        type: WEBGL, parent: "phaser-market", width: "100%", height: "100%", transparent: true,
+                        scale: { mode: Scale.NONE, autoCenter: Scale.CENTER_BOTH },
+                        physics: { default: "arcade" },
+                        scene: new Particles("Uncommon")
+                    });
                     for (let i = 0; i < amount; i++) {
-                        let unlock = market[selected].rewards[Math.floor(Math.random() * market[selected].rewards.length)][0]
+                        let unlock = market[selected].rewards[Math.floor(Math.random() * market[selected].rewards.length)][0] && weighted(market[selected].rewards)
                         setBlooks(b => (b[i] = unlock, [...b]));
                         setIsNew(n => (n[i] = (Math.random() > 0.5), [...n]));
-                        await new Promise(r => setTimeout(r, Math.random() * 1500));
                     }
                 }}>
                     <div>
-                        <input type="number" onChange={({ target: { value } }) => setAmount(parseInt(value))} defaultValue={1} min={1} max={Math.floor(tokens / market[selected]?.price) + 1000} /> / {Math.floor(tokens / market[selected]?.price)}
+                        <input type="number" onChange={({ target: { value } }) => setAmount(parseInt(value))} defaultValue={1} min={0} max={Math.floor(tokens / market[selected]?.price)} /> / {Math.floor(tokens / market[selected]?.price)}
                     </div>
                     <div>
                         <input type="submit" value="Open" />
-                        <span style={{ position: "absolute", top: "100%", left: "0", right: "0", lineHeight: "4rem", opacity: "0.5", textAlign: "center"}}>
+                        <span style={{ position: "absolute", top: "100%", left: "0", right: "0", lineHeight: "4rem", opacity: "0.5", textAlign: "center" }}>
                             <img style={{ height: "1.75rem", marginBottom: "-2px", marginRight: "10px" }} src={token} alt=""></img>
-                            {tokens} - {market[selected]?.price}x{amount} = {tokens - market[selected]?.price*amount}
+                            {tokens} - {market[selected]?.price}x{amount} = {tokens - market[selected]?.price * amount}
                         </span>
                     </div>
                 </form>
             </div>
         </Sidebar>
-        {opening && <div id="openingContainer" onClick={() => {
+        {opening && <div id="openingContainer" onClick={async () => {
             if (startOpen) {
                 if (amount > 1 && showing < blooks.length - 1) {
+                    shownParticles.current = true;
+                    game.scene.game.events.emit("start-particles", allBlooks[blooks[showing + 1]]?.rarity);
+                    if (!allBlooks[blooks[showing + 1]]?.rarity) shownParticles.current = false;
                     if (blooks[showing]) setShowing(s => s + 1);
                 } else if (blooks[showing]) {
                     setOpening(false);
                     setStartOpen(false);
                 }
-            } else setStartOpen(true);
+            } else {
+                setStartOpen(true)
+                await new Promise(r => setTimeout(r, 500));
+                game.scene.game.events.emit("start-particles", allBlooks[blooks[showing]]?.rarity);
+            };
         }} style={{ background: market[selected]?.background, cursor: "pointer" }}>
             <img className="cornerIcon" src={packs[selected].setIcon} alt="" />
+            <div ref={gameRef}></div>
             <div className={`openContainer${startOpen ? " openingContainer" : ""}`}>
                 <img className="blookBackground" src={packs[selected].setBackground} alt="" />
                 <div id="blookContainer" className="unlockedBlookImage">

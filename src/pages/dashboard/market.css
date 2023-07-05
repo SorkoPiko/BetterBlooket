@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, 210px);
     justify-content: center;
-    align-content: center;
+    align-items: center;
     grid-gap: 25px;
     left: 25px;
     top: 100px;
@@ -12,6 +12,7 @@
     overflow-y: scroll;
     background-color: var(--main2);
     border-radius: 10px;
+    padding-block: 50px
 }
 
 #packsWrapper::-webkit-scrollbar {
@@ -147,7 +148,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    align-content: center;
+    align-items: center;
     border-radius: 10px;
     /* grid-template-columns: repeat(auto-fit, 130px); */
 }
