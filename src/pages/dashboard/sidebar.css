@@ -51,7 +51,7 @@
 
 #sidebar li a .page {
     display: none;
-    margin: 15px;
+    /* margin: 15px; */
     margin-left: 30px;
     width: max-content;
     opacity: 0;

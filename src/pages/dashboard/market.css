@@ -171,7 +171,7 @@
 }
 
 #rewardsPreview img {
-    width: 120px;
+    /* width: 120px; */
     padding: 5px;
 }
 
@@ -180,6 +180,7 @@
     font-weight: 700;
     font-size: 20px;
     letter-spacing: 1px;
+    width: calc(20% - 5px);
 }
 
 #packOpener {

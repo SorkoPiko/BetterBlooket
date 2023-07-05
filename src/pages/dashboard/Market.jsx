@@ -40,7 +40,6 @@ function useGame(config, containerRef) {
     return game;
 }
 
-
 function Market() {
     const [tokens, setTokens] = useState(0);
     const [opening, setOpening] = useState(false);
@@ -54,7 +53,7 @@ function Market() {
     const gameRef = useRef(null);
     const shownParticles = useRef(false);
     useGame(game, gameRef);
-    const { http: { get } } = useAuth();
+    const { http: { get }, protobuf: { purchaseBlookBox } } = useAuth();
     useEffect(() => {
         window.setStartOpen = setStartOpen;
         get("https://dashboard.blooket.com/api/users/market").then(({ data: { tokens } }) => setTokens(tokens));
@@ -95,7 +94,8 @@ function Market() {
                     return (<div key={blook}>
                         {/* {blook} */}
                         <img src={allBlooks[blook].url} alt={blook} />
-                        <div style={{ fontSize: "1rem" }}>{blook}</div>
+                        {/* <div style={{ fontSize: "1rem" }}>{blook}</div> */}
+                        <Textfit mode="single" forceSingleModeWidth={false} min={1} max={16}>{blook}</Textfit>
                         <div style={{ color: rarityColors[allBlooks[blook].rarity] }}>{chance}%</div>
                     </div>)
                 })}
@@ -115,9 +115,10 @@ function Market() {
                         scene: new Particles("Uncommon")
                     });
                     for (let i = 0; i < amount; i++) {
-                        let unlock = market[selected].rewards[Math.floor(Math.random() * market[selected].rewards.length)][0] && weighted(market[selected].rewards)
-                        setBlooks(b => (b[i] = unlock, [...b]));
-                        setIsNew(n => (n[i] = (Math.random() > 0.5), [...n]));
+                        let { unlockedBlook, tokens, isNewToUser } = await purchaseBlookBox({ boxName: selected });// market[selected].rewards[Math.floor(Math.random() * market[selected].rewards.length)][0] && weighted(market[selected].rewards)
+                        setBlooks(b => (b[i] = unlockedBlook, [...b]));
+                        setIsNew(n => (n[i] = isNewToUser, [...n]));
+                        setTokens(tokens);
                     }
                 }}>
                     <div>
