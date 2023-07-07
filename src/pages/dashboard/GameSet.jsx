@@ -27,7 +27,6 @@ function GameSet() {
     const [reporting, setReporting] = useState(false);
     const [report, setReport] = useState("");
     const [copying, setCopying] = useState(false);
-    const [loadingCopy, setLoadingCopy] = useState(false);
     const { http: { get, put, post }, userData } = useAuth();
     const [canCopy, setCanCopy] = useState(userData.hasPlus);
     const { setId } = useParams();
@@ -77,8 +76,7 @@ function GameSet() {
     }, [report, reporting, set]);
     const onCopy = useCallback(() => {
         get("https://dashboard.blooket.com/api/users/plan").then(function ({ data: { hasPlus } }) {
-            if (!hasPlus) return setCanCopy(false);
-            setCanCopy(true);
+            setCanCopy(hasPlus);
             setCopying(true);
         }).catch(function (e) {
             console.error(e);
@@ -87,13 +85,11 @@ function GameSet() {
     }, []);
     const navigate = useNavigate();
     const onCopyConfirm = useCallback(() => {
-        setLoadingCopy(true);
         post("https://dashboard.blooket.com/api/games/copy", { id: setId, isDuplicate: true })
             .then(({ data: { _id } }) => navigate("/edit?id=" + _id))
             .catch(e => {
                 console.error(e);
                 setCopying(false);
-                setLoadingCopy(false);
             })
     }, []);
     const [zoomedImage, setZoomedImage] = useState("");
@@ -121,7 +117,7 @@ function GameSet() {
                         </div>
                         <div id="setButtons">
                             <div onClick={onFavorite}><i className={`fa-${favorited ? "solid" : "regular"} fa-star`} />{favorited ? "Unfavorite" : "Favorite"}</div>
-                            <div onClick={() => setCopying(true)}><i className="fas fa-copy" />Copy</div>
+                            <div onClick={() => onCopy()}><i className="fas fa-copy" />Copy</div>
                             <div onClick={() => setReporting(true)}><i className="fa-regular fa-flag" />Report</div>
                         </div>
                     </div>
@@ -226,7 +222,7 @@ function GameSet() {
                     {canCopy ? <>
                         <div className="copyHeader">Copy Set</div>
                         <div className="copyButtonContainer">
-                            <div className="copyYesButton" onClick={() => onCopy()}>Copy</div>
+                            <div className="copyYesButton" onClick={() => onCopyConfirm()}>Copy</div>
                             <div className="copyNoButton" onClick={() => setCopying(false)}>Cancel</div>
                         </div>
                     </> : <>
