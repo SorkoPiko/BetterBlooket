@@ -24,5 +24,8 @@ export default defineConfig(async () => ({
     // produce sourcemaps for debug builds
     sourcemap: !!process.env.TAURI_DEBUG,
   },
+  define: {
+    global: "globalThis"
+  }
 
 }));

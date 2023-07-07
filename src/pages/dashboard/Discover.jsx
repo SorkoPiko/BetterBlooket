@@ -28,9 +28,8 @@ function relativeTime(timestamp) {
 function Set({ set }) {
     return <Link className="questionSet" to={`/set/${set._id}`}>
         <div className="setImg">
-            {set.coverImage ? <img src={set.coverImage.url} alt="Cover" /> : <div className="emptyImg">
-                Blooket
-            </div>}
+            <div className="emptyImg">Blooket</div>
+            {set.coverImage && <img onError={e => e.target.style.display = "none"} src={set.coverImage.url} alt="Cover" />}
             <div className="setNumQuestions">{set.numQuestions} Questions</div>
         </div>
         <div className="setTitle">{set.title}</div>
@@ -58,7 +57,6 @@ function Discover() {
     });
     const loadSearch = useRef(false);
     const onSearch = useCallback(function (evt, page = 0) {
-        console.log({ this: this, arguments, search, page });
         evt?.preventDefault();
         if (page == 0) window.history.pushState({}, null, "".concat(window.location.origin, "/discover?s=").concat(encodeURIComponent(search)));
         get("https://dashboard.blooket.com/api/games/search", {
@@ -70,7 +68,6 @@ function Discover() {
                 minPlays: filter.minPlays
             }
         }).then(function ({ data }) {
-            console.log({ data })
             setHasMore(data.length >= 8);
             setPageIndex(page);
             if (0 === page) {
@@ -102,7 +99,6 @@ function Discover() {
             searchUser(decodeURIComponent(user));
             setSearch(search || decodeURIComponent(user));
         } else if (query) {
-            console.log(query)
             loadSearch.current = true;
             setSearch(decodeURIComponent(query));
         } else get("https://dashboard.blooket.com/api/games/featured").then(({ data: { discoverGames, featuredGames } }) => {
@@ -117,7 +113,6 @@ function Discover() {
     useEffect(() => {
         if (loadSearch.current && search) {
             onSearch();
-            console.log("load search", search)
             loadSearch.current = false;
         }
     }, [search]);
@@ -126,10 +121,7 @@ function Discover() {
             <div id="discoverContainer">
                 <div id="searchBar">
                     <form onSubmit={onSearch}>
-                        <input id="searchInput" type="search" placeholder="Search for a Set..." value={search} onChange={e => {
-                            console.log(e.target.value)
-                            setSearch(e.target.value.slice(0, 50));
-                        }} />
+                        <input id="searchInput" type="search" placeholder="Search for a Set..." value={search} onChange={e => setSearch(e.target.value.slice(0, 50))} />
                         <i id="searchIcon" className="fas fa-search" onClick={onSearch} />
                     </form>
                 </div>

@@ -1,0 +1,103 @@
+.audioButton {
+    background-color: var(--accent1);
+    border-radius: 7px;
+    width: 45%;
+    max-width: 150px;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    outline: none;
+    cursor: pointer;
+    overflow: hidden;
+    margin-bottom: 5px;
+    transition: .2s;
+}
+
+.audioIcon {
+    font-size: 40px;
+    color: #fff;
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* text-shadow: 2px 2px 8px grey; */
+    z-index: 4;
+}
+
+.spinnerContainer {
+    width: 175%;
+    height: 175%;
+    position: absolute;
+    left: -37.5%;
+    top: -37.5%;
+    background: inherit;
+}
+
+.spinner {
+    width: 50%;
+    height: 100%;
+    transform-origin: 100% 50%;
+    position: absolute;
+    background: var(--highlight1);
+    /* filter: brightness(1.2); */
+    border-radius: 175px 0 0 175px;
+    z-index: 2;
+    animation: rota 1s linear;
+}
+
+.filler {
+    width: 50%;
+    height: 100%;
+    transform-origin: 100% 50%;
+    position: absolute;
+    background: var(--highlight1);
+    border-radius: 0 175px 175px 0;
+    z-index: 1;
+    left: 50%;
+    opacity: 0;
+    animation: fill 1s steps(1);
+}
+
+.mask {
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    z-index: 3;
+    opacity: 1;
+    background: inherit;
+    animation: mask 1s steps(1);
+}
+
+@keyframes rota {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+@keyframes fill {
+    0% {
+        opacity: 0;
+    }
+    50%, 100% {
+        opacity: 1;
+    }
+}
+
+@keyframes mask {
+    0% {
+        opacity: 1;
+    }
+    50%, 100% {
+        opacity: 0;
+    }
+}
