@@ -81,13 +81,20 @@ export const AuthProvider = ({ children }) => {
     }
 
     const http = {
-        async get(url) {
-            return fetch(url, { headers: { Cookie: bisd.current, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" } });
+        async get(url, { params } = {}) {
+            return fetch(`${url}${params ? "?" + new URLSearchParams(params) : ""}`, { headers: { Cookie: bisd.current, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" } });
         },
-        async put(url, body) {
-            return fetch(url, {
+        async put(url, body, { params } = {}) {
+            return fetch(`${url}${params ? "?" + new URLSearchParams(params) : ""}`, {
                 headers: { Cookie: bisd.current, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" },
                 method: "PUT",
+                body: Body.json(body)
+            });
+        },
+        async post(url, body, { params } = {}) {
+            return fetch(`${url}${params ? "?" + new URLSearchParams(params) : ""}`, {
+                headers: { Cookie: bisd.current, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" },
+                method: "POST",
                 body: Body.json(body)
             });
         }

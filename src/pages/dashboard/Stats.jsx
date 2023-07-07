@@ -62,7 +62,7 @@ function Stats() {
         <Sidebar>
             {changingProfile == "blook" ? <div onClick={(e) => e.target.id == "profileBlooksWrapper" && setChangingProfile(null)} id="profileBlooksWrapper">
                 <div>
-                    {Object.keys(allBlooks).filter(blook => freeBlooks.includes(blook) || stats.unlocks?.[blook]).map(blook => (<div onClick={async () => {
+                    {Object.keys(allBlooks).filter(blook => freeBlooks.includes(blook) || stats.unlocks?.[blook]).map(blook => (<div key={blook} onClick={async () => {
                         await changeUserBlook({ blook });
                         setStats(s => ({ ...s, blook }));
                         setChangingProfile(null);

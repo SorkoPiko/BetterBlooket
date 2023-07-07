@@ -9,6 +9,6 @@ window.tfetch = fetch;
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     // <React.StrictMode> // strict mode makes useEffect render twice on dev server, breaking protobuf
-        <BrowserRouter><App /></BrowserRouter>
+        <BrowserRouter basename="/"><App /></BrowserRouter>
     // </React.StrictMode>
 );

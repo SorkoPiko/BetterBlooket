@@ -1,0 +1,148 @@
+#gameHeader, #gameCoverImage,#setButtons div {
+    overflow: hidden;
+    --border-radius: 10px;
+    clip-path: polygon(0 var(--border-radius),
+            var(--border-radius) 0,
+            calc(100% - var(--border-radius)) 0,
+            100% var(--border-radius),
+            100% calc(100% - var(--border-radius)),
+            calc(100% - var(--border-radius)) 100%,
+            var(--border-radius) 100%,
+            0 calc(100% - var(--border-radius)));
+}
+
+#gameHeader {
+    background-color: var(--main2);
+    display: flex;
+    /* justify-content: space-between; */
+    padding: 20px;
+    margin: 25px;
+    position: relative;
+    height: 20%;
+}
+
+#gameCoverImage {
+    height: 100%;
+    aspect-ratio: 16 / 9;
+    position: relative;
+}
+
+#gameCoverImage img {
+    margin: auto;
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+}
+
+#gameCoverImage #emptyCover {
+    background: var(--accent1);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    font-family: Adventure;
+}
+
+#gameInfo {
+    margin-inline: 25px;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    width: calc(85% - 500px)
+}
+
+#gameTitle {
+    font-weight: 700;
+    font-size: 3rem;
+}
+
+#gameAuthor {
+    margin-top: auto;
+    width: fit-content
+}
+
+#gameDescription {
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+
+#gameAuthor i {
+    margin-right: 10px;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+#gameButtons {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#playButtons {
+    display: flex;
+    font-size: 2rem;
+    text-align: center;
+}
+
+#playButtons * {
+    padding: 12px 47px;
+    margin-inline: 20px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+#gameSoloButton {
+    background-color: var(--main1);
+    border: 3px solid var(--main1)
+}
+
+#gameSoloButton:hover {
+    filter: brightness(0.8);
+}
+
+#gameHostButton {
+    border: 3px solid var(--accent1);
+}
+
+#gameHostButton:hover {
+    border: 3px solid var(--highlight1)
+}
+
+#setButtons {
+    display: flex;
+    justify-content: space-evenly;
+    /* position: absolute; */
+    /* bottom: 40px; */
+    /* right: 0; */
+    width: 100%;
+}
+
+#setButtons div {
+    width: 27.5%;
+    text-align: center;
+    margin-top: 30px;
+    background-color: var(--main1);
+    padding: 5px;
+    /* border-radius: 5px; */
+    cursor: pointer;
+    transition: 0.2s;
+    --border-radius: 5px;
+}
+
+#setButtons div:hover {
+    filter: brightness(0.9);
+}
+
+#setButtons i {
+    margin-right: 5px;
+}

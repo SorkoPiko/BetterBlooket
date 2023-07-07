@@ -13,6 +13,7 @@ import Sets from "./pages/dashboard/Sets";
 import Favorites from "./pages/dashboard/Favorites";
 import Settings from "./pages/dashboard/Settings";
 import Play from "./pages/play/Play";
+import GameSet from "./pages/dashboard/GameSet";
 
 function App() {
     return <AuthProvider>
@@ -23,6 +24,7 @@ function App() {
             <Route path="/blooks" element={<AuthRoute><Blooks /></AuthRoute>}></Route>
             <Route path="/market" element={<AuthRoute><Market /></AuthRoute>}></Route>
             <Route path="/discover" element={<AuthRoute><Discover /></AuthRoute>}></Route>
+            <Route path="/set/:setId" element={<AuthRoute><GameSet /></AuthRoute>}></Route>
             <Route path="/create" element={<AuthRoute><SetCreator /></AuthRoute>}></Route>
             <Route path="/sets" element={<AuthRoute><Sets /></AuthRoute>}></Route>
             <Route path="/favorites" element={<AuthRoute><Favorites /></AuthRoute>}></Route>
