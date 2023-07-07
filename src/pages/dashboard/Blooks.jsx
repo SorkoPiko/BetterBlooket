@@ -77,7 +77,7 @@ function Blooks() {
                         <div id="packUnlocksWrapper">
                             {Object.keys((showHidden ? packs[pack]?.allBlooks : packs[pack]?.blooks) || {}).map((blook, i) => {
                                 let x = -Math.pow(Math.E, -.45 * Math.abs(i - selectedIndex));
-                                return (<div className="packBlook" key={blook} data-place={i} style={{
+                                return (<div className="packBlook" key={i} data-place={i} style={{
                                     left: `calc(50% + ${Math.sign(i - selectedIndex) * (65 + x * 65)}%)`,
                                     width: `${-25 * x}%`,
                                 }}>
