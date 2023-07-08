@@ -9,6 +9,15 @@
   --main2: #0b0c0d;
   --accent1: hsl(290, 40%, 48%);
   --highlight1: hsl(290, 100%, 50%);
+  --accent2: hsl(184, 90%, 43%);
+  --highlight2: hsl(184, 100%, 50%);
+  --accent3: hsl(275, 66%, 22%);
+  --highlight3: hsl(275, 100%, 50%);
+  --accent4: hsl(207, 85%, 57%);
+  --highlight4: hsl(207, 100%, 50%);
+  --accent5: hsl(281, 95%, 43%);
+  --highlight5: hsl(281, 100%, 50%);
+  
 }
 
 * {

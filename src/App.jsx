@@ -14,6 +14,10 @@ import Favorites from "./pages/dashboard/Favorites";
 import Settings from "./pages/dashboard/Settings";
 import Play from "./pages/play/Play";
 import GameSet from "./pages/dashboard/GameSet";
+import Host from "./pages/host/Host";
+import Landing from "./pages/host/Landing";
+import Assign from "./pages/host/Assign";
+import { GameLayout } from "./context/GameContext";
 
 function App() {
     return <AuthProvider>
@@ -29,7 +33,12 @@ function App() {
             <Route path="/sets" element={<AuthRoute><Sets /></AuthRoute>}></Route>
             <Route path="/favorites" element={<AuthRoute><Favorites /></AuthRoute>}></Route>
             <Route path="/settings" element={<AuthRoute><Settings /></AuthRoute>}></Route>
-            <Route path="/play" element={<Play />}></Route>
+            <Route element={<GameLayout />}>
+                <Route path="/play" element={<Play />}></Route>
+                <Route path="/host" element={<AuthRoute><Host /></AuthRoute>}></Route>
+                <Route path="/host/assign" element={<AuthRoute><Assign /></AuthRoute>}></Route>
+                <Route path="/host/landing" element={<AuthRoute><Landing /></AuthRoute>}></Route>
+            </Route>
             <Route path="/*" element={<Navigate to="/"></Navigate>}></Route>
         </Routes>
     </AuthProvider>

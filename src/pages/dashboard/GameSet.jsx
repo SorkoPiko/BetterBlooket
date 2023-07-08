@@ -113,7 +113,9 @@ function GameSet() {
                     <div id="gameButtons">
                         <div id="playButtons">
                             <div id="gameSoloButton">Solo</div>
-                            <div id="gameHostButton">Host</div>
+                            <div onClick={() => {
+                                navigate("/host?id=" + setId);
+                            }} id="gameHostButton">Host</div>
                         </div>
                         <div id="setButtons">
                             <div onClick={onFavorite}><i className={`fa-${favorited ? "solid" : "regular"} fa-star`} />{favorited ? "Unfavorite" : "Favorite"}</div>
