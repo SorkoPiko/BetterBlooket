@@ -97,7 +97,13 @@ export const AuthProvider = ({ children }) => {
                 method: "POST",
                 body: Body.json(body)
             });
-        }
+        },
+        async delete(url, { params } = {}) {
+            return fetch(`${url}${params ? "?" + new URLSearchParams(params) : ""}`, {
+                headers: { Cookie: bisd.current, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" },
+                method: "DELETE"
+            });
+        },
     }
 
     return (
