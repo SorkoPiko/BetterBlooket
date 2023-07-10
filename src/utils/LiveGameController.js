@@ -34,6 +34,7 @@ export default class LiveGameController {
             path: "bu/" + user,
             val: 1
         });
+        this.removeVal("c/" + user);
         await this.http.post("https://fb.blooket.com/c/firebase/block", { g: this.liveGameCode, u: user });
     }
     async setVal({ path, val }, fn) {

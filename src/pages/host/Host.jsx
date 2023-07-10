@@ -7,7 +7,6 @@ import { imageUrl } from "../../utils/questions";
 import "./host.css";
 import { useCallback } from "react";
 import { setActivity } from "../../utils/discordRPC";
-import { useGame } from "../../context/GameContext";
 
 export default function Host() {
     const [selected, setSelected] = useState(null);
@@ -15,9 +14,7 @@ export default function Host() {
     const navigate = useNavigate();
     const id = getParam("id");
     const { http: { get, post } } = useAuth();
-    const { liveGameController } = useGame();
     useEffect(() => {
-        console.log(liveGameController);
         if (!/^[a-f0-9]{24}$/i.test(id)) return navigate("/sets");
         get("https://play.blooket.com/api/gamemodes/forhostpage").then(({ data }) => {
             if (!data.gameModes || !Array.isArray(data.gameModes) || data.gameModes.length == 0) return navigate("/sets");
@@ -42,7 +39,7 @@ export default function Host() {
             gameMode: selected.slug,
             setId: id
         }).catch(console.error);
-        navigate(`/host/landing?gid=${gid}`);
+        navigate(`/host/landing/${selected.slug}?gid=${gid}`);
     }, [selected]);
     if (getParam("id")) return <div>
         <div id="hostPageBackground" style={{
