@@ -78,6 +78,7 @@ export default function Host() {
                 })}
             </div>
         </div>
+        <div id="backButton" style={{backgroundColor:"var(--accent6)"}} onClick={() => navigate(-1)}><i className="fas fa-reply" />Back</div>
         {selected && <div id="hostPageRight">
             <div id="gameModeInfo">
                 <div id="gameModeImage">

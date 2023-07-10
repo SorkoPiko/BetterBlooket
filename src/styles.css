@@ -1,31 +1,63 @@
 @import url('https://fonts.googleapis.com/css?family=Rubik');
+
 @font-face {
-  font-family: Adventure;
-  src: url("Adventure.otf");
+    font-family: Adventure;
+    src: url("Adventure.otf");
 }
 
 :root {
-  --main1: #1c1e22;
-  --main2: #0b0c0d;
-  --accent1: hsl(290, 40%, 48%);
-  --highlight1: hsl(290, 100%, 50%);
-  --accent2: hsl(184, 90%, 43%);
-  --highlight2: hsl(184, 95%, 46.5%);
-  --accent3: hsl(275, 66%, 22%);
-  --highlight3: hsl(275, 83%, 36%);
-  --accent4: hsl(207, 85%, 57%);
-  --highlight4: hsl(207, 92.5%, 53.5%);
-  --accent5: hsl(281, 95%, 43%);
-  --highlight5: hsl(281, 97.5%, 46.5%);
-  
+    --main1: #1c1e22;
+    --main2: #0b0c0d;
+    --accent1: hsl(290, 40%, 48%);
+    --highlight1: hsl(290, 100%, 50%);
+    --accent2: hsl(184, 90%, 43%);
+    --highlight2: hsl(184, 95%, 46.5%);
+    --accent3: hsl(275, 66%, 22%);
+    --highlight3: hsl(275, 83%, 36%);
+    --accent4: hsl(207, 85%, 57%);
+    --highlight4: hsl(207, 92.5%, 53.5%);
+    --accent5: hsl(281, 95%, 43%);
+    --highlight5: hsl(281, 97.5%, 46.5%);
+    --accent6: hsl(279, 45%, 42%);
+    --highlight6: hsl(279, 72.5%, 46%);
+
 }
 
 * {
-  font-family: Rubik;
-  color: white;
+    font-family: Rubik;
+    color: white;
 }
+
 body {
-  margin: 0;
-  padding: 0;
-  background: var(--main1);
+    margin: 0;
+    padding: 0;
+    background: var(--main1);
+}
+
+#backButton {
+    position: fixed;
+    left: 25px;
+    bottom: 25px;
+    font-size: 2rem;
+    padding: 5px 15px;
+    border-radius: 5px;
+    padding-bottom: 12px;
+    box-shadow: inset 0 -7px rgba(0, 0, 0, .2), 0 0 4px rgba(0, 0, 0, .15);
+    user-select: none;
+    cursor: pointer;
+    transition: 0.2s;
+    text-decoration: none;
+}
+
+#backButton:hover {
+    filter: brightness(1.1);
+}
+
+#backButton:active {
+    padding-bottom: 8px;
+    box-shadow: inset 0 -3px rgba(0, 0, 0, .2), 0 0 4px rgba(0, 0, 0, .15);
+}
+
+#backButton i {
+    margin-right: 16px;
 }

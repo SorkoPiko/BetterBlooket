@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { getParam } from "../../utils/location"
 import { useEffect } from "react";
-import { setActivity } from "../../utils/discordRPC";
 import { useGame } from "../../context/GameContext";
 import { useAuth } from "../../context/AuthContext";
 
@@ -21,10 +20,6 @@ export default function Landing() {
                 method: "host"
             });
             navigate("/host/settings?gid=" + gid, { replace: true });
-        });
-        setActivity({
-            state: "Landing Page",
-            timestampStart: Date.now()
         });
     }, []);
     return null;

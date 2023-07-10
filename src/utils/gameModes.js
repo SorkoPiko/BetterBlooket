@@ -432,9 +432,8 @@ export default {
                 title: "Allow Student Accounts",
                 desc: "Disabling this option will hide account creation options from students (enabled is recommended)"
             },
-            amount: {
-                title: "Number of Questions",
-                max: 70
+            numQ: {
+                title: "Number of Questions"
             }
         }
     },

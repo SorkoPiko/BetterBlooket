@@ -6,6 +6,7 @@ import { getParam } from "../../utils/location";
 import gameModes from "../../utils/gameModes";
 import InputSlider from "react-input-slider";
 import "./settings.css";
+import { setActivity } from "../../utils/discordRPC";
 
 export default function HostSettings() {
     const navigate = useNavigate();
@@ -16,6 +17,7 @@ export default function HostSettings() {
     });
     const [gameMode, setGameMode] = useState(gameModes.Gold);
     const [settings, setSettings] = useState({
+        randomOrder: false,
         raceEvery: 5,
         energy: 5,
         instruct: true,
@@ -30,6 +32,7 @@ export default function HostSettings() {
         map: "meadow",
         difficulty: "normal"
     });
+    const [que, setQue] = useState({ numQ: 25, maxQ: 0 })
     const { addHostQuestions } = useGame();
     const { http: { get } } = useAuth();
     useEffect(() => {
@@ -43,6 +46,10 @@ export default function HostSettings() {
                 method: "host",
                 mode: ["Factory", "Cafe", "Gold", "Brawl", "Hack", "Fish", "Toy", "Defense", "Defense2", "Dino",].includes(data.gameMode) ? "Time" : "Rush" === data.gameMode ? "Teams" : "Solo"
             });
+            setActivity({
+                state: `${gameModes[data.gameMode].name} Settings`,
+                timestampStart: Date.now()
+            });
             get("https://play.blooket.com/api/questionsets/detailforhostsettingspage", { params: { id: data.questionSetId } }).then(({ data: set }) => {
                 if (!set.questions) return navigate("/sets");
                 let questions = set.questions.map(question => ({
@@ -54,6 +61,7 @@ export default function HostSettings() {
                 }));
                 addHostQuestions(questions);
                 setGameSet({ ...set, questions });
+                setQue({ maxQ: questions.length, numQ: Math.min(25, questions.length) });
             });
         });
     }, []);
@@ -80,83 +88,116 @@ export default function HostSettings() {
                 backgroundImage: 'url("https://ac.blooket.com/play/65a43218fd1cabe52bdf1cda34613e9e.png")'
             }}></div>
         </div>
-        <div id="hostSettingsContainer">
-            <div id="hostSettingsSet">{gameSet.title}</div>
-            <div id="hostButton">Host Now</div>
-            {gameMode.modes && <>
-                <div id="hostSettingsModes">
-                    {Object.keys(gameMode.modes).map((mode) => {
-                        return <div onClick={() => setSettings({ ...settings, mode })} style={{
-                            opacity: settings.mode == mode ? 1 : 0.6
-                        }} key={mode}>
-                            {gameMode.modes[mode].icon ? <i className={`${gameMode.modes[mode].icon}`} /> : <img src={gameMode.modes[mode].image} />}
-                            <div className="hostSettingsModeTitle">{gameMode.modes[mode].title}</div>
-                            <div className="hostSettingsModeDesc">{gameMode.modes[mode].desc}</div>
+        <div id="backButton" style={{ backgroundColor: "var(--accent2)" }} onClick={() => navigate(-1)}><i className="fas fa-reply" />Back</div>
+        <div id="hostSettingsWrapper">
+            <div id="hostSettingsContainer">
+                <div id="hostSettingsSet">{gameSet.title}</div>
+                <div id="hostButton">Host Now</div>
+                {gameMode.modes && <>
+                    <div id="hostSettingsModes">
+                        {Object.keys(gameMode.modes).map((mode) => {
+                            return <div onClick={() => setSettings({ ...settings, mode, ...(gameMode.modes[mode].amount ? { amount: gameMode.modes[mode].amount } : {}) })} style={{
+                                opacity: settings.mode == mode ? 1 : 0.6
+                            }} key={mode}>
+                                {gameMode.modes[mode].icon ? <i className={`${gameMode.modes[mode].icon}`} /> : <img src={gameMode.modes[mode].image} />}
+                                <div className="hostSettingsModeTitle">{gameMode.modes[mode].title}</div>
+                                <div className="hostSettingsModeDesc">{gameMode.modes[mode].desc}</div>
+                            </div>
+                        })}
+                    </div>
+                    {gameMode.modes?.[settings.mode]?.input && <div id="amountContainer">
+                        <i className={`${gameMode.modes[settings.mode].inputIcon}`} />
+                        <div>{gameMode.modes[settings.mode].input}</div>
+                        <input type="number" max={settings.mode == "Time" ? 30 : settings.type == "Brawl" ? 2591 : 1e12} value={settings.amount} onChange={e => setSettings({ ...settings, amount: Math.max(1, Math.min(settings.mode == "Time" ? 30 : settings.type == "Brawl" ? 2591 : 1e12, parseInt(e.target.value))) })} />
+                    </div>}
+                    {gameMode.extra?.map && <>
+                        <div id="hostSettingsHeader">Map Selection</div>
+                        <div id="hostSettingsMaps">
+                            {Object.entries(gameMode.extra.map).map(([map, data]) => (<div className="hostSettingMap" data-selected={settings.map == map} key={map} onClick={() => setSettings({ ...settings, map })}>
+                                <div style={{ position: "relative" }}>
+                                    <img src={data.img || data.smallImg} alt={data.name} />
+                                </div>
+                                {data.name}
+                            </div>))}
                         </div>
+                    </>}
+                    {gameMode.extra?.difficulty && <>
+                        <div id="hostSettingsHeader">Difficulty Selection</div>
+                        <div id="hostSettingsMaps">
+                            {Object.entries(gameMode.extra.difficulty).map(([difficulty, data]) => (<div className="hostSettingDifficulty" data-selected={settings.difficulty == difficulty} key={difficulty} onClick={() => setSettings({ ...settings, difficulty })}>
+                                <div style={{
+                                    position: "relative",
+                                    width: "100px",
+                                    height: "130px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                }}>
+                                    <img style={{ width: data.width }} src={data.img} alt={data.name} />
+                                </div>
+                                {data.name}
+                            </div>))}
+                        </div>
+                    </>}
+                </>}
+                <div id="hostSettings">
+                    <div id="hostSettingsHeader">{gameMode.name} Settings</div>
+                    {Object.entries(gameMode.settings).map(([setting, data], i, arr) => {
+                        return <Fragment key={setting}>
+                            <div style={typeof settings[setting] == "boolean" ? {} : {
+                                flexDirection: "column"
+                            }} className="hostSetting">
+                                <div className="hostSettingInfo" style={typeof settings[setting] == "boolean" ? {} : {
+                                    maxWidth: "unset"
+                                }}>
+                                    <div className="hostSettingText">{data.title}{setting == "energy" && (settings.mode == "Solo" ? "Person" : "Team")}</div>
+                                    <div className="hostSettingDesc">{data.desc || ""}</div>
+                                </div>
+                                {typeof settings[setting] == "boolean"
+                                    ? <div onClick={() => {
+                                        setSettings({ ...settings, [setting]: !settings[setting] });
+                                    }} className={`hostSettingCheckbox${settings[setting] ? " hostSettingChecked" : ""}`}><i className="fas fa-check" /></div>
+                                    : data.choices
+                                        ? <div className="hostSettingChoices">
+                                            {data.choices.map(choice => {
+                                                return <div onClick={() => setSettings({ ...settings, [setting]: choice })} data-selected={settings[setting] == choice} key={`choice${choice}`}>
+                                                    {choice}
+                                                </div>
+                                            })}
+                                        </div>
+                                        : <div className="hostSettingSlider">
+                                            <InputSlider axis="x" x={setting == "numQ" ? que.numQ : settings[setting]} xmin={1} xmax={setting == "numQ" ? que.maxQ : data.max} onChange={setting == "numQ" ? e => setQue({ ...que, numQ: e.x }) : (e) => setSettings({ ...settings, [setting]: e.x })} styles={{
+                                                track: {
+                                                    height: 10,
+                                                    width: "75%",
+                                                    borderRadius: 10,
+                                                    marginLeft: 10
+                                                },
+                                                active: {
+                                                    backgroundColor: "var(--accent2)",
+                                                    borderRadius: 10
+                                                },
+                                                thumb: {
+                                                    height: 25,
+                                                    width: 25,
+                                                    boxShadow: "0 0 8px rgba(0,0,0,.4)",
+                                                    cursor: "pointer"
+                                                }
+                                            }} />
+                                            <input className="hostSettingInput" type="number" min={1} max={setting == "numQ" ? que.maxQ : data.max} value={setting == "numQ" ? que.numQ : settings[setting]} onChange={setting == "numQ" ? e => setQue({ ...que, numQ: parseInt(e.target.value) }) : (e) => setSettings({ ...settings, [setting]: parseInt(e.target.value) })} />
+                                        </div>
+                                }
+                            </div>
+                            {i < arr.length - 1 && <div style={{
+                                height: "3px",
+                                width: "calc(100% - 20px)",
+                                margin: "10px auto",
+                                backgroundColor: "#e0e0e0",
+                                borderRadius: "3px",
+                            }}></div>}
+                        </Fragment>
                     })}
                 </div>
-                {gameMode.modes?.[settings.mode]?.input && <>
-                    <i className={`${gameMode.modes[settings.mode].inputIcon}`} />
-                    {gameMode.modes[settings.mode].input}
-                </>}
-            </>}
-            <div id="hostSettings">
-                <div id="hostSettingsHeader">{gameMode.name} Settings</div>
-                {Object.entries(gameMode.settings).map(([setting, data], i, arr) => {
-                    return <Fragment key={setting}>
-                        <div style={typeof settings[setting] == "boolean" ? {} : {
-                            flexDirection: "column"
-                        }} className="hostSetting">
-                            <div className="hostSettingInfo" style={typeof settings[setting] == "boolean" ? {} : {
-                                maxWidth: "unset"
-                            }}>
-                                <div className="hostSettingText">{data.title}{setting == "energy" && (settings.mode == "Solo" ? "Person" : "Team")}</div>
-                                <div className="hostSettingDesc">{data.desc || ""}</div>
-                            </div>
-                            {typeof settings[setting] == "boolean"
-                                ? <div onClick={() => {
-                                    setSettings({ ...settings, [setting]: !settings[setting] });
-                                }} className={`hostSettingCheckbox${settings[setting] ? " hostSettingChecked" : ""}`}><i className="fas fa-check" /></div>
-                                : data.choices
-                                    ? <div className="hostSettingChoices">
-                                        {data.choices.map(choice => {
-                                            return <div onClick={() => setSettings({ ...settings, [setting]: choice })} data-selected={settings[setting] == choice} key={`choice${choice}`}>
-                                                {choice}
-                                            </div>
-                                        })}
-                                    </div>
-                                    : <div className="hostSettingSlider">
-                                        <InputSlider axis="x" x={settings[setting]} xmin={1} xmax={data.max} onChange={(e) => setSettings({ ...settings, [setting]: e.x })} styles={{
-                                            track: {
-                                                height: 10,
-                                                width: "75%",
-                                                borderRadius: 10,
-                                                marginLeft: 10
-                                            },
-                                            active: {
-                                                backgroundColor: "var(--accent2)",
-                                                borderRadius: 10
-                                            },
-                                            thumb: {
-                                                height: 25,
-                                                width: 25,
-                                                boxShadow: "0 0 8px rgba(0,0,0,.4)",
-                                                cursor: "pointer"
-                                            }
-                                        }} />
-                                        <input className="hostSettingInput" type="number" min={1} max={data.max} value={settings[setting]} onChange={(e) => setSettings({ ...settings, [setting]: parseInt(e.target.value) })} />
-                                    </div>
-                            }
-                        </div>
-                        {i < arr.length - 1 && <div style={{
-                            height: "3px",
-                            width: "calc(100% - 20px)",
-                            margin: "10px auto",
-                            backgroundColor: "#e0e0e0",
-                            borderRadius: "3px",
-                        }}></div>}
-                    </Fragment>
-                })}
             </div>
         </div>
     </>
