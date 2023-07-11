@@ -19,15 +19,7 @@ export default function HostLobby() {
     const navigate = useNavigate();
     const [game, setGame] = useState({
         id: "",
-        clients: {
-            MllereA: {
-                b: "Pumpkin King",
-                bg: "techChip"
-            },
-            Jod: {
-                b: "Spooky Ghost"
-            }
-        },
+        clients: {},
         hostName: ""
     });
     const [muted, setMuted] = useState(false);
@@ -174,11 +166,11 @@ export default function HostLobby() {
                         return data && <div key={name} className="hostLobbyClientBox" onClick={() => removeClient(name)}>
                             {banners[data.bg]?.url
                                 ? <img className="hostLobbyClientBgImg" src={banners[data.bg]?.url} />
-                                : <div className="hostLobbyClientBg"></div>}
+                                : <div className="hostLobbyClientBg" style={{backgroundColor: holidays.halloween ? "#1a1a1a" : null}}></div>}
                             <Blook name={data.b} className="hostLobbyBlookBox" />
                             <Textfit className="hostLobbyClientNameText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")} style={{
                                 width: banners[data.bg]?.url ? "50%" : null,
-                                color: banners[data.bg]?.url ? "#fff" : "#3a3a3a",
+                                color: banners[data.bg]?.url || holidays.halloween ? "#fff" : "#3a3a3a",
                                 marginLeft: banners[data.bg]?.url ? "0%" : null,
                             }}>{name}</Textfit>
                         </div>
