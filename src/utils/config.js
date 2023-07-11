@@ -1,6 +1,6 @@
 export const holidays = {
     halloween: false, // c
-    winter: false, // d
+    winter: true, // d
     fall: false,
     lucky: false
 }

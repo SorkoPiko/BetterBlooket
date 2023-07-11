@@ -252,6 +252,10 @@
     scale: 0.95
 }
 
+.hostLobbyNoButton:hover {
+    scale: 1
+}
+
 .hostLobbyNoButton {
     cursor: default;
 }

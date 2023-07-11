@@ -45,8 +45,12 @@ export const GameProvider = ({ children }) => {
         host.current = { ...host.current, ...data };
     }, [host]);
 
+    const setPlayers = useCallback(players => {
+        host.current = { ...host.current, players };
+    }, [host]);
+
     return (
-        <GameContext.Provider value={{ liveGameController, host, client, addGameId, setSettings, addHostQuestions, deleteHost, hostId, setHostId, updateHost }}>
+        <GameContext.Provider value={{ liveGameController, host, client, addGameId, setSettings, addHostQuestions, deleteHost, hostId, setHostId, updateHost, setPlayers }}>
             {!loading && children}
         </GameContext.Provider>
     )

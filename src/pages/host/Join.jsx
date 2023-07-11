@@ -12,9 +12,13 @@ import "./join.css";
 import { audios, holidays } from "../../utils/config";
 import { useRef } from "react";
 import { useAuth } from "../../context/AuthContext";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+import { colorBlooks, freeBlooks } from "../../blooks/allBlooks";
+import { random } from "../../utils/questions";
 
 export default function HostLobby() {
-    const { host: { current: host }, liveGameController, deleteHost, hostId, updateHost } = useGame();
+    const { host: { current: host }, liveGameController, deleteHost, hostId, setPlayers } = useGame();
     const { http: { get, post }, userData } = useAuth();
     const navigate = useNavigate();
     const [game, setGame] = useState({
@@ -27,6 +31,10 @@ export default function HostLobby() {
     const audio = useRef(new Audio(audios.lobby));
     const dbRef = useRef({});
     const copyTimeout = useRef();
+    const init = useCallback(async engine => {
+        console.log(engine);
+        await loadFull(engine);
+    }, []);
     useEffect(() => {
         window.hostData = { host, hostId };
         if (!host?.setId || !host.settings || host.teams) return navigate("/sets");
@@ -119,11 +127,65 @@ export default function HostLobby() {
     }, [muted]);
     const copyToClipboard = useCallback(() => {
         navigator.clipboard.writeText(new URL("/play?=" + game.id, "https://play.blooket.com").href).then(() => setJustCopied(true));
-    }, []);
+    }, [game]);
     useEffect(() => {
         if (justCopied) copyTimeout.current = setTimeout(() => setJustCopied(false), 1500);
     }, [justCopied]);
-    const startGame = useCallback(() => { }, [game]);
+    const startGame = useCallback(() => {
+        let clients = JSON.parse(JSON.stringify(game.clients));
+        let taken = [];
+        for (const [name, data] of Object.entries(clients)) if (taken.includes(data?.b || "Chick")) {
+            let available = [];
+            for (let blook of freeBlooks) if (!taken.includes(blook)) available.push(blook);
+            if (available.length == 0) for (let blook of colorBlooks) if (!taken.includes(blook)) available.push(blook);
+            if (available.length > 0) clients[name].b = random(available);
+        } else taken.push(data?.b || "Chick");
+        liveGameController.setVal({ path: "c", val: clients }, () => {
+            switch (host.settings.type) {
+                case "Racing": navigate("/host/racing"); break;
+                case "Factory": navigate("/host/factory"); break;
+                case "Cafe": navigate("/host/cafe"); break;
+                case "Defense2": navigate("/host/defense2"); break;
+                case "Defense": navigate("/host/defense"); break;
+                case "Brawl": navigate("/host/brawl"); break;
+                case "Classic": liveGameController.setStage({ stage: "crdy" }, () => navigate("/host/classic/get-ready")); break;
+                case "Gold":
+                    if (host.settings.instruct) liveGameController.setStage({ stage: "inst" }, () => navigate("/host/gold/instructions"));
+                    else navigate("/host/gold");
+                    break;
+                case "Hack":
+                    if (host.settings.instruct) liveGameController.setStage({ stage: "inst" }, () => navigate("/host/hack/instructions"));
+                    else navigate("/host/hack");
+                    break;
+                case "Fish":
+                    if (host.settings.instruct) liveGameController.setStage({ stage: "inst" }, () => navigate("/host/fishing/instructions"));
+                    else navigate("/host/fishing");
+                    break;
+                case "Dino":
+                    if (host.settings.instruct) liveGameController.setStage({ stage: "inst" }, () => navigate("/host/dino/instructions"));
+                    else navigate("/host/dino");
+                    break;
+                case "Toy":
+                    if (host.settings.instruct) liveGameController.setStage({ stage: "inst" }, () => navigate("/host/toy/instructions"));
+                    else navigate("/host/toy");
+                    break;
+                case "Rush":
+                    if (host.settings.mode == "Teams") {
+                        setPlayers(Object.entries(clients).map(([name, { b: blook }]) => ({ name, blook })));
+                        liveGameController.setStage({ stage: "team" }, () => navigate("/host/teams"));
+                    } else if (host.settings.instruct) liveGameController.setStage({ stage: "inst" }, () => navigate("/host/rush/instructions"));
+                    else navigate("/host/rush");
+                    break;
+                // default: BATTLE ROYALE
+                //     setPlayers(Object.entries(clients).map(([name, { b: blook }]) => ({ name, blook, energy: host.settings.energy })));
+                //     if (host.settings.mode == "Teams") liveGameController.setStage({ stage: "team" }, () => navigate("/host/teams"));
+                //     else if (host.settings.instruct) liveGameController.setStage({ stage: "inst" }, () => navigate("/host/battle-royale/instructions"));
+                //     else {
+
+                //     }
+            }
+        });
+    }, [game, host]);
     const removeClient = useCallback((user) => {
         liveGameController.blockUser(user);
     }, []);
@@ -151,6 +213,54 @@ export default function HostLobby() {
                 </div>
             </div>
             <div id="hostLobbyLowerContainer">
+                {holidays.winter && <Particles
+                    init={init}
+                    height="calc(100vh - 61px)"
+                    width="100vw"
+                    // canvasClassName=""
+                    params={{
+                        particles: {
+                            number: {
+                                value: 70,
+                                density: {
+                                    enable: true,
+                                    value_area: 650,
+                                },
+                            },
+                            color: { value: '#fff' },
+                            shape: {
+                                type: 'circle',
+                                stroke: { width: 0 },
+                            },
+                            opacity: {
+                                value: 1,
+                                random: true,
+                                anim: { enable: false },
+                            },
+                            size: {
+                                value: 8,
+                                random: true,
+                                anim: { enable: false },
+                            },
+                            line_linked: { enable: false },
+                            move: {
+                                enable: true,
+                                speed: 6,
+                                direction: 'bottom',
+                                random: false,
+                                straight: false,
+                                out_mode: 'out',
+                                bounce: false,
+                                attract: { enable: false },
+                            },
+                        },
+                        interactivity: {},
+                        fullScreen: {
+                            enable: true,
+                            zIndex: 1,
+                        },
+                    }}
+                />}
                 <div id="hostLobbyLowerRow">
                     <div id="hostLobbyPlayerNumber">
                         {numClients}
@@ -166,7 +276,7 @@ export default function HostLobby() {
                         return data && <div key={name} className="hostLobbyClientBox" onClick={() => removeClient(name)}>
                             {banners[data.bg]?.url
                                 ? <img className="hostLobbyClientBgImg" src={banners[data.bg]?.url} />
-                                : <div className="hostLobbyClientBg" style={{backgroundColor: holidays.halloween ? "#1a1a1a" : null}}></div>}
+                                : <div className="hostLobbyClientBg" style={{ backgroundColor: holidays.halloween ? "#1a1a1a" : null }}></div>}
                             <Blook name={data.b} className="hostLobbyBlookBox" />
                             <Textfit className="hostLobbyClientNameText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")} style={{
                                 width: banners[data.bg]?.url ? "50%" : null,

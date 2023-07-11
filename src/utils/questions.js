@@ -114,3 +114,7 @@ export function shuffleArray(array) {
     }
     return array;
 }
+
+export function random(array) {
+    return array[Math.floor(Math.random() * array.length)];
+}
