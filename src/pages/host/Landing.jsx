@@ -9,11 +9,11 @@ export default function Landing() {
     const { gameMode } = useParams();
     const navigate = useNavigate();
     const { http: { get } } = useAuth();
-    const { setSettings, addGameId } = useGame();
+    const { setSettings, addGameId, setHostId } = useGame();
     useEffect(() => {
         if (!gid || !gameMode) return navigate("/sets");
+        setHostId(gid);
         get("https://play.blooket.com/api/hostedgames/forhost", { params: { id: gid } }).then(({ data }) => {
-            console.log(data)
             addGameId(data.questionSetId);
             setSettings({
                 type: gameMode,

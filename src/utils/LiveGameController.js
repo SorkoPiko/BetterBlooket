@@ -58,10 +58,11 @@ export default class LiveGameController {
         if (!this.isHost) throw new Error("players cannot delete a game");
         if (!this.liveGameCode) throw new Error("cannot delete a game without the game id");
         try {
-            this.isHost = false;
             await this.liveApp.database().ref(this.liveGameCode).remove();
             await this.liveApp.database().ref("ids/" + this.liveGameCode).remove();
             await this.http.delete("https://fb.blooket.com/c/firebase/game?id=" + this.liveGameCode);
+            this.isHost = false;
+            this.liveGameCode = null;
         } catch (e) {
             console.error(e);
         }

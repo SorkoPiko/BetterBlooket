@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useGame } from "../../context/GameContext"
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import gameModes from "../../utils/gameModes";
 import InputSlider from "react-input-slider";
 import "./settings.css";
 import { setActivity } from "../../utils/discordRPC";
+import { shuffleArray } from "../../utils/questions";
 
 export default function HostSettings() {
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ export default function HostSettings() {
         title: "",
         questions: []
     });
+    const [ready, setReady] = useState(false);
     const [gameMode, setGameMode] = useState(gameModes.Gold);
     const [settings, setSettings] = useState({
         randomOrder: false,
@@ -33,7 +35,7 @@ export default function HostSettings() {
         difficulty: "normal"
     });
     const [que, setQue] = useState({ numQ: 25, maxQ: 0 })
-    const { addHostQuestions } = useGame();
+    const { addHostQuestions, setSettings: addSettings } = useGame();
     const { http: { get } } = useAuth();
     useEffect(() => {
         window.gameModes = gameModes;
@@ -62,10 +64,71 @@ export default function HostSettings() {
                 addHostQuestions(questions);
                 setGameSet({ ...set, questions });
                 setQue({ maxQ: questions.length, numQ: Math.min(25, questions.length) });
+                setReady(true);
             });
         });
     }, []);
-    return <>
+    const onHost = useCallback(() => {
+        let opts = {
+            type: settings.type,
+            mode: settings.mode,
+            lateJoin: settings.lateJoin,
+            randomNames: settings.randomNames,
+            allowAccounts: settings.allowAccounts
+        }
+        switch (settings.type) {
+            case "Classic":
+            case "Candy":
+                let questions = JSON.parse(JSON.stringify(gameSet.questions));
+                if (settings.randomOrder) {
+                    questions = shuffleArray(questions);
+                    for (let i = 0; i < questions.length; i++) questions[i].number = i + 1;
+                }
+                questions.sort((a, b) => a.number - b.number);
+                questions = questions.slice(0, que.numQ);
+                addHostQuestions(questions);
+                opts.mode = "Solo";
+                if (settings.type == "Candy") opts.instruct = settings.instruct;
+                break;
+            case "Racing":
+                opts.mode = "Solo";
+                opts.amount = settings.amount;
+                break;
+            case "Factory":
+                opts.amount = settings.amount;
+                opts.glitchesOn = settings.glitchesOn;
+                break;
+            case "Cafe":
+            case "Brawl":
+                opts.amount = settings.amount;
+                break;
+            case "Gold":
+            case "Hack":
+            case "Fish":
+            case "Toy":
+            case "Dino":
+                opts.instruct = settings.instruct;
+                opts.amount = settings.amount;
+                break;
+            case "Defense":
+                opts.map = settings.map;
+                opts.amount = settings.amount;
+                break;
+            case "Defense2":
+                opts.map = settings.map;
+                opts.difficulty = settings.difficulty;
+                opts.amount = settings.amount;
+                break;
+            case "Rush":
+                opts.lateJoin = "Solo" === settings.mode && settings.lateJoin;
+                opts.instruct = settings.instruct;
+                opts.amount = settings.amount;
+                break;
+        }
+        addSettings(opts);
+        navigate("/host/join");
+    }, [settings, que]);
+    return ready && <>
         <div id="hostSettingsBackground" style={{
             position: "fixed",
             width: "100%",
@@ -92,7 +155,7 @@ export default function HostSettings() {
         <div id="hostSettingsWrapper">
             <div id="hostSettingsContainer">
                 <div id="hostSettingsSet">{gameSet.title}</div>
-                <div id="hostButton">Host Now</div>
+                <div id="hostButton" onClick={onHost}>Host Now</div>
                 {gameMode.modes && <>
                     <div id="hostSettingsModes">
                         {Object.keys(gameMode.modes).map((mode) => {

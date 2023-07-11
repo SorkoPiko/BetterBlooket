@@ -22,3 +22,7 @@ export function formatBigNumber(o) {
     }
     return e
 }
+export function getDimensions(o) {
+    var [_, number, unit] = o.match(/([0-9\.]+)(vh|vw)/);
+    return window[["innerHeight", "innerWidth"][["vh", "vw"].indexOf(unit)]] * (number / 100)
+}

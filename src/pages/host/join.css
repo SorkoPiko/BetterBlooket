@@ -1,0 +1,376 @@
+#hostLobbyBody {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--accent2);
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+#hostLobbyBackground {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+}
+
+#blooksBackground {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: 50%;
+    left: 50%;
+    background-size: 1000px;
+    background-position: -100px -100px;
+    opacity: .1;
+    transform: translate(-50%, -50%) rotate(15deg);
+}
+
+#hostLobbyHeaderBox {
+    position: absolute;
+    height: 20vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    background-color: var(--accent1);
+    padding: 0 2vw 10px;
+    box-shadow: inset 0 -10px rgba(0, 0, 0, .2), 0 6px rgba(0, 0, 0, .2);
+    box-sizing: border-box;
+    z-index: 10;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    animation: one 2s linear;
+}
+
+#hostLobbyQrHolder {
+    width: 9vw;
+    height: 18vh;
+    margin: auto 0.5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#hostLobbyHeaderText {
+    font-size: 2.5vw;
+    line-height: 3vw;
+    color: #fff;
+    width: 30vw;
+    text-align: center;
+    margin-left: 2vw;
+}
+
+#hostLobbyIdNumberText {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #fff;
+    text-align: center;
+    font-family: Adventure;
+    text-shadow: 3px 3px rgba(0, 0, 0, .2);
+    padding-bottom: 1.5vh;
+    box-sizing: border-box;
+    width: 43vw;
+    font-size: 8vw;
+}
+
+#hostLobbyRightContainer {
+    width: 8vw;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+#hostLobbyRightRow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    flex-direction: row;
+    margin-bottom: 1vh;
+}
+
+.hostLobbyIconButton {
+    font-size: 1.5vw;
+    width: 2.5vw;
+    height: 2.5vw;
+    margin: auto 0.5vw;
+    color: #fff;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    outline: none;
+    transition: .2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hostLobbyIconButton:hover {
+    transform: scale(.95);
+}
+
+#hostLobbyCopyButton {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: underline;
+    width: 5vw;
+    color: #fff;
+    font-size: 1vw;
+    line-height: 1.2vw;
+    text-align: center;
+    outline: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    transition: .2s;
+}
+
+#hostLobbyCopyButton:hover {
+    transform: scale(.95);
+}
+
+#copiedNotification {
+    display: flex;
+    position: absolute;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .8);
+    color: #fff;
+    font-size: 1vw;
+    border-radius: 7px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+#hostLobbyLowerContainer {
+    height: 80vh;
+    width: 100vw;
+    top: 20vh;
+    flex-direction: column;
+    display: flex;
+    position: absolute;
+    left: 0;
+}
+
+#hostLobbyLowerRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 90%;
+    margin: 3vh auto 0;
+    animation: two 2s linear;
+}
+
+.hostLobbyClientArrayContainer {
+    flex: 1;
+    width: 95%;
+    margin: 2vh auto;
+    overflow: hidden;
+    overflow-y: scroll;
+    justify-content: center;
+    align-content: flex-start;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+#hostLobbyPlayerNumber {
+    width: 14vw;
+    height: 5vw;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-family: Adventure;
+    color: #fff;
+    font-size: 2.5vw;
+    text-shadow: 0 3px rgba(0, 0, 0, .2);
+    margin-top: 3vh;
+}
+
+.clientIcon {
+    margin-left: 1vw;
+    font-size: 2.1vw;
+}
+
+#hostLobbyTitleText {
+    font-family: Adventure;
+    color: #fff;
+    text-shadow: 2px 2px 8px grey;
+    font-size: 5vw;
+}
+
+.hostLobbyStartButton {
+    font-family: Adventure;
+    width: 14vw;
+    height: 4.5vw;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    font-size: 2.5vw;
+    border-radius: 10px;
+    padding-bottom: 7px;
+    box-shadow: inset 0 -7px rgba(0, 0, 0, .2), 0 5px rgba(0, 0, 0, .2);
+    text-shadow: 0 3px rgba(0, 0, 0, .2);
+    box-sizing: border-box;
+    margin-top: 3vh;
+    cursor: pointer;
+    outline: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    transition: .2s;
+    color: #3a3a3a
+}
+
+.hostLobbyStartButton:hover {
+    scale: 0.95
+}
+
+.hostLobbyNoButton {
+    cursor: default;
+}
+
+.hostLobbyArrayScrollbar::-webkit-scrollbar {
+    width: 10px;
+}
+
+.hostLobbyArrayScrollbar::-webkit-scrollbar-thumb {
+    background: #fff;
+    border-radius: 10px;
+}
+
+.hostLobbyClientBox {
+    position: relative;
+    height: 5.94286vw;
+    width: 26vw;
+    margin: 1vw 1.5vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    outline: none;
+}
+
+.hostLobbyClientBox:hover {
+    text-decoration: line-through;
+}
+
+.hostLobbyClientBox:has(.hostLobbyClientBg):hover {
+    color: #3a3a3a;
+}
+
+.hostLobbyClientBgImg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.hostLobbyClientBg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0 -7px rgba(0, 0, 0, .2);
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.hostLobbyBlookBox {
+    width: 5.5vw;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-57.5%) rotate(-10deg);
+}
+
+.hostLobbyClientNameText {
+    text-align: center;
+    width: 75%;
+    margin-left: 20%;
+    height: 70%;
+    padding-bottom: 7px;
+    box-sizing: border-box;
+    color: #3a3a3a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    text-shadow: 1px 1px rgba(0, 0, 0, .2);
+}
+
+.hostLobbyClientNameText div {
+    color: inherit
+}
+
+@keyframes one {
+    0% {
+        top: -20vh;
+    }
+
+    5% {
+        top: -20vh;
+    }
+
+    15% {
+        top: 0;
+    }
+
+    100% {
+        top: 0;
+    }
+}
+
+@keyframes two {
+    0% {
+        opacity: 0;
+        transform: scale(.5);
+    }
+
+    20% {
+        opacity: 0;
+        transform: scale(.5);
+    }
+
+    30% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    35% {
+        transform: scale(1.2);
+    }
+
+    42.5% {
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

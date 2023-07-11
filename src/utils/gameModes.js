@@ -549,6 +549,9 @@ export default {
             }
         },
         settings: {
+            instruct: {
+                title: "Show Instructions"
+            },
             lateJoin: {
                 title: "Allow Late Joining",
             },
@@ -618,6 +621,9 @@ export default {
             }
         },
         settings: {
+            instruct: {
+                title: "Show Instructions"
+            },
             lateJoin: {
                 title: "Allow Late Joining",
             },
@@ -651,6 +657,9 @@ export default {
             }
         },
         settings: {
+            instruct: {
+                title: "Show Instructions"
+            },
             lateJoin: {
                 title: "Allow Late Joining",
             },
@@ -684,6 +693,9 @@ export default {
             }
         },
         settings: {
+            instruct: {
+                title: "Show Instructions"
+            },
             lateJoin: {
                 title: "Allow Late Joining",
             },
@@ -717,6 +729,9 @@ export default {
             }
         },
         settings: {
+            instruct: {
+                title: "Show Instructions"
+            },
             lateJoin: {
                 title: "Allow Late Joining",
             },
@@ -817,6 +832,9 @@ export default {
             }
         },
         settings: {
+            instruct: {
+                title: "Show Instructions"
+            },
             lateJoin: {
                 mode: "Solo",
                 title: "Allow Late Joining",

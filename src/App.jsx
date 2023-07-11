@@ -19,6 +19,7 @@ import Landing from "./pages/host/Landing";
 import Assign from "./pages/host/Assign";
 import { GameLayout } from "./context/GameContext";
 import HostSettings from "./pages/host/Settings";
+import HostLobby from "./pages/host/Join";
 
 function App() {
     return <AuthProvider>
@@ -40,6 +41,7 @@ function App() {
                 <Route path="/host/assign" element={<AuthRoute><Assign /></AuthRoute>}></Route>
                 <Route path="/host/landing/:gameMode" element={<AuthRoute><Landing /></AuthRoute>}></Route>
                 <Route path="/host/settings" element={<AuthRoute><HostSettings /></AuthRoute>}></Route>
+                <Route path="/host/join" element={<AuthRoute><HostLobby /></AuthRoute>}></Route>
             </Route>
             <Route path="/*" element={<Navigate to="/"></Navigate>}></Route>
         </Routes>
