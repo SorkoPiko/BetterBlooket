@@ -1,0 +1,19 @@
+.tooltip {
+    font-family: Nunito, sans-serif !important;
+    font-size: 15px !important;
+    line-height: 17px !important;
+    padding: 6px 13px !important;
+    max-width: 185px;
+    text-align: center;
+}
+
+.iconButton {
+    font-size: 28px;
+    line-height: 59px;
+    text-align: center;
+    margin-right: 15px;
+    width: 30px;
+    cursor: pointer;
+    outline: none;
+    transition: .2s;
+}
