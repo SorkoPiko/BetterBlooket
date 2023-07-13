@@ -18,7 +18,7 @@ import { colorBlooks, freeBlooks } from "../../blooks/allBlooks";
 import { random } from "../../utils/questions";
 
 export default function HostLobby() {
-    const { host: { current: host }, liveGameController, deleteHost, hostId, setPlayers } = useGame();
+    const { host: { current: host }, liveGameController, deleteHost, hostId, setPlayers, updateHost } = useGame();
     const { http: { get, post }, userData } = useAuth();
     const navigate = useNavigate();
     const [game, setGame] = useState({
@@ -96,9 +96,9 @@ export default function HostLobby() {
             setGame({ ...game, id: newGame.id });
             await post("https://play.blooket.com/api/hostedgames/invitationcodes", {
                 invitationCode: newGame.id,
-                hostToken: hostId
+                hostToken: hostId.current
             });
-            // updateHost({ hostName: data.title });
+            updateHost({ hostName: data.title });
             dbRef.current = await liveGameController.getDatabaseRef("c");
             dbRef.current.on("value", function (snapshot) {
                 const clients = snapshot.val() || {};
@@ -108,10 +108,11 @@ export default function HostLobby() {
         });
         return () => {
             if (Object.keys(dbRef.current).length) dbRef.current.off("value");
-            if (liveGameController.liveGameCode && liveGameController.isHost) {
-                liveGameController.removeHostAndDeleteGame();
-                deleteHost();
-            }
+            // if (liveGameController.liveGameCode && liveGameController.isHost) {
+            //     console.log("bruh")
+            //     liveGameController.removeHostAndDeleteGame();
+            //     deleteHost();
+            // }
             audio.current.currentTime = 0;
             audio.current.pause();
             audio.current.removeEventListener("ended", function () {
@@ -124,9 +125,10 @@ export default function HostLobby() {
     const changeMuted = useCallback(() => {
         setMuted(!muted);
         audio.current.muted = !muted;
+        updateHost({ muted: !muted });
     }, [muted]);
     const copyToClipboard = useCallback(() => {
-        navigator.clipboard.writeText(new URL("/play?=" + game.id, "https://play.blooket.com").href).then(() => setJustCopied(true));
+        navigator.clipboard.writeText(new URL("/play?id=" + game.id, "https://play.blooket.com").href).then(() => setJustCopied(true));
     }, [game]);
     useEffect(() => {
         if (justCopied) copyTimeout.current = setTimeout(() => setJustCopied(false), 1500);

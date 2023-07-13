@@ -32,6 +32,7 @@
     "react-qr-code": "^2.0.11",
     "react-router-dom": "^6.14.0",
     "react-textfit": "^1.1.1",
+    "react-tooltip": "^5.18.0",
     "react-tsparticles": "^2.10.1",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "tsparticles": "^2.10.1"

@@ -17,8 +17,9 @@ export const GameProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const { http, userData } = useAuth();
     const host = useRef({});
+    const standings = useRef([]);
     const [client, setClient] = useState();
-    const [hostId, setHostId] = useState(null);
+    const hostId = useRef(null);
 
     useEffect(() => {
         if (!liveGameController) liveGameController = new LiveGameController(http);
@@ -49,8 +50,16 @@ export const GameProvider = ({ children }) => {
         host.current = { ...host.current, players };
     }, [host]);
 
+    const updateStandings = useCallback(standings => {
+        standings.current = standings;
+    }, [standings]);
+
+    const setHostId = useCallback(id => {
+        hostId.current = id;
+    }, [standings]);
+
     return (
-        <GameContext.Provider value={{ liveGameController, host, client, addGameId, setSettings, addHostQuestions, deleteHost, hostId, setHostId, updateHost, setPlayers }}>
+        <GameContext.Provider value={{ liveGameController, host, client, addGameId, setSettings, addHostQuestions, deleteHost, hostId, setHostId, updateHost, setPlayers, updateStandings, standings: standings.current }}>
             {!loading && children}
         </GameContext.Provider>
     )

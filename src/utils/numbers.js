@@ -26,3 +26,25 @@ export function getDimensions(o) {
     var [_, number, unit] = o.match(/([0-9\.]+)(vh|vw)/);
     return window[["innerHeight", "innerWidth"][["vh", "vw"].indexOf(unit)]] * (number / 100)
 }
+
+export function diffObjects(obj1, obj2) {
+    const changed = {};
+
+    for (const key in obj1) {
+        if (!obj2.hasOwnProperty(key)) continue;
+
+        const value1 = obj1[key];
+        const value2 = obj2[key];
+
+        if (typeof value1 === "object" && typeof value2 === "object") {
+            const recChanged = diffObjects(value1, value2);
+            if (recChanged !== null && Object.keys(recChanged).length !== 0) changed[key] = recChanged;
+        } else if (value1 !== value2) changed[key] = value2;
+    }
+
+    for (const key in obj2) if (!obj1.hasOwnProperty(key)) changed[key] = obj2[key];
+
+    if (Object.keys(changed).length === 0) return null;
+
+    return changed;
+}  

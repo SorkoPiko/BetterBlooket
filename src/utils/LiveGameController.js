@@ -79,6 +79,7 @@ export default class LiveGameController {
 
         await this.setLiveGameCode(data.id, data.fbToken, data.fbShardURL);
         this.isHost = true;
+        console.log(this.liveGameCode)
         await this.liveApp.database().ref(this.liveGameCode).set(initialGame);
         await this.liveApp.database().ref(`ids/${this.liveGameCode}`).set(data.createdAt);
 

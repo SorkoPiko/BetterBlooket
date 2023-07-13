@@ -17,34 +17,39 @@ import GameSet from "./pages/dashboard/GameSet";
 import Host from "./pages/host/Host";
 import Landing from "./pages/host/Landing";
 import Assign from "./pages/host/Assign";
-import { GameLayout } from "./context/GameContext";
+import { GameLayout, GameProvider } from "./context/GameContext";
 import HostSettings from "./pages/host/Settings";
 import HostLobby from "./pages/host/Join";
+import GoldHost, { GoldInstruct } from "./pages/host/gamemodes/Gold";
 
 function App() {
     return <AuthProvider>
-        <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/login" element={<Auth />}></Route>
-            <Route path="/stats" element={<AuthRoute><Stats /></AuthRoute>}></Route>
-            <Route path="/blooks" element={<AuthRoute><Blooks /></AuthRoute>}></Route>
-            <Route path="/market" element={<AuthRoute><Market /></AuthRoute>}></Route>
-            <Route path="/discover" element={<AuthRoute><Discover /></AuthRoute>}></Route>
-            <Route path="/set/:setId" element={<AuthRoute><GameSet /></AuthRoute>}></Route>
-            <Route path="/create" element={<AuthRoute><SetCreator /></AuthRoute>}></Route>
-            <Route path="/sets" element={<AuthRoute><Sets /></AuthRoute>}></Route>
-            <Route path="/favorites" element={<AuthRoute><Favorites /></AuthRoute>}></Route>
-            <Route path="/settings" element={<AuthRoute><Settings /></AuthRoute>}></Route>
-            <Route element={<GameLayout />}>
+        <GameProvider>
+            <Routes>
+                <Route path="/" element={<Home />}></Route>
+                <Route path="/login" element={<Auth />}></Route>
+                <Route path="/stats" element={<AuthRoute><Stats /></AuthRoute>}></Route>
+                <Route path="/blooks" element={<AuthRoute><Blooks /></AuthRoute>}></Route>
+                <Route path="/market" element={<AuthRoute><Market /></AuthRoute>}></Route>
+                <Route path="/discover" element={<AuthRoute><Discover /></AuthRoute>}></Route>
+                <Route path="/set/:setId" element={<AuthRoute><GameSet /></AuthRoute>}></Route>
+                <Route path="/create" element={<AuthRoute><SetCreator /></AuthRoute>}></Route>
+                <Route path="/sets" element={<AuthRoute><Sets /></AuthRoute>}></Route>
+                <Route path="/favorites" element={<AuthRoute><Favorites /></AuthRoute>}></Route>
+                <Route path="/settings" element={<AuthRoute><Settings /></AuthRoute>}></Route>
+                {/* <Route element={<GameLayout />}> */}
                 <Route path="/play" element={<Play />}></Route>
                 <Route path="/host" element={<AuthRoute><Host /></AuthRoute>}></Route>
                 <Route path="/host/assign" element={<AuthRoute><Assign /></AuthRoute>}></Route>
                 <Route path="/host/landing/:gameMode" element={<AuthRoute><Landing /></AuthRoute>}></Route>
                 <Route path="/host/settings" element={<AuthRoute><HostSettings /></AuthRoute>}></Route>
                 <Route path="/host/join" element={<AuthRoute><HostLobby /></AuthRoute>}></Route>
-            </Route>
-            <Route path="/*" element={<Navigate to="/"></Navigate>}></Route>
-        </Routes>
+                <Route path="/host/gold" element={<AuthRoute><GoldHost /></AuthRoute>}></Route>
+                <Route path="/host/gold/instructions" element={<AuthRoute><GoldInstruct /></AuthRoute>}></Route>
+                {/* </Route> */}
+                <Route path="/*" element={<Navigate to="/"></Navigate>}></Route>
+            </Routes>
+        </GameProvider>
     </AuthProvider>
 }
 
