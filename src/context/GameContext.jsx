@@ -24,6 +24,12 @@ export const GameProvider = ({ children }) => {
     useEffect(() => {
         if (!liveGameController) liveGameController = new LiveGameController(http);
         setLoading(false);
+        return () => {
+            if (liveGameController.liveGameCode && liveGameController.isHost) {
+                liveGameController.removeHostAndDeleteGame();
+                deleteHost();
+            }
+        }
     }, []);
 
     const addGameId = useCallback((setId) => {

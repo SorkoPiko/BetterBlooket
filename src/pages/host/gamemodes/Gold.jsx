@@ -75,7 +75,7 @@ export default function GoldHost() {
     }, [muted]);
     useEffect(() => {
         audio.muted = muted;
-        // updateHost({ muted });
+        updateHost({ muted });
     }, [muted]);
     const blockUser = useCallback(() => {
         liveGameController.blockUser(userToBlock);
@@ -156,10 +156,6 @@ export default function GoldHost() {
         return () => {
             clearInterval(timerInterval.current);
             clearInterval(clientsInterval.current);
-            if (liveGameController.liveGameCode && liveGameController.isHost) {
-                liveGameController.removeHostAndDeleteGame();
-                // deleteHost();
-            }
             audio.currentTime = 0;
             audio.pause();
             audio.removeEventListener("ended", () => {
