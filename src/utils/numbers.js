@@ -47,4 +47,4 @@ export function diffObjects(obj1, obj2) {
     if (Object.keys(changed).length === 0) return null;
 
     return changed;
-}  
+}

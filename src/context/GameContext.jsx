@@ -56,8 +56,8 @@ export const GameProvider = ({ children }) => {
         host.current = { ...host.current, players };
     }, [host]);
 
-    const updateStandings = useCallback(standings => {
-        standings.current = standings;
+    const updateStandings = useCallback(s => {
+        standings.current = s;
     }, [standings]);
 
     const setHostId = useCallback(id => {

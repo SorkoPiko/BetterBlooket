@@ -100,9 +100,11 @@ export default function HostLobby() {
             });
             updateHost({ hostName: data.title });
             dbRef.current = await liveGameController.getDatabaseRef("c");
+            let oldClients = {};
             dbRef.current.on("value", function (snapshot) {
                 const clients = snapshot.val() || {};
-                if (Object.keys(clients).length > Object.keys(game.clients).length && !muted) new Audio(audios.join).play();
+                if (Object.keys(clients).length > Object.keys(oldClients).length && !muted) new Audio(audios.join).play();
+                oldClients = clients;
                 setGame(g => ({ ...g, clients }));
             });
         });

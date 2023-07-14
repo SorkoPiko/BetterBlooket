@@ -1,0 +1,144 @@
+.fog {
+    width: 100%;
+    filter: blur(1px) grayscale(.2) saturate(1.2) sepia(.2);
+    pointer-events: none;
+    z-index: 50
+}
+
+.fog,
+.fog1,
+.fog2,
+.fog3 {
+    position: absolute;
+    height: 100%
+}
+
+.fog1,
+.fog2,
+.fog3 {
+    width: 200%
+}
+
+.fog1 .img1,
+.fog1 .img2,
+.fog2 .img1,
+.fog2 .img2,
+.fog3 .img1,
+.fog3 .img2 {
+    float: left;
+    height: 100%;
+    width: 50%
+}
+
+.fog1 {
+    animation: fog1_opacity 10s linear infinite, foglayer_moveme 15s linear infinite
+}
+
+.fog2,
+.fog3 {
+    animation: fog2_opacity 21s linear infinite, foglayer_moveme 13s linear infinite
+}
+
+.fog1 .img1,
+.fog1 .img2 {
+    background: url(https://media.blooket.com/image/upload/v1665986863/Media/spooky/fog1.png) 50%/cover no-repeat transparent
+}
+
+.fog2 .img1,
+.fog2 .img2,
+.fog3 .img1,
+.fog3 .img2 {
+    background: url(https://media.blooket.com/image/upload/v1665986869/Media/spooky/fog2.png) 50%/cover no-repeat transparent
+}
+
+@keyframes fog1_opacity {
+    0% {
+        opacity: .1
+    }
+
+    22% {
+        opacity: .5
+    }
+
+    40% {
+        opacity: .28
+    }
+
+    58% {
+        opacity: .4
+    }
+
+    80% {
+        opacity: .16
+    }
+
+    to {
+        opacity: .1
+    }
+}
+
+@keyframes fog2_opacity {
+    0% {
+        opacity: .5
+    }
+
+    25% {
+        opacity: .2
+    }
+
+    50% {
+        opacity: .1
+    }
+
+    80% {
+        opacity: .3
+    }
+
+    to {
+        opacity: .5
+    }
+}
+
+@keyframes fog3_opacity {
+    0% {
+        opacity: .8
+    }
+
+    27% {
+        opacity: .2
+    }
+
+    52% {
+        opacity: .6
+    }
+
+    68% {
+        opacity: .3
+    }
+
+    to {
+        opacity: .8
+    }
+}
+
+@keyframes foglayer_moveme {
+    0% {
+        left: 0
+    }
+
+    to {
+        left: -100%
+    }
+}
+
+@media only screen and (min-width:280px) and (max-width:1130px) {
+
+    .fog1 .img1,
+    .fog1 .img2,
+    .fog2 .img1,
+    .fog2 .img2,
+    .fog3 .img1,
+    .fog3 .img2 {
+        width: 100%
+    }
+}
