@@ -214,7 +214,7 @@
     justify-content: center;
 }
 
-#totalGoldText {
+.totalGoldText {
     font-weight: 700;
     color: #fff;
     font-family: Eczar, sans-serif;
@@ -382,4 +382,203 @@
 .candyIcon {
     height: 50%;
     margin-left: 0.75vw;
+}
+
+
+.goldLeft {
+    position: absolute;
+    height: 85%;
+    top: 6%;
+    width: 35vw;
+    padding: 1.5% 1.25vw;
+    left: 2.5vw;
+    overflow-y: auto;
+}
+
+.goldStandingContainer {
+    position: absolute;
+    height: calc(8vh + 25px);
+    width: calc(35vw - 5px);
+    box-sizing: border-box;
+    padding: 7px;
+    background-color: #d52423;
+    border-radius: 8px;
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, .2);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    outline: none;
+    cursor: pointer;
+    transition: opacity .2s, transform .2s;
+}
+
+.goldIcon {
+    height: 40%;
+    margin-left: 0.75vw;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.goldStandingInside {
+    background-color: #d52423;
+    border: 5px solid #ffd329;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.goldChatRoom {
+    width: 55vw;
+    height: calc(65% - 30px);
+    position: absolute;
+    left: 42.5vw;
+    top: 7.5%;
+    background-color: #d52423;
+    box-shadow: 5px 5px 0 rgba(0,0,0,.2);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.goldChatRoomInside {
+    background-color: #d52423;
+    border: 5px solid #ffd329;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding: 15px 0;
+}
+
+.totalGoldContainer {
+    background-color: #d52423;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 5px 5px 0 rgba(0,0,0,.2);
+    padding: 10px;
+    border-radius: 6px;
+    position: absolute;
+    left: 45vw;
+    top: 80%;
+    width: 50vw;
+    height: 15%;
+}
+
+.totalGoldInside {
+    border: 5px solid #ffd329;
+    width: 100%;
+    height: 100%;
+    background-color: #d52423;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#totalGoldIcon {
+    height: 40%;
+    width: auto;
+    margin-left: 1.5vw;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.green {
+    background-color: #095618;
+}
+
+
+.blockModal {
+    display: block;
+    position: fixed;
+    z-index: 15;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, .6);
+}
+
+.blockContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    background-color: var(--main1);
+    box-shadow: 0 0 8px 3px rgba(0, 0, 0, .2);
+    border-radius: 7px;
+    text-align: center;
+}
+
+.blockHeader {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 35px;
+}
+
+.blockButtonContainer {
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.blockYesButton {
+    border-color: white;
+    border-style: solid;
+    border-radius: 6px;
+    width: 125px;
+    height: 45px;
+    margin: auto;
+    font-size: 23px;
+    text-align: center;
+    line-height: 45px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.blockYesButton:hover {
+    border-color: #ce1313;
+    color: #ce1313;
+    font-weight: 700;
+}
+
+.blockNoButton {
+    border-color: white;
+    border-style: solid;
+    border-radius: 6px;
+    width: 125px;
+    height: 45px;
+    margin: auto;
+    font-size: 23px;
+    text-align: center;
+    line-height: 45px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.blockNoButton:hover {
+    border-color: var(--accent1);
+    color: var(--accent1);
+    font-weight: 700;
 }
