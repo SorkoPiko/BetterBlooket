@@ -56,11 +56,11 @@
 }
 
 #gameInfo {
-    margin-inline: 25px;
+    margin-left: 25px;
     display: flex;
     flex-direction: column;
     font-size: 1.5rem;
-    width: calc(80% - 500px)
+    width: calc(80% - 475px)
 }
 
 #gameTitle {
@@ -642,4 +642,25 @@
     border-color: var(--accent1);
     color: var(--accent1);
     font-weight: 700;
+}
+
+#skipButton {
+    position: absolute;
+    top: 75px;
+    right: 1vw;
+    font-size: 3vw;
+    color: #fff;
+    text-align: right;
+    font-family: Adventure;
+    text-shadow: 2px 2px 8px grey;
+    cursor: pointer;
+    outline: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    transition: all .2s cubic-bezier(.39, .5, .15, 1.36)
+}
+
+#skipButton:hover {
+    transform: scale(1.05)
 }

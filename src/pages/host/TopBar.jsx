@@ -58,5 +58,5 @@ export default function TopBar({ color, muted, changeMuted, left, center, right,
                 <i className="iconButton fas fa-fast-forward" style={{ marginRight: "0", marginLeft: "15px" }} onClick={onRightClick} data-tooltip-id="endnow" data-tooltip-content="End Now" />
             </>}
         </div>
-    </div >
+    </div>
 }

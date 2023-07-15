@@ -20,7 +20,7 @@ import Assign from "./pages/host/Assign";
 import { GameLayout, GameProvider } from "./context/GameContext";
 import HostSettings from "./pages/host/Settings";
 import HostLobby from "./pages/host/Join";
-import GoldHost, { GoldInstruct } from "./pages/host/gamemodes/Gold";
+import GoldHost, { GoldFinal, GoldInstruct } from "./pages/host/gamemodes/Gold";
 
 function App() {
     return <AuthProvider>
@@ -46,6 +46,7 @@ function App() {
                 <Route path="/host/join" element={<AuthRoute><HostLobby /></AuthRoute>}></Route>
                 <Route path="/host/gold" element={<AuthRoute><GoldHost /></AuthRoute>}></Route>
                 <Route path="/host/gold/instructions" element={<AuthRoute><GoldInstruct /></AuthRoute>}></Route>
+                <Route path="/host/gold/final" element={<AuthRoute><GoldFinal /></AuthRoute>}></Route>
             </Route>
             <Route path="/*" element={<Navigate to="/"></Navigate>}></Route>
         </Routes>

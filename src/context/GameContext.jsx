@@ -65,7 +65,7 @@ export const GameProvider = ({ children }) => {
     }, [standings]);
 
     return (
-        <GameContext.Provider value={{ liveGameController, host, client, addGameId, setSettings, addHostQuestions, deleteHost, hostId, setHostId, updateHost, setPlayers, updateStandings, standings: standings.current }}>
+        <GameContext.Provider value={{ liveGameController, host, client, addGameId, setSettings, addHostQuestions, deleteHost, hostId, setHostId, updateHost, setPlayers, updateStandings, standings }}>
             {!loading && children}
         </GameContext.Provider>
     )

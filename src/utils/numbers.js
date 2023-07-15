@@ -48,3 +48,11 @@ export function diffObjects(obj1, obj2) {
 
     return changed;
 }
+
+export function listKeys(players) {
+    var names = Object.keys(players), list = names[0];
+    if (names.length === 2) list += " & ".concat(names[1]);
+    else for (var i = 1; i < names.length; i++) if (names.length - 1 === i) list += `, & ${names[i]}`;
+    else list += `, ${names[i]}`;
+    return list
+}
