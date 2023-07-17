@@ -38,7 +38,7 @@ export function HackInstruct() {
     const { host: { current: host }, updateHost, liveGameController } = useGame();
     const { current: audio } = useRef(new Audio(audios.cryptoHack));
     const [muted, setMuted] = useState(!!host && host.muted);
-    const [instructions, setInstructions] = useState(instructs.concat([t.host && t.host.settings && "Time" === t.host.settings.mode ? `Most Crypto after ${formatNumber(n)} ${"1" === n ? "minute" : "minutes"} wins!` : `First player to have ₿ ${formatNumber(n)} wins!`, "Good Luck"]));
+    const [instructions, setInstructions] = useState(instructs);
     const [text, setText] = useState("");
     const timeout = useRef();
     const typingInterval = useRef();
@@ -61,7 +61,7 @@ export function HackInstruct() {
                     clearInterval(typingInterval.current);
                     timeout.current = setTimeout(function () {
                         ind++;
-                        real(ind);
+                        nextInstruction(ind);
                     }, 3000);
                 }
             }, 40);
@@ -70,13 +70,14 @@ export function HackInstruct() {
     useEffect(() => {
         if (host?.settings) {
             import("./hack.css");
+            setInstructions(i => [...i].concat([host?.settings && "Time" === host.settings.mode ? `Most Crypto after ${formatNumber(host.settings.amount)} ${"1" === host.settings.amount ? "minute" : "minutes"} wins!` : `First player to have ₿ ${formatNumber(host.settings.amount)} wins!`, "Good Luck"]));
             audio.volume = 0.15;
             audio.play();
             audio.addEventListener("ended", function () {
                 audio.currentTime = 0;
                 audio.play();
             }, false);
-            nextInstruction();
+            nextInstruction(0);
         }
         return () => {
             clearTimeout(timeout.current);
@@ -90,9 +91,9 @@ export function HackInstruct() {
         }
     }, []);
     if (!host?.settings) return navigate("/sets");
-    return <div className="body" style={{ backgroundColor: "#000" }}>
+    return <div className="instructBody" style={{ backgroundColor: "#000" }}>
         <TopBar left={host.settings.lateJoin ? `ID: ${liveGameController.liveGameCode}` : ""} center="Instructions" muted={muted} changeMuted={changeMuted} color="#000" />
-        <div className="regularBody body">
+        <div className="regularBody instructInnerBody">
             <div className="noise"></div>
             <div className="overlay"></div>
             <div className="text">{text}</div>
@@ -118,10 +119,10 @@ export default function HackHost() {
     const getClients = useCallback(() => {
         liveGameController.getDatabaseVal("c", snapshot => {
             const val = snapshot || {};
-            if (!val || Object.keys(val).length == 0) return;
+            if (!val || Object.keys(val).length == 0) return setPlayers([]);
             let clients = [];
-            for (const [name, { b: blook, g: gold }] of Object.entries(val)) clients.push({ name, blook, gold: gold || 0 });
-            clients.sort((a, b) => b.gold - a.gold);
+            for (const [name, { b: blook, cr: crypto }] of Object.entries(val)) clients.push({ name, blook, crypto: crypto || 0 });
+            clients.sort((a, b) => b.crypto - a.crypto);
             setPlayers(clients);
         });
     }, []);
@@ -129,13 +130,13 @@ export default function HackHost() {
         let val = players.map((s, i) => ({
             n: s.name,
             b: s.blook,
-            g: s.gold,
+            cr: s.crypto,
             p: i + 1
         }));
         updateStandings(val);
         liveGameController.setVal({
             path: "st", val
-        }, () => liveGameController.setStage({ stage: "fin" }, () => navigate("/host/gold/final")));
+        }, () => liveGameController.setStage({ stage: "fin" }, () => navigate("/host/hack/final")));
     }, [players]);
     const addAlert = useCallback((name, blook, msg, info) => {
         setAlerts(a => a.find(e => e.name + e.msg == name + msg) ? a : [...a, { name, blook, msg, info }])
@@ -198,41 +199,27 @@ export default function HackHost() {
                 const clients = snapshot.val() || {};
                 const changed = diffObjects(lastClients.current, clients) || {};
                 for (const [client, data] of Object.entries(changed)) if (data.tat) {
-                    const [tat, type, amount] = data.tat.split(":");
+                    const [tat, amount] = data.tat.split(":");
                     const r = clients[tat];
-                    if (!r) continue;
-                    if (type == "swap") {
-                        if (!amount || tat == client) continue;
-                        liveGameController.setVal({
-                            path: `c/${tat}`,
-                            val: {
-                                b: r.b,
-                                g: parseInt(amount),
-                                at: `${client}:${clients[client].b}:swap:${amount}`
-                            }
-                        });
-                        clients[tat].g = parseInt(amount);
-                        addAlert(client, clients[client].b, `just swapped ${holidays.halloween ? "candy" : "gold"} with ${tat}`);
-                    } else {
-                        if (!type) continue;
-                        liveGameController.setVal({
-                            path: `c/${tat}`,
-                            val: {
-                                b: r.b,
-                                g: Math.max((r.g || 0) - parseInt(type), 0),
-                                at: `${client}:${clients[client].b}:${type}`
-                            }
-                        });
-                        clients[tat].g = Math.max((r.g || 0) - parseInt(type), 0);
-                        addAlert(client, clients[client].b, `just took ${formatNumber(parseInt(type))} ${holidays.halloween ? "candy" : "gold"} from ${tat}`);
-                    }
+                    if (!r || !type) continue;
+                    liveGameController.setVal({
+                        path: `c/${tat}`,
+                        val: {
+                            b: r.b,
+                            p: r.p,
+                            cr: Math.max((r.cr || 0) - parseInt(amount), 0),
+                            at: `${client}:${clients[client].b}:${amount}`
+                        }
+                    });
+                    clients[tat].cr = Math.max((r.cr || 0) - parseInt(amount), 0);
+                    addAlert(client, clients[client].b, `just took ${formatNumber(parseInt(amount))} crypto from ${tat}`);
                     liveGameController.removeVal(`c/${client}/tat`);
                 }
                 lastClients.current = clients;
                 let total = 0;
                 for (const client in clients) {
-                    total += parseInt("0" + clients[client].g);
-                    if (host.settings.mode == "Amount" && clients[client].g >= host.settings.amount) endGame.current = true;
+                    total += parseInt("0" + clients[client].cr);
+                    if (host.settings.mode == "Amount" && clients[client].cr >= host.settings.amount) endGame.current = true;
                 }
                 setTotalCrypto(total);
             });
@@ -253,126 +240,50 @@ export default function HackHost() {
     }, [players])
     if (!host?.settings) return navigate("/sets");
     return <>
-        {holidays.halloween ? <div className="body" style={{ overflow: "hidden", backgroundColor: "#292929" }}>
-            <TopBar left="Blooket" center={host.settings.mode == "Time" ? timer : `Goal: ${formatNumber(host.settings.amount)}`} right={host.settings.lateJoin ? `ID: ${liveGameController.liveGameCode}` : ""} muted={muted} changeMuted={() => setMuted(m => !m)} onRightClick={() => (endGame.current = true, getClients())} />
-            <div className="hostRegularBody">
-                <NodeGroup data={players} keyAccessor={({ name }) => name}
-                    start={(_, place) => ({ x: -60, y: 12.5 * place })}
-                    enter={(_, place) => ({ x: [0], y: [12.5 * place], timing: { duration: 1000, ease: e => +e } })}
-                    update={(_, place) => ({ x: [0], y: [12.5 * place], timing: { duration: 500, ease: e => +e } })}
-                    leave={() => ({ x: [-60], timing: 1000 })}>
-                    {(standings) => <div id="spookyLeftWrapper">
-                        <div className="spookyCorner1"></div>
-                        <div className="spookyCorner2"></div>
-                        <div className="spookyCorner3"></div>
-                        <div className="spookyCorner4"></div>
-                        <div id="spookyLeftBg"></div>
-                        <div className="spookySpots"></div>
-                        <img src={images.cracksTop2} alt="Crack" id="spookyLeftCrackTop" />
-                        <img src={images.cracksLeft2} alt="Crack" id="spookyLeftCrackLeft" />
-                        <div className="spookyLeft invisibleScrollbar">
-                            {standings.map(({ key, data, state: { x, y } }, i) => {
-                                return <div key={key} style={{
-                                    opacity: userToBlock == data.name ? 0.4 : null,
-                                    transform: `translate(${x}vw, ${y}vh)`
-                                }} onClick={() => setUserToBlock(data.name)} className="spookyStandingContainer">
-                                    <div className="spookyStandingInside">
-                                        <Textfit className="placeText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5vw")}>{i + 1}</Textfit>
-                                        <div className="superPlaceText">{getOrdinal(i + 1)}</div>
-                                        <Blook name={data.blook} className="blookBox"></Blook>
-                                        <Textfit className="nameText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("4vw")}>{data.name}</Textfit>
-                                        <div className="goldContainer">
-                                            <Textfit className="goldText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5vw")}>{data.gold < 1000 ? formatNumber(data.gold) : formatBigNumber(data.gold)}</Textfit>
-                                            <img src={images.candy} alt="Candy" className="candyIcon" />
-                                        </div>
-                                    </div>
-                                </div>
-                            })}
-                        </div>
-                    </div>}
-                </NodeGroup>
-                <div id="spookyRight">
-                    <div className="spookyCorner1"></div>
-                    <div className="spookyCorner2"></div>
-                    <div className="spookyCorner3"></div>
-                    <div className="spookyCorner4"></div>
-                    <div id="spookyChatroom">
-                        <img id="spookyArch" src={images.arch} alt="arch" />
-                    </div>
-                    <div id="totalCandyContainerBg"></div>
-                    <div className="spookySpots"></div>
-                    <img src={images.cracksTop} alt="Crack" id="spookyRightCrackTop" />
-                    <img src={images.cracksRight} alt="Crack" id="spookyRightCrackRight" />
-                    <img src={images.cracksBottom} alt="Crack" id="spookyRightCrackBottom" />
-                    <img src={images.cracksLeft} alt="Crack" id="spookyRightCrackLeft" />
-                    <div className="spookyChatroomInside invisibleScrollbar">
-                        {alerts.length
-                            ? alerts.map((alert, i) => <Alert key={`alert${i}`} name={alert.name} blook={alert.blook} message={alert.msg} glitchInfo={alert.info} night={true} />)
-                            : <div id="noAlerts">
-                                <i className="noAlertsIcon fas fa-hourglass-start" />
-                                <div id="noAlertsText">Waiting To Party...</div>
-                            </div>}
-                    </div>
-                    <div id="totalCandyContainer">
-                        <div className="totalGoldText">{formatNumber(totalCrypto)}</div>
-                        <img src={images.candy} alt="Candy" id="totalCandyIcon" />
-                    </div>
-                    <img src={images.candle1} alt="Candle" id="spookyCandle1" />
-                    <img src={images.candle2} alt="Candle" id="spookyCandle2" />
-                    <img src={images.candle3} alt="Candle" id="spookyCandle3" />
-                </div>
-            </div>
-            <Fog />
-        </div> : <div className="body" style={{
+        <div className="body" style={{
             overflow: "hidden",
-            backgroundImage: `url(${images.castleTile})`,
-            backgroundSize: "74.5px"
+            backgroundColor: `#000`
         }}>
-            <TopBar left="Blooket" center={host.settings.mode == "Time" ? timer : `Goal: ${formatNumber(host.settings.amount)}`} right={host.settings.lateJoin ? `ID: ${liveGameController.liveGameCode}` : ""} muted={muted} changeMuted={changeMuted} onRightClick={() => (endGame.current = true, getClients())} />
-            <div className="hostRegularBody">
+            <TopBar left="Blooket" center={host.settings.mode == "Time" ? timer : `Goal: ${formatNumber(host.settings.amount)}`} right={host.settings.lateJoin ? `ID: ${liveGameController.liveGameCode}` : ""} muted={muted} changeMuted={changeMuted} onRightClick={() => (endGame.current = true, getClients())} color="#000" />
+            <div className="hostRegularBody hackBody">
                 <NodeGroup data={players} keyAccessor={({ name }) => name}
-                    start={(_, place) => ({ x: -60, y: 12.5 * place })}
-                    enter={(_, place) => ({ x: [0], y: [12.5 * place], timing: { duration: 1000, ease: e => +e } })}
-                    update={(_, place) => ({ x: [0], y: [12.5 * place], timing: { duration: 500, ease: e => +e } })}
+                    start={(_, place) => ({ x: -60, y: 11 * place })}
+                    enter={(_, place) => ({ x: [0], y: [11 * place], timing: { duration: 1000, ease: e => +e } })}
+                    update={(_, place) => ({ x: [0], y: [11 * place], timing: { duration: 500, ease: e => +e } })}
                     leave={() => ({ x: [-60], timing: 1000 })}>
-                    {(standings) => <div className="goldLeft invisibleScrollbar">
+                    {(standings) => <div className="hackLeft invisibleScrollbar">
                         {standings.map(({ key, data, state: { x, y } }, i) => {
                             return <div key={key} style={{
                                 opacity: userToBlock == data.name ? 0.4 : null,
                                 transform: `translate(${x}vw, ${y}vh)`
-                            }} onClick={() => setUserToBlock(data.name)} className={`goldStandingContainer${holidays.lucky ? " green" : ""}`}>
-                                <div className={`goldStandingInside${holidays.lucky ? " green" : ""}`}>
-                                    <Textfit className="placeText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5vw")}>{i + 1}</Textfit>
-                                    <div className="superPlaceText">{getOrdinal(i + 1)}</div>
-                                    <Blook name={data.blook} className="blookBox"></Blook>
-                                    <Textfit className="nameText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("4vw")}>{data.name}</Textfit>
-                                    <div className="goldContainer">
-                                        <Textfit className="goldText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5vw")}>{data.gold < 1000 ? formatNumber(data.gold) : formatBigNumber(data.gold)}</Textfit>
-                                        <img src={images.gold} alt="Gold" className="goldIcon" />
-                                    </div>
+                            }} onClick={() => setUserToBlock(data.name)} className={`hackStandingContainer`}>
+                                <Textfit className="placeText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5vw")}>{i + 1}</Textfit>
+                                <div className="superPlaceText">{getOrdinal(i + 1)}</div>
+                                <Blook name={data.blook} className="blookBox"></Blook>
+                                <Textfit className="nameText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("4vw")}>{data.name}</Textfit>
+                                <div className="cryptoContainer">
+                                    <Textfit className="cryptoText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5vw")}>{data.crypto < 1000 ? formatNumber(data.crypto) : formatBigNumber(data.crypto)}</Textfit>
                                 </div>
                             </div>
                         })}
                     </div>}
                 </NodeGroup>
-                <div className={`goldChatRoom${holidays.lucky ? " green" : ""}`}>
-                    <div className={`goldChatRoomInside invisibleScrollbar${holidays.lucky ? " green" : ""}`}>
-                        {alerts.length
-                            ? alerts.map((alert, i) => <Alert key={`alert${i}`} name={alert.name} blook={alert.blook} message={alert.msg} glitchInfo={alert.info} night={true} />)
-                            : <div id="noAlerts">
-                                <i className="noAlertsIcon fas fa-hourglass-start" />
-                                <div id="noAlertsText">Waiting To Party...</div>
-                            </div>}
-                    </div>
+                <div className={`hackChatroom invisibleScrollbar`}>
+                    {alerts.length
+                        ? alerts.map((alert, i) => <Alert key={`alert${i}`} name={alert.name} blook={alert.blook} message={alert.msg} glitchInfo={alert.info} night={true} />)
+                        : <div id="noAlerts">
+                            <i className="noAlertsIcon fas fa-satellite-dish" />
+                            <div id="noAlertsText">Waiting For Hacks...</div>
+                        </div>}
                 </div>
-                <div className={`totalGoldContainer${holidays.lucky ? " green" : ""}`}>
-                    <div className={`totalGoldInside${holidays.lucky ? " green" : ""}`}>
-                        <div className="totalGoldText">{formatNumber(totalCrypto)}</div>
-                        <img src={images.gold} alt="Gold" id="totalGoldIcon" />
-                    </div>
+                <div className="totalCryptoContainer">
+                    <div className="totalCryptoText">{"₿ " + formatNumber(totalCrypto)}</div>
                 </div>
+                <div className="noise"></div>
+                <div className="overlay"></div>
             </div>
-        </div>}
+            {isIntro && <div className="loadingText">{loadingText}<br />Loading</div>}
+        </div>
         {userToBlock && <div className="blockModal">
             <div className="blockContainer">
                 <div className="blockHeader">Remove {userToBlock} from the game?</div>
@@ -424,9 +335,9 @@ export function HackFinal() {
                 if (!standings.length) return;
                 post("https://play.blooket.com/api/history", {
                     t: hostId.current,
-                    standings: standings.map(({ blook, name, place, gold }) => ({
+                    standings: standings.map(({ blook, name, place, crypto }) => ({
                         blook, name, place,
-                        gold: isNaN(gold) ? 0 : Math.min(Math.round(Number(gold)), 9223372036854775000),
+                        crypto: isNaN(crypto) ? 0 : Math.min(Math.round(Number(crypto)), 9223372036854775000),
                         corrects: results[name]?.corrects || {},
                         incorrects: results[name]?.incorrects || {}
                     })),
@@ -446,19 +357,16 @@ export function HackFinal() {
     }, []);
     if (host?.standings?.[0] || state.standings?.[0]) return <div className="body" style={{
         overflowY: state.ready ? "auto" : "hidden",
-        backgroundImage: holidays.halloween ? null : `url(${images.castleTile})`,
-        backgroundColor: holidays.halloween ? "#292929" : null,
-        backgroundSize: 74.5
+        backgroundColor: "#000"
     }}>
         {state.standings.length > 0 && <Standings
             standings={state.standings}
-            stats={state.standings.map(e => formatNumber(e.g) + (holidays.halloween ? " Candy" : " Gold"))}
+            stats={state.standings.map(e => "₿ " + formatNumber(e.cr))}
             gameId={hostCopy.setId}
             historyId={state.historyId}
             muted={state.muted}
-            theme={holidays.halloween ? "spooky" : holidays.lucky ? "shamrock" : "royal"}
+            theme="hack"
             ready={state.ready}
         />}
-        {holidays.halloween && <Fog />}
     </div>;
 }

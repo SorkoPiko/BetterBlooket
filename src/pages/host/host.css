@@ -67,7 +67,8 @@
     scale: 0.95
 }
 
-#gameModeImage, #gameModeImage img {
+#gameModeImage,
+#gameModeImage img {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     /* overflow: hidden;
@@ -104,7 +105,7 @@
     position: absolute;
     left: 50%;
     top: 0;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     width: 80%;
 }
 
@@ -117,8 +118,8 @@
     padding: 8px 10px;
     background-color: var(--accent5);
     border-radius: 7px;
-    text-shadow: 2px 2px rgba(0,0,0,.2);
-    box-shadow: 0 4px rgba(0,0,0,.2);
+    text-shadow: 2px 2px rgba(0, 0, 0, .2);
+    box-shadow: 0 4px rgba(0, 0, 0, .2);
 }
 
 #gameModeDetail {
@@ -168,7 +169,7 @@
     background-color: #fff;
     border-radius: 10px;
     padding-bottom: 12px;
-    box-shadow: inset 0 -7px rgba(0,0,0,.2), 0 0 4px rgba(0,0,0,.15);
+    box-shadow: inset 0 -7px rgba(0, 0, 0, .2), 0 0 4px rgba(0, 0, 0, .15);
     box-sizing: border-box;
 }
 
@@ -185,7 +186,7 @@
     box-sizing: border-box;
     font-family: Adventure;
     font-size: 1.5vw;
-    text-shadow: 2px 2px rgba(0,0,0,.2);
+    text-shadow: 2px 2px rgba(0, 0, 0, .2);
     background-color: var(--accent5);
     color: #fff;
     border-radius: 7px;
@@ -193,7 +194,7 @@
     justify-content: center;
     align-items: center;
     padding-bottom: 7px;
-    box-shadow: inset 0 -7px rgba(0,0,0,.2), 0 0 4px rgba(0,0,0,.15);
+    box-shadow: inset 0 -7px rgba(0, 0, 0, .2), 0 0 4px rgba(0, 0, 0, .15);
     outline: none;
     cursor: pointer;
     margin-inline: 10px;
@@ -216,4 +217,97 @@
     min-height: 100vh;
     overflow-x: hidden;
     background-color: #f7f7f7;
+}
+
+.hostRegularBody {
+    width: 100%;
+    height: calc(100% - 65px);
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 65px;
+    left: 0;
+    z-index: -1;
+}
+
+.blockModal {
+    display: block;
+    position: fixed;
+    z-index: 15;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, .6);
+}
+
+.blockContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    background-color: var(--main1);
+    box-shadow: 0 0 8px 3px rgba(0, 0, 0, .2);
+    border-radius: 7px;
+    text-align: center;
+}
+
+.blockHeader {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 35px;
+}
+
+.blockButtonContainer {
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.blockYesButton {
+    border-color: white;
+    border-style: solid;
+    border-radius: 6px;
+    width: 125px;
+    height: 45px;
+    margin: auto;
+    font-size: 23px;
+    text-align: center;
+    line-height: 45px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.blockYesButton:hover {
+    border-color: #ce1313;
+    color: #ce1313;
+    font-weight: 700;
+}
+
+.blockNoButton {
+    border-color: white;
+    border-style: solid;
+    border-radius: 6px;
+    width: 125px;
+    height: 45px;
+    margin: auto;
+    font-size: 23px;
+    text-align: center;
+    line-height: 45px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.blockNoButton:hover {
+    border-color: var(--accent1);
+    color: var(--accent1);
+    font-weight: 700;
 }
