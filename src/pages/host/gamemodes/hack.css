@@ -1,0 +1,87 @@
+.body {
+    background-color: #000;
+    background-image: radial-gradient(#11581e, #041607), url(https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif);
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: Inconsolata, Helvetica, monospace, sans-serif;
+    color: rgba(128, 255, 128, .8);
+    text-shadow: 0 0 1px #3f3, 0 0 2px hsla(0, 0%, 100%, .8);
+    transform: scaleY(0);
+    animation: turnOn .5s ease-in .25s forwards
+}
+
+@keyframes turnOn {
+    0% {
+        transform: scaleY(0)
+    }
+
+    to {
+        transform: scaleY(1)
+    }
+}
+
+.noise {
+    background-image: url(https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif);
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -1;
+    opacity: .02
+}
+
+.noise,
+.overlay {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%
+}
+
+.overlay {
+    background: repeating-linear-gradient(180deg, transparent, rgba(0, 0, 0, .3) 50%, transparent);
+    background-size: auto 4px;
+    z-index: 1
+}
+
+.overlay:before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(0deg, transparent, rgba(32, 128, 32, .2) 2%, rgba(32, 128, 32, .8) 3%, rgba(32, 128, 32, .2) 0, transparent);
+    background-repeat: no-repeat;
+    background-position: 0 -100vh;
+    animation: scan 7.5s linear 12.5s infinite
+}
+
+@keyframes scan {
+    0% {
+        background-position: 0 -100vh
+    }
+
+    35%,
+    to {
+        background-position: 0 100vh
+    }
+}
+
+.text {
+    width: 80%;
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+    text-align: center;
+    font-weight: 700;
+    font-family: Inconsolata, Helvetica, monospace, sans-serif;
+    color: rgba(128, 255, 128, .8);
+    text-shadow: 0 0 1px #3f3, 0 0 2px hsla(0, 0%, 100%, .8);
+    font-size: 6vw
+}

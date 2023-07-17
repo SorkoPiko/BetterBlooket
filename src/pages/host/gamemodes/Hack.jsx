@@ -32,31 +32,55 @@ const images = {
     castleTile: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iCiAgIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiCiAgIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyIKICAgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiCiAgIHhtbG5zOmlua3NjYXBlPSJodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy9uYW1lc3BhY2VzL2lua3NjYXBlIgogICB3aWR0aD0iNzQuNSIKICAgaGVpZ2h0PSI3NC41IgogICB2aWV3Qm94PSIwIDAgMTkuNzExNDU5IDE5LjcxMTQ1OSIKICAgdmVyc2lvbj0iMS4xIgogICBpZD0ic3ZnOCIKICAgaW5rc2NhcGU6dmVyc2lvbj0iMC45Mi40ICg1ZGE2ODljMzEzLCAyMDE5LTAxLTE0KSIKICAgc29kaXBvZGk6ZG9jbmFtZT0iY2FzdGxlVGlsZS5zdmciPgogIDxkZWZzCiAgICAgaWQ9ImRlZnMyIiAvPgogIDxzb2RpcG9kaTpuYW1lZHZpZXcKICAgICBpZD0iYmFzZSIKICAgICBwYWdlY29sb3I9IiNmZmZmZmYiCiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiCiAgICAgYm9yZGVyb3BhY2l0eT0iMS4wIgogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwLjAiCiAgICAgaW5rc2NhcGU6cGFnZXNoYWRvdz0iMiIKICAgICBpbmtzY2FwZTp6b29tPSI1LjYiCiAgICAgaW5rc2NhcGU6Y3g9IjY2LjM5MzA5MiIKICAgICBpbmtzY2FwZTpjeT0iNDAuMzYwNzE1IgogICAgIGlua3NjYXBlOmRvY3VtZW50LXVuaXRzPSJweCIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJsYXllcjEiCiAgICAgc2hvd2dyaWQ9ImZhbHNlIgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTkyMCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxMDAxIgogICAgIGlua3NjYXBlOndpbmRvdy14PSItOSIKICAgICBpbmtzY2FwZTp3aW5kb3cteT0iLTkiCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMSIKICAgICBmaXQtbWFyZ2luLXRvcD0iMCIKICAgICBmaXQtbWFyZ2luLWxlZnQ9IjAiCiAgICAgZml0LW1hcmdpbi1yaWdodD0iMCIKICAgICBmaXQtbWFyZ2luLWJvdHRvbT0iMCIKICAgICB1bml0cz0icHgiIC8+CiAgPG1ldGFkYXRhCiAgICAgaWQ9Im1ldGFkYXRhNSI+CiAgICA8cmRmOlJERj4KICAgICAgPGNjOldvcmsKICAgICAgICAgcmRmOmFib3V0PSIiPgogICAgICAgIDxkYzpmb3JtYXQ+aW1hZ2Uvc3ZnK3htbDwvZGM6Zm9ybWF0PgogICAgICAgIDxkYzp0eXBlCiAgICAgICAgICAgcmRmOnJlc291cmNlPSJodHRwOi8vcHVybC5vcmcvZGMvZGNtaXR5cGUvU3RpbGxJbWFnZSIgLz4KICAgICAgICA8ZGM6dGl0bGU+PC9kYzp0aXRsZT4KICAgICAgPC9jYzpXb3JrPgogICAgPC9yZGY6UkRGPgogIDwvbWV0YWRhdGE+CiAgPGcKICAgICBpbmtzY2FwZTpsYWJlbD0iTGF5ZXIgMSIKICAgICBpbmtzY2FwZTpncm91cG1vZGU9ImxheWVyIgogICAgIGlkPSJsYXllcjEiCiAgICAgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTY0LjgyOTYxNSwtMTc2LjE3MzIzKSI+CiAgICA8ZwogICAgICAgaWQ9Imc5MjkzIgogICAgICAgdHJhbnNmb3JtPSJtYXRyaXgoMS4wNzE0Mjg2LDAsMCwxLjA3MTQyODYsLTIxNS44ODM4NiwyMy4wMjY3MjUpIj4KICAgICAgPGcKICAgICAgICAgdHJhbnNmb3JtPSJzY2FsZSgwLjI2NDU4MzMzKSIKICAgICAgICAgaWQ9InVzZTkyOTEiPgogICAgICAgIDxwYXRoCiAgICAgICAgICAgc3R5bGU9ImZpbGw6I2EyYjViNjtzdHJva2U6bm9uZSIKICAgICAgICAgICBpbmtzY2FwZTpjb25uZWN0b3ItY3VydmF0dXJlPSIwIgogICAgICAgICAgIGlkPSJwYXRoODI3IgogICAgICAgICAgIGQ9Im0gMTAxNiw2MDggcSAwLC0xLjk1IC0yLC0xLjk1IGggLTQuMDUgcSAtMS45NSwwIC0xLjk1LDEuOTUgdiAyIGggOCB2IC0yIG0gMCwtNjUuOTUgViA1NDAgaCAtOCB2IDIuMDUgcSAwLDIgMS45NSwyIGggNC4wNSBxIDIsMCAyLC0yIG0gMjIsNTAuOTUgaCAtMi45NSBxIC0yLjA1LDAgLTIuMDUsMi4wNSB2IDIuOSBxIDAsMi4wNSAyLjA1LDIuMDUgaCAyLjk1IHEgMiwwIDIsLTIuMDUgdiAtMi45IHEgMCwtMi4wNSAtMiwtMi4wNSBtIDEwLjA1LC00MSBoIDIuOTUgcSAyLDAgMiwtMi4wNSB2IC0yLjkgcSAwLC0yLjA1IC0yLC0yLjA1IGggLTIuOTUgcSAtMi4wNSwwIC0yLjA1LDIuMDUgdiAyLjkgcSAwLDIuMDUgMi4wNSwyLjA1IE0gMTAwNCw1ODMgcSAwLDIgMiwyIGggOCBxIDIsMCAyLC0yIHYgLTggcSAwLC0yIC0yLC0yIGggLTggcSAtMiwwIC0yLDIgeiIgLz4KICAgICAgICA8cGF0aAogICAgICAgICAgIHN0eWxlPSJmaWxsOiNiN2NjY2Q7c3Ryb2tlOm5vbmUiCiAgICAgICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIKICAgICAgICAgICBpZD0icGF0aDgyOSIKICAgICAgICAgICBkPSJtIDEwNjAsNTkyLjA1IHYgLTEyIGggLTMgcSAtMiwwIC0yLDIgdiA4IHEgMCwyIDIsMiBoIDMgbSAtNzAsLTEyIHYgMTIgaCA1IHEgMiwwIDIsLTIgdiAtOCBxIDAsLTIgLTIsLTIgaCAtNSBtIDMwLDEuOSBWIDU4NiBxIDAsMiAxLjk1LDIgaCA0LjA1IHEgMiwwIDIsLTIgdiAtNC4wNSBxIDAsLTEuOTUgLTIsLTEuOTUgaCAtNC4wNSBxIC0xLjk1LDAgLTEuOTUsMS45NSBNIDEwMzkuMDUsNTY1IGggMi45NSBxIDIsMCAyLC0yLjA1IHYgLTIuOSBxIDAsLTIuMDUgLTIsLTIuMDUgaCAtMi45NSBxIC0yLjA1LDAgLTIuMDUsMi4wNSB2IDIuOSBxIDAsMi4wNSAyLjA1LDIuMDUgeiIgLz4KICAgICAgICA8cGF0aAogICAgICAgICAgIHN0eWxlPSJmaWxsOiNhY2MwYzE7c3Ryb2tlOm5vbmUiCiAgICAgICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIKICAgICAgICAgICBpZD0icGF0aDgzMSIKICAgICAgICAgICBkPSJtIDEwMTYsNTQwIHYgMi4wNSBxIDAsMiAtMiwyIGggLTQuMDUgcSAtMS45NSwwIC0xLjk1LC0yIFYgNTQwIGggLTE4IHYgNDAuMDUgaCA1IHEgMiwwIDIsMiB2IDggcSAwLDIgLTIsMiBoIC01IFYgNjEwIGggMTggdiAtMiBxIDAsLTEuOTUgMS45NSwtMS45NSBoIDQuMDUgcSAyLDAgMiwxLjk1IHYgMiBoIDQ0IHYgLTE3Ljk1IGggLTMgcSAtMiwwIC0yLC0yIHYgLTggcSAwLC0yIDIsLTIgaCAzIFYgNTQwIGggLTQ0IG0gLTEwLDQ1IHEgLTIsMCAtMiwtMiB2IC04IHEgMCwtMiAyLC0yIGggOCBxIDIsMCAyLDIgdiA4IHEgMCwyIC0yLDIgaCAtOCBtIDQ1LC0zMyBoIC0yLjk1IHEgLTIuMDUsMCAtMi4wNSwtMi4wNSB2IC0yLjkgcSAwLC0yLjA1IDIuMDUsLTIuMDUgaCAyLjk1IHEgMiwwIDIsMi4wNSB2IDIuOSBxIDAsMi4wNSAtMiwyLjA1IG0gLTksMTMgaCAtMi45NSBxIC0yLjA1LDAgLTIuMDUsLTIuMDUgdiAtMi45IHEgMCwtMi4wNSAyLjA1LC0yLjA1IGggMi45NSBxIDIsMCAyLDIuMDUgdiAyLjkgcSAwLDIuMDUgLTIsMi4wNSBtIC0yMiwyMSB2IC00LjA1IHEgMCwtMS45NSAxLjk1LC0xLjk1IGggNC4wNSBxIDIsMCAyLDEuOTUgViA1ODYgcSAwLDIgLTIsMiBoIC00LjA1IHEgLTEuOTUsMCAtMS45NSwtMiBtIDE1LjA1LDcgaCAyLjk1IHEgMiwwIDIsMi4wNSB2IDIuOSBxIDAsMi4wNSAtMiwyLjA1IGggLTIuOTUgcSAtMi4wNSwwIC0yLjA1LC0yLjA1IHYgLTIuOSBxIDAsLTIuMDUgMi4wNSwtMi4wNSB6IiAvPgogICAgICA8L2c+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K"
 }
 
-export function GoldInstruct() {
+const instructs = ["Choose a Password", "Answer Questions", "Mine Crypto", "Hack Other Players By Guessing Their Passwords"];
+
+export function HackInstruct() {
     const { host: { current: host }, updateHost, liveGameController } = useGame();
-    const { current: audio } = useRef(new Audio(holidays.halloween ? audios.candyQuest : audios.goldQuest));
+    const { current: audio } = useRef(new Audio(audios.cryptoHack));
     const [muted, setMuted] = useState(!!host && host.muted);
+    const [instructions, setInstructions] = useState(instructs.concat([t.host && t.host.settings && "Time" === t.host.settings.mode ? `Most Crypto after ${formatNumber(n)} ${"1" === n ? "minute" : "minutes"} wins!` : `First player to have ₿ ${formatNumber(n)} wins!`, "Good Luck"]));
+    const [text, setText] = useState("");
     const timeout = useRef();
+    const typingInterval = useRef();
     const navigate = useNavigate();
-    const skip = useCallback(() => navigate("/host/gold"), []);
+    const skip = useCallback(() => navigate("/host/hack"), []);
     const changeMuted = useCallback(() => {
         setMuted(!muted);
         audio.muted = !muted;
         updateHost({ muted: !muted });
-    }, [muted])
+    }, [muted]);
+    const nextInstruction = useCallback((ind) => {
+        setText("");
+        if (ind >= instructions.length) skip();
+        else timeout.current = setTimeout(function () {
+            let char = 0;
+            typingInterval.current = setInterval(function () {
+                char++;
+                setText(instructions[ind].slice(0, char));
+                if (char >= instructions[ind].length) {
+                    clearInterval(typingInterval.current);
+                    timeout.current = setTimeout(function () {
+                        ind++;
+                        real(ind);
+                    }, 3000);
+                }
+            }, 40);
+        }, 1000);
+    }, []);
     useEffect(() => {
         if (host?.settings) {
-            import("./gold.css");
-            audio.volume = 0.45;
+            import("./hack.css");
+            audio.volume = 0.15;
             audio.play();
             audio.addEventListener("ended", function () {
                 audio.currentTime = 0;
                 audio.play();
             }, false);
-            timeout.current = setTimeout(skip, 14500);
+            nextInstruction();
         }
         return () => {
             clearTimeout(timeout.current);
+            clearTimeout(typingInterval.current);
             audio.currentTime = 0;
             audio.pause();
             audio.removeEventListener("ended", function () {
@@ -66,37 +90,26 @@ export function GoldInstruct() {
         }
     }, []);
     if (!host?.settings) return navigate("/sets");
-    return <div className="body">
-        <TopBar left={host.settings.lateJoin ? `ID: ${liveGameController.liveGameCode}` : ""} center="Instructions" muted={muted} changeMuted={changeMuted} />
-        <div className="regularBody">
-            <div className="container" style={{
-                backgroundImage: holidays.halloween ? null : `url(${images.castleTile})`,
-                backgroundColor: holidays.halloween ? "#292929" : null,
-                backgroundSize: 74.5
-            }}>
-                <div className="text n1">Answer Questions</div>
-                <div className="text n2">Select Chests</div>
-                <div className="text n3">Collect {holidays.halloween ? "Candy" : "Gold"}</div>
-                <div className="text n4">Take {holidays.halloween ? "Candy" : "Gold"} From Others</div>
-                <div className="text n5">
-                    {host.settings.mode == "Time"
-                        ? `Most ${holidays.halloween ? "candy" : "gold"} after ${formatNumber(host.settings.amount)} minute${host.settings.amount == 1 ? "s" : ""} wins!`
-                        : `First player to have ${formatNumber(host.settings.amount)} ${holidays.halloween ? "Candy" : "Gold"} wins!`}
-                </div>
-                <div className="text n6">Good Luck!</div>
-            </div>
+    return <div className="body" style={{ backgroundColor: "#000" }}>
+        <TopBar left={host.settings.lateJoin ? `ID: ${liveGameController.liveGameCode}` : ""} center="Instructions" muted={muted} changeMuted={changeMuted} color="#000" />
+        <div className="regularBody body">
+            <div className="noise"></div>
+            <div className="overlay"></div>
+            <div className="text">{text}</div>
         </div>
         <div id="skipButton" onClick={skip}>Skip</div>
     </div>
 }
 
-export default function GoldHost() {
+export default function HackHost() {
     const { host: { current: host }, liveGameController, updateHost, updateStandings } = useGame();
     const [timer, setTimer] = useState("00:00");
     const [players, setPlayers] = useState([]);
     const [alerts, setAlerts] = useState([]);
-    const [totalGold, setTotalGold] = useState(0);
-    const [muted, setMuted] = useState(!!host?.muted);
+    const [totalCrypto, setTotalCrypto] = useState(0);
+    const [muted, setMuted] = useState(!!host && host.muted);
+    const [loadingText, setLoadingText] = useState("[----------]")
+    const [isIntro, setIsIntro] = useState(true);
     const [userToBlock, setUserToBlock] = useState("");
     const dbRef = useRef();
     const lastClients = useRef({});
@@ -139,22 +152,23 @@ export default function GoldHost() {
         setPlayers(players.filter(({ name }) => name != userToBlock));
         setUserToBlock("");
     }, [userToBlock, players]);
-    const { current: audio } = useRef(new Audio(holidays.halloween ? audios.candyQuest : audios.goldQuest));
+    const { current: audio } = useRef(new Audio(audios.cryptoHack));
     const timerInterval = useRef();
+    const loadingTimeout = useRef();
     const clientsInterval = useRef();
     useEffect(() => {
-        import("./gold.css");
+        import("./hack.css");
         if (!host?.settings) return navigate("/sets");
         window.liveGameController = liveGameController;
         (async () => {
             audio.muted = muted;
-            audio.volume = 0.4;
+            audio.volume = 0.15;
             audio.play();
             audio.addEventListener("ended", () => {
                 audio.currentTime = 0;
                 audio.play();
             }, false);
-            liveGameController.setStage({ stage: "gold" });
+            liveGameController.setStage({ stage: "hack" });
             getClients();
             if (host.settings.mode == "Time") {
                 let seconds = 60 * host.settings.amount;
@@ -169,6 +183,16 @@ export default function GoldHost() {
                     }
                 }, 1000);
             } else timerInterval.current = setInterval(getClients, 1000);
+            let progress = 0;
+            loadingTimeout.current = setTimeout(function load() {
+                loadingTimeout.current = progress >= 10
+                    ? setTimeout(() => setIsIntro(false), 3000)
+                    : setTimeout(() => {
+                        progress++;
+                        setLoadingText(`[${"#".repeat(progress)}${"-".repeat(10 - progress)}]`);
+                        load();
+                    }, 500);
+            }, 1500);
             dbRef.current = await liveGameController.getDatabaseRef("c");
             dbRef.current.on("value", function (snapshot) {
                 const clients = snapshot.val() || {};
@@ -210,7 +234,7 @@ export default function GoldHost() {
                     total += parseInt("0" + clients[client].g);
                     if (host.settings.mode == "Amount" && clients[client].g >= host.settings.amount) endGame.current = true;
                 }
-                setTotalGold(total);
+                setTotalCrypto(total);
             });
         })();
         return () => {
@@ -290,7 +314,7 @@ export default function GoldHost() {
                             </div>}
                     </div>
                     <div id="totalCandyContainer">
-                        <div className="totalGoldText">{formatNumber(totalGold)}</div>
+                        <div className="totalGoldText">{formatNumber(totalCrypto)}</div>
                         <img src={images.candy} alt="Candy" id="totalCandyIcon" />
                     </div>
                     <img src={images.candle1} alt="Candle" id="spookyCandle1" />
@@ -343,7 +367,7 @@ export default function GoldHost() {
                 </div>
                 <div className={`totalGoldContainer${holidays.lucky ? " green" : ""}`}>
                     <div className={`totalGoldInside${holidays.lucky ? " green" : ""}`}>
-                        <div className="totalGoldText">{formatNumber(totalGold)}</div>
+                        <div className="totalGoldText">{formatNumber(totalCrypto)}</div>
                         <img src={images.gold} alt="Gold" id="totalGoldIcon" />
                     </div>
                 </div>
@@ -361,7 +385,7 @@ export default function GoldHost() {
     </>
 }
 
-export function GoldFinal() {
+export function HackFinal() {
     const { standings: { current: standings }, liveGameController, deleteHost, host: { current: host }, hostId } = useGame();
     const { http: { post } } = useAuth();
     const [state, setState] = useState({
