@@ -7,8 +7,8 @@
 }
 
 :root {
-    --main1: #1c1e22;
-    --main2: #0b0c0d;
+    --main1: hsl(220, 10%, 12%);
+    --main2: hsl(210, 8%, 5%);
     --accent1: hsl(290, 40%, 48%);
     --highlight1: hsl(290, 100%, 50%);
     --accent2: hsl(184, 90%, 43%);
@@ -26,11 +26,12 @@
 
 body {
     font-family: Rubik;
+    color: white;
 }
 
 * {
     font-family: inherit;
-    color: white;
+    color: inherit;
 }
 
 body {

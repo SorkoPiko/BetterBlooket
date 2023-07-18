@@ -282,7 +282,7 @@
     outline: none;
 }
 
-.hostLobbyClientBox:hover {
+.hostLobbyClientBox:hover .hostLobbyClientNameText {
     text-decoration: line-through;
 }
 
