@@ -28,15 +28,16 @@ export function HackInstruct() {
         audio.muted = !muted;
         updateHost({ muted: !muted });
     }, [muted]);
+    const instructionsRef = useRef(instructions);
     const nextInstruction = useCallback((ind) => {
         setText("");
-        if (ind >= instructions.length) skip();
+        if (ind >= instructionsRef.current.length) skip();
         else timeout.current = setTimeout(function () {
             let char = 0;
             typingInterval.current = setInterval(function () {
                 char++;
-                setText(instructions[ind].slice(0, char));
-                if (char >= instructions[ind].length) {
+                setText(instructionsRef.current[ind].slice(0, char));
+                if (char >= instructionsRef.current[ind].length) {
                     clearInterval(typingInterval.current);
                     timeout.current = setTimeout(function () {
                         ind++;
@@ -46,6 +47,7 @@ export function HackInstruct() {
             }, 40);
         }, 1000);
     }, []);
+    useEffect(() => { instructionsRef.current = instructions }, [instructions])
     useEffect(() => {
         if (host?.settings) {
             import("./hack.css");
