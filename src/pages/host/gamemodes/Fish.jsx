@@ -15,14 +15,14 @@ const instructs = ["Choose a Password", "Answer Questions", "Mine Crypto", "Hack
 
 export function FishInstruct() {
     const { host: { current: host }, updateHost, liveGameController } = useGame();
-    const { current: audio } = useRef(new Audio(audios.cryptoHack));
+    const { current: audio } = useRef(new Audio(audios.fishingFrenzy));
     const [muted, setMuted] = useState(!!host && host.muted);
     const [instructions, setInstructions] = useState(instructs);
     const [text, setText] = useState("");
     const timeout = useRef();
     const typingInterval = useRef();
     const navigate = useNavigate();
-    const skip = useCallback(() => navigate("/host/hack"), []);
+    const skip = useCallback(() => navigate("/host/fishing"), []);
     const changeMuted = useCallback(() => {
         setMuted(!muted);
         audio.muted = !muted;
@@ -70,12 +70,25 @@ export function FishInstruct() {
         }
     }, []);
     if (!host?.settings) return navigate("/sets");
-    return <div className="instructBody" style={{ backgroundColor: "#000" }}>
-        <TopBar left={host.settings.lateJoin ? `ID: ${liveGameController.liveGameCode}` : ""} center="Instructions" muted={muted} changeMuted={changeMuted} color="#000" />
-        <div className="regularBody instructInnerBody">
-            <div className="noise"></div>
-            <div className="overlay"></div>
-            <div className="text">{text}</div>
+    return <div className="instructBody">
+        <TopBar left={host.settings.lateJoin ? `ID: ${liveGameController.liveGameCode}` : ""} center="Instructions" muted={muted} changeMuted={changeMuted} />
+        <div className="regularBody">
+            <div className="container">
+                <div className="wave1" style={{ backgroundSize: "100px 320px" }}></div>
+                <div className="text n1">Click to Cast Your Line</div>
+                <div className="text n2">Click to Reel Once You Hook a Fish</div>
+                <div className="text n3">Answer Questions to Reel In The Fish</div>
+                <div className="text n4">Watch Out For Catching Some Crazy Things!</div>
+                <div className="text n5">
+                    {host.settings.mode == "Time"
+                        ? `Most total fish weight after ${formatNumber(host.settings.amount)} minute${host.settings.amount == 1 ? "s" : ""} wins!`
+                        : `First player to have ${formatNumber(host.settings.amount)} lbs of fish wins!`}
+                </div>
+                <div className="text n6">Good Luck!</div>
+                <div className="wave2" style={{ backgroundSize: "100px 320px" }}></div>
+                <div className="wave3" style={{ backgroundSize: "100px 320px" }}></div>
+                <div className="wave4" style={{ backgroundSize: "100px 320px" }}></div>
+            </div>
         </div>
         <div id="skipButton" onClick={skip}>Skip</div>
     </div>
@@ -102,8 +115,9 @@ const parties = {
 }
 
 export function Party({ fish }) {
+    console.log(parties, parties[fish], fish)
     return <div className="wrapper">
-        {Array(parties[fish].num).fill(parties[fish]).map((party, i) =>
+        {Array(parties[fish]?.num || 0).fill(parties[fish]).map((party, i) =>
             <Blook key={i} name={fish} className={`${party.className} ${party.className}${i + 1}`} blookClassName={party.blookClassName ? `${party.blookClassName}${party.dontNumber ? "" : (i % 4) + 1}` : null} />
         )}
     </div>
@@ -250,7 +264,7 @@ export default function FishHost() {
                     }, randomInt(100, 4000));
                 }
                 for (const client in clients)
-                    if (host.settings.mode == "Amount" && clients[client].cr >= host.settings.amount) endGame.current = true;
+                    if (host.settings.mode == "Amount" && clients[client].w >= host.settings.amount) endGame.current = true;
             });
         })();
         return () => {
@@ -270,10 +284,9 @@ export default function FishHost() {
     if (!host?.settings) return navigate("/sets");
     return <>
         <div className="body" style={{
-            overflow: "hidden",
-            backgroundColor: `#000`
+            overflow: "hidden"
         }}>
-            <TopBar left="Blooket" center={host.settings.mode == "Time" ? timer : `Goal: ${formatNumber(host.settings.amount)} lbs`} right={host.settings.lateJoin ? `ID: ${liveGameController.liveGameCode}` : ""} muted={muted} changeMuted={changeMuted} onRightClick={() => (endGame.current = true, getClients())} color="#000" />
+            <TopBar left="Blooket" center={host.settings.mode == "Time" ? timer : `Goal: ${formatNumber(host.settings.amount)} lbs`} right={host.settings.lateJoin ? `ID: ${liveGameController.liveGameCode}` : ""} muted={muted} changeMuted={changeMuted} onRightClick={() => (endGame.current = true, getClients())} />
             <div className="hostRegularBody">
                 <div className={`background${isFrenzy ? " frenzyBackground" : ""}`}></div>
                 <div className={`wave1${isFrenzy ? " wave1Frenzy" : ""}`} style={{ backgroundSize: "100px 320px" }}></div>
@@ -309,13 +322,13 @@ export default function FishHost() {
                         top: fish.top,
                         zIndex: fish.zIndex
                     }}>
-                        {fish.lure
+                        {(console.log(fish), fish.lure)
                             ? <div className="lureUpgrade">
                                 <div className="lureUpgradeInside">
                                     <img src={lures[fish.lure]} alt="Lure" className="lureUpgradeImg" />
                                 </div>
                             </div>
-                            : <Blook name={fish.name} className="jumpingFish" />}
+                            : <Blook name={fish.fish} className="jumpingFish" />}
                         <div className="jumpingText">{fish.fisher}</div>
                     </div>
                 })}
@@ -396,7 +409,7 @@ export function FishFinal() {
     }, []);
     if (host?.standings?.[0] || state.standings?.[0]) return <div className="body" style={{
         overflowY: state.ready ? "auto" : "hidden",
-        backgroundColor: "linear-gradient(to bottom, #9be2fe 0%,#67d1fb 100%)"
+        background: "linear-gradient(to bottom, #9be2fe 0%,#67d1fb 100%)"
     }}>
         {state.standings.length > 0 && <Standings
             standings={state.standings}

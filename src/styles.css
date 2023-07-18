@@ -24,8 +24,12 @@
 
 }
 
-* {
+body {
     font-family: Rubik;
+}
+
+* {
+    font-family: inherit;
     color: white;
 }
 

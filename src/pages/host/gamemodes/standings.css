@@ -417,7 +417,8 @@
     margin-left: 12px;
     font-size: 36px;
     text-align: left;
-    flex-grow: 1
+    flex-grow: 1;
+    font-family: Adventure;
 }
 
 .standingNameText,

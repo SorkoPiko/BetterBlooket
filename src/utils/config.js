@@ -1,8 +1,8 @@
 export const holidays = {
     fall: false,
     lucky: false, // b
-    halloween: !false, // c
-    winter: false, // d
+    halloween: false, // c
+    winter: !false, // d
 }
 
 export const audios = {
