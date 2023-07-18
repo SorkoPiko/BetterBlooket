@@ -14,5 +14,6 @@ export const audios = {
     candyQuest: "https://ac.blooket.com/play/e44fb428489db3775720c6228f6d2a9a.mp3",
     final: "https://ac.blooket.com/play/e4fa5995ca0e8e3b2c8fb21d9fd1a54a.mp3",
     cryptoHack: "https://ac.blooket.com/play/edf1a769470725cc5085dee58c3c6422.mp3",
-    fishingFrenzy: "https://ac.blooket.com/play/52295c65b6affe201809e6b8232ca426.mp3"
+    fishingFrenzy: "https://ac.blooket.com/play/52295c65b6affe201809e6b8232ca426.mp3",
+    defense2: "https://ac.blooket.com/play/42da6af92276ca568b237a4f706a6d7a.mp3"
 }

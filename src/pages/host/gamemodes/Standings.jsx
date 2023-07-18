@@ -25,6 +25,7 @@ export default function Standings({ muted, theme, historyId, gameId, standings, 
         audio.volume = 0.7;
         if (muted) audio.muted = true;
         audioTimeout.current = setTimeout(() => audio.play(), 3500);
+        // window.dispatchEvent(new Event('resize')); 
         return () => clearTimeout(audioTimeout.current);
     }, []);
     return <div>

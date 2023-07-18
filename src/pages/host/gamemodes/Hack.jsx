@@ -310,6 +310,7 @@ export function HackFinal() {
                 liveGameController.removeHostAndDeleteGame();
                 deleteHost();
             }
+            window.dispatchEvent(new Event('resize')); // Fix React-Textfit not sizing right
             waitTimeout.current = setTimeout(function () {
                 if (!standings.length) return;
                 post("https://play.blooket.com/api/history", {

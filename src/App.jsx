@@ -23,6 +23,7 @@ import HostLobby from "./pages/host/Join";
 import GoldHost, { GoldFinal, GoldInstruct } from "./pages/host/gamemodes/Gold";
 import HackHost, { HackFinal, HackInstruct } from "./pages/host/gamemodes/Hack";
 import FishHost, { FishFinal, FishInstruct } from "./pages/host/gamemodes/Fish";
+import Defense2Host, { Defense2Final } from "./pages/host/gamemodes/Defense2";
 
 function App() {
     return <AuthProvider>
@@ -55,6 +56,8 @@ function App() {
                 <Route path="/host/fishing/instructions" element={<AuthRoute><FishInstruct /></AuthRoute>}></Route>
                 <Route path="/host/fishing" element={<AuthRoute><FishHost /></AuthRoute>}></Route>
                 <Route path="/host/fishing/final" element={<AuthRoute><FishFinal /></AuthRoute>}></Route>
+                <Route path="/host/defense2" element={<AuthRoute><Defense2Host /></AuthRoute>}></Route>
+                <Route path="/host/defense2/final" element={<AuthRoute><Defense2Final /></AuthRoute>}></Route>
             </Route>
             <Route path="/*" element={<Navigate to="/"></Navigate>}></Route>
         </Routes>
