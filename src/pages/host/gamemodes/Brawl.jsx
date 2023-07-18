@@ -925,7 +925,7 @@ export default function BrawlHost() {
             const val = snapshot || {};
             if (!val || Object.keys(val).length == 0) return setPlayers([]);
             let clients = [];
-            for (const [name, { b: blook, xp }] of Object.entries(val)) clients.push({ name, blook, xp });
+            for (const [name, { b: blook, xp = 0 }] of Object.entries(val)) clients.push({ name, blook, xp });
             clients.sort((a, b) => b.xp - a.xp);
             setPlayers(clients);
         });
@@ -1041,12 +1041,12 @@ export default function BrawlHost() {
                                 <div className="placeRow">
                                     <Textfit className="placeText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5vw")}>{i + 1}</Textfit>
                                     <div className="superPlaceText">{getOrdinal(i + 1)}</div>
-                                    <Blook name={data.blook} className="blookBox"></Blook>
-                                    <Textfit className="nameText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("4vw")}>{data.name}</Textfit>
-                                    <div className="xpContainer">
-                                        <Textfit className="xpText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5vw")}>{(data.xp < 1000 ? formatNumber(data.xp) : formatBigNumber(data.xp))}</Textfit>
-                                        <img src={basic.xp} alt="Xp" className="xpIcon" draggable={false} />
-                                    </div>
+                                </div>
+                                <Blook name={data.blook} className="blookBox"></Blook>
+                                <Textfit className="nameText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("4vw")}>{data.name}</Textfit>
+                                <div className="xpContainer">
+                                    <Textfit className="xpText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5vw")}>{(data.xp < 1000 ? formatNumber(data.xp) : formatBigNumber(data.xp))}</Textfit>
+                                    <img src={basic.xp} alt="Xp" className="xpIcon" draggable={false} />
                                 </div>
                             </div>
                         })}

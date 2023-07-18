@@ -143,7 +143,7 @@ export default function FishHost() {
             const val = snapshot || {};
             if (!val || Object.keys(val).length == 0) return setPlayers([]);
             let clients = [];
-            for (const [name, { b: blook, w: weight, f: fish, s: isSpecial }] of Object.entries(val)) clients.push({ name, blook, weight: weight || 0, fish, isSpecial });
+            for (const [name, { b: blook, w: weight = 0, f: fish, s: isSpecial }] of Object.entries(val)) clients.push({ name, blook, weight: weight || 0, fish, isSpecial });
             clients.sort((a, b) => b.weight - a.weight);
             setPlayers(clients);
         });

@@ -101,7 +101,7 @@ export default function HackHost() {
             const val = snapshot || {};
             if (!val || Object.keys(val).length == 0) return setPlayers([]);
             let clients = [];
-            for (const [name, { b: blook, cr: crypto }] of Object.entries(val)) clients.push({ name, blook, crypto: crypto || 0 });
+            for (const [name, { b: blook, cr: crypto = 0 }] of Object.entries(val)) clients.push({ name, blook, crypto: crypto || 0 });
             clients.sort((a, b) => b.crypto - a.crypto);
             setPlayers(clients);
         });

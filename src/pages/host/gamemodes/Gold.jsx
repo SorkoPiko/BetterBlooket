@@ -105,7 +105,7 @@ export default function GoldHost() {
             const val = snapshot || {};
             if (!val || Object.keys(val).length == 0) return;
             let clients = [];
-            for (const [name, { b: blook, g: gold }] of Object.entries(val)) clients.push({ name, blook, gold: gold || 0 });
+            for (const [name, { b: blook, g: gold = 0 }] of Object.entries(val)) clients.push({ name, blook, gold: gold || 0 });
             clients.sort((a, b) => b.gold - a.gold);
             setPlayers(clients);
         });

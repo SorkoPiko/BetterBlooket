@@ -30,7 +30,7 @@ export default function Defense2Host() {
             const val = snapshot || {};
             if (!val || Object.keys(val).length == 0) return setPlayers([]);
             let clients = [];
-            for (const [name, { b: blook, d: dmg }] of Object.entries(val)) clients.push({ name, blook, dmg });
+            for (const [name, { b: blook, d: dmg = 0 }] of Object.entries(val)) clients.push({ name, blook, dmg });
             clients.sort((a, b) => b.dmg - a.dmg);
             setPlayers(clients);
         });
