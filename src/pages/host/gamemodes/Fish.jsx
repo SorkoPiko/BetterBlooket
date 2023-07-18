@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useGame } from "../../../context/GameContext";
 import { audios } from "../../../utils/config";
-import { diffObjects, formatBigNumber, formatNumber, getDimensions, getOrdinal } from "../../../utils/numbers";
+import { diffObjects, formatBigNumber, formatNumber, getDimensions, getOrdinal, randomFloat, randomInt } from "../../../utils/numbers";
 import { useNavigate } from "react-router-dom";
 import TopBar from "../topBar";
 import { Textfit } from "react-textfit";
@@ -13,7 +13,7 @@ import Standings from "./Standings";
 
 const instructs = ["Choose a Password", "Answer Questions", "Mine Crypto", "Hack Other Players By Guessing Their Passwords"];
 
-export function HackInstruct() {
+export function FishInstruct() {
     const { host: { current: host }, updateHost, liveGameController } = useGame();
     const { current: audio } = useRef(new Audio(audios.cryptoHack));
     const [muted, setMuted] = useState(!!host && host.muted);
@@ -48,7 +48,7 @@ export function HackInstruct() {
     }, []);
     useEffect(() => {
         if (host?.settings) {
-            import("./hack.css");
+            import("./fish.css");
             setInstructions(i => [...i].concat([host?.settings && "Time" === host.settings.mode ? `Most Crypto after ${formatNumber(host.settings.amount)} ${"1" === host.settings.amount ? "minute" : "minutes"} wins!` : `First player to have ₿ ${formatNumber(host.settings.amount)} wins!`, "Good Luck"]));
             audio.volume = 0.15;
             audio.play();
@@ -81,16 +81,44 @@ export function HackInstruct() {
     </div>
 }
 
-export default function HackHost() {
+export const lures = [
+    'https://blooket.s3.us-east-2.amazonaws.com/images/fishing/lure1.svg',
+    'https://blooket.s3.us-east-2.amazonaws.com/images/fishing/lure2.svg',
+    'https://blooket.s3.us-east-2.amazonaws.com/images/fishing/lure3.svg',
+    'https://blooket.s3.us-east-2.amazonaws.com/images/fishing/lure4.svg',
+    'https://blooket.s3.us-east-2.amazonaws.com/images/fishing/lure5.svg',
+];
+
+const parties = {
+    Crab: { className: 'crab', blookClassName: 'crabDance', num: 4 },
+    Jellyfish: { className: 'jellyfish', blookClassName: 'crabDance', num: 4 },
+    Frog: { className: 'frog', num: 4 },
+    Pufferfish: { className: 'pufferfish', blookClassName: 'crabDance', num: 9 },
+    Octopus: { className: 'octopus', num: 7 },
+    Narwhal: { className: 'narwhal', blookClassName: 'narwhalDance', num: 9, dontNumber: true },
+    Megalodon: { className: 'megalodon', num: 11 },
+    Blobfish: { className: 'blobfish', num: 1 },
+    'Baby Shark': { className: 'babyShark', num: 9 },
+}
+
+export function Party({ fish }) {
+    return <div className="wrapper">
+        {Array(parties[fish].num).fill(parties[fish]).map((party, i) =>
+            <Blook key={i} name={fish} className={`${party.className} ${party.className}${i + 1}`} blookClassName={party.blookClassName ? `${party.blookClassName}${party.dontNumber ? "" : (i % 4) + 1}` : null} />
+        )}
+    </div>
+}
+
+export default function FishHost() {
     const { host: { current: host }, liveGameController, updateHost, updateStandings } = useGame();
     const [timer, setTimer] = useState("00:00");
     const [players, setPlayers] = useState([]);
-    const [alerts, setAlerts] = useState([]);
-    const [totalCrypto, setTotalCrypto] = useState(0);
     const [muted, setMuted] = useState(!!host && host.muted);
-    const [loadingText, setLoadingText] = useState("[----------]")
-    const [isIntro, setIsIntro] = useState(true);
+    const [fish, setFish] = useState([])
+    const [party, setParty] = useState("")
+    const [isFrenzy, setIsFrenzy] = useState(false);
     const [userToBlock, setUserToBlock] = useState("");
+    const fishCounter = useRef(-1);
     const dbRef = useRef();
     const lastClients = useRef({});
     const navigate = useNavigate();
@@ -100,8 +128,8 @@ export default function HackHost() {
             const val = snapshot || {};
             if (!val || Object.keys(val).length == 0) return setPlayers([]);
             let clients = [];
-            for (const [name, { b: blook, cr: crypto }] of Object.entries(val)) clients.push({ name, blook, crypto: crypto || 0 });
-            clients.sort((a, b) => b.crypto - a.crypto);
+            for (const [name, { b: blook, w: weight, f: fish, s: isSpecial }] of Object.entries(val)) clients.push({ name, blook, weight: weight || 0, fish, isSpecial });
+            clients.sort((a, b) => b.weight - a.weight);
             setPlayers(clients);
         });
     }, []);
@@ -109,17 +137,14 @@ export default function HackHost() {
         let val = players.map((s, i) => ({
             n: s.name,
             b: s.blook,
-            cr: s.crypto,
+            w: s.weight,
             p: i + 1
         }));
         updateStandings(val);
         liveGameController.setVal({
             path: "st", val
-        }, () => liveGameController.setStage({ stage: "fin" }, () => navigate("/host/hack/final")));
+        }, () => liveGameController.setStage({ stage: "fin" }, () => navigate("/host/fishing/final")));
     }, [players]);
-    const addAlert = useCallback((name, blook, msg, info) => {
-        setAlerts(a => a.find(e => e.name + e.msg == name + msg) ? a : [...a, { name, blook, msg, info }])
-    }, []);
     const changeMuted = useCallback(() => {
         setMuted(!muted);
     }, [muted]);
@@ -132,23 +157,29 @@ export default function HackHost() {
         setPlayers(players.filter(({ name }) => name != userToBlock));
         setUserToBlock("");
     }, [userToBlock, players]);
-    const { current: audio } = useRef(new Audio(audios.cryptoHack));
+    const { current: audio } = useRef(new Audio(audios.fishingFrenzy));
     const timerInterval = useRef();
-    const loadingTimeout = useRef();
     const clientsInterval = useRef();
+    const frenzyTimeout = useRef();
+    const partyTimeout = useRef();
+    const shortFrenzyTimeout = useRef();
+    const frenzyRef = useRef(isFrenzy);
+    const fishRef = useRef(fish);
+    useEffect(() => { frenzyRef.current = isFrenzy }, [isFrenzy]);
+    useEffect(() => { fishRef.current = fish }, [fish]);
     useEffect(() => {
-        import("./hack.css");
+        import("./fish.css");
         if (!host?.settings) return navigate("/sets");
         window.liveGameController = liveGameController;
         (async () => {
             audio.muted = muted;
-            audio.volume = 0.15;
+            audio.volume = 0.4;
             audio.play();
             audio.addEventListener("ended", () => {
                 audio.currentTime = 0;
                 audio.play();
             }, false);
-            liveGameController.setStage({ stage: "hack" });
+            liveGameController.setStage({ stage: "fish" });
             getClients();
             if (host.settings.mode == "Time") {
                 let seconds = 60 * host.settings.amount;
@@ -163,44 +194,63 @@ export default function HackHost() {
                     }
                 }, 1000);
             } else timerInterval.current = setInterval(getClients, 1000);
-            let progress = 0;
-            loadingTimeout.current = setTimeout(function load() {
-                loadingTimeout.current = progress >= 10
-                    ? setTimeout(() => setIsIntro(false), 3000)
-                    : setTimeout(() => {
-                        progress++;
-                        setLoadingText(`[${"#".repeat(progress)}${"-".repeat(10 - progress)}]`);
-                        load();
-                    }, 500);
-            }, 1500);
             dbRef.current = await liveGameController.getDatabaseRef("c");
             dbRef.current.on("value", function (snapshot) {
                 const clients = snapshot.val() || {};
                 const changed = diffObjects(lastClients.current, clients) || {};
-                for (const [client, data] of Object.entries(changed)) if (data.tat) {
-                    const [tat, amount] = data.tat.split(":");
-                    const r = clients[tat];
-                    if (!r || !type) continue;
-                    liveGameController.setVal({
-                        path: `c/${tat}`,
-                        val: {
-                            b: r.b,
-                            p: r.p,
-                            cr: Math.max((r.cr || 0) - parseInt(amount), 0),
-                            at: `${client}:${clients[client].b}:${amount}`
-                        }
-                    });
-                    clients[tat].cr = Math.max((r.cr || 0) - parseInt(amount), 0);
-                    addAlert(client, clients[client].b, `just took ${formatNumber(parseInt(amount))} crypto from ${tat}`);
-                    liveGameController.removeVal(`c/${client}/tat`);
+                let i = [], distraction = "";
+                for (const [client, data] of Object.entries(changed)) if (data.f) {
+                    if (data.f.split(" ")[0] == "Lure") i.push({ lure: data.f.split(" ")[1], name: client });
+                    else if (data.f == "Frenzy") {
+                        if (frenzyRef.current) continue;
+                        liveGameController.setVal({ path: "act", val: "Frenzy" });
+                        shortFrenzyTimeout.current = setTimeout(() => liveGameController.removeVal("act"), 1000);
+                        audio.playbackRate = 2;
+                        audio.volume = 0.5;
+                        setIsFrenzy(true);
+                        clearTimeout(frenzyTimeout.current);
+                        frenzyTimeout.current = setTimeout(() => {
+                            setIsFrenzy(false);
+                            audio.playbackRate = 1;
+                            audio.volume = 0.4;
+                        }, 20000);
+                    } else i.push({ fish: data.f, name: client });
+                    if (data.s) {
+                        distraction = data.f;
+                        liveGameController.removeVal(`c/${client}/s`);
+                    }
+                    liveGameController.removeVal(`c/${client}/f`);
                 }
                 lastClients.current = clients;
-                let total = 0;
-                for (const client in clients) {
-                    total += parseInt("0" + clients[client].cr);
-                    if (host.settings.mode == "Amount" && clients[client].cr >= host.settings.amount) endGame.current = true;
+                if (distraction) {
+                    liveGameController.setVal({ path: "act", val: distraction });
+                    setParty(p => p || distraction);
+                    partyTimeout.current = setTimeout(() => {
+                        setParty("");
+                        liveGameController.removeVal("act");
+                    }, 7100);
                 }
-                setTotalCrypto(total);
+                for (const { fish, lure, name } of i) {
+                    fishCounter.current += 1;
+                    let newFish = {
+                        fish, lure,
+                        id: fishCounter.current,
+                        left: `${randomFloat(41.5, 87.5)}%`,
+                        top: `${randomFloat(100, 145)}%`,
+                        zIndex: randomInt(2, 5),
+                        fisher: name
+                    }
+                    setTimeout(() => {
+                        setFish(f => [...f, newFish]);
+                        setTimeout(() => {
+                            let copy = JSON.parse(JSON.stringify(fishRef.current));
+                            copy.splice(copy.findIndex(fish => fish.id == newFish.id), 1);
+                            setFish(copy);
+                        }, 3100);
+                    }, randomInt(100, 4000));
+                }
+                for (const client in clients)
+                    if (host.settings.mode == "Amount" && clients[client].cr >= host.settings.amount) endGame.current = true;
             });
         })();
         return () => {
@@ -223,45 +273,55 @@ export default function HackHost() {
             overflow: "hidden",
             backgroundColor: `#000`
         }}>
-            <TopBar left="Blooket" center={host.settings.mode == "Time" ? timer : `Goal: ${formatNumber(host.settings.amount)}`} right={host.settings.lateJoin ? `ID: ${liveGameController.liveGameCode}` : ""} muted={muted} changeMuted={changeMuted} onRightClick={() => (endGame.current = true, getClients())} color="#000" />
-            <div className="hostRegularBody hackBody">
+            <TopBar left="Blooket" center={host.settings.mode == "Time" ? timer : `Goal: ${formatNumber(host.settings.amount)} lbs`} right={host.settings.lateJoin ? `ID: ${liveGameController.liveGameCode}` : ""} muted={muted} changeMuted={changeMuted} onRightClick={() => (endGame.current = true, getClients())} color="#000" />
+            <div className="hostRegularBody">
+                <div className={`background${isFrenzy ? " frenzyBackground" : ""}`}></div>
+                <div className={`wave1${isFrenzy ? " wave1Frenzy" : ""}`} style={{ backgroundSize: "100px 320px" }}></div>
+                <div className={`wave2${isFrenzy ? " wave2Frenzy" : ""}`} style={{ backgroundSize: "100px 320px" }}></div>
+                <div className={`wave3${isFrenzy ? " wave3Frenzy" : ""}`} style={{ backgroundSize: "100px 320px" }}></div>
+                <div className={`wave4${isFrenzy ? " wave4Frenzy" : ""}`} style={{ backgroundSize: "100px 320px" }}></div>
                 <NodeGroup data={players} keyAccessor={({ name }) => name}
-                    start={(_, place) => ({ x: -60, y: 11 * place })}
-                    enter={(_, place) => ({ x: [0], y: [11 * place], timing: { duration: 1000, ease: e => +e } })}
-                    update={(_, place) => ({ x: [0], y: [11 * place], timing: { duration: 500, ease: e => +e } })}
+                    start={(_, place) => ({ x: -60, y: 12.5 * place })}
+                    enter={(_, place) => ({ x: [0], y: [12.5 * place], timing: { duration: 1000, ease: e => +e } })}
+                    update={(_, place) => ({ x: [0], y: [12.5 * place], timing: { duration: 500, ease: e => +e } })}
                     leave={() => ({ x: [-60], timing: 1000 })}>
-                    {(standings) => <div className="hackLeft invisibleScrollbar">
+                    {(standings) => <div className="fishLeft invisibleScrollbar">
                         {standings.map(({ key, data, state: { x, y } }, i) => {
                             return <div key={key} style={{
                                 opacity: userToBlock == data.name ? 0.4 : null,
-                                transform: `translate(${x}vw, ${y}vh)`
-                            }} onClick={() => setUserToBlock(data.name)} className={`hackStandingContainer`}>
-                                <Textfit className="placeText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5vw")}>{i + 1}</Textfit>
-                                <div className="superPlaceText">{getOrdinal(i + 1)}</div>
-                                <Blook name={data.blook} className="blookBox"></Blook>
-                                <Textfit className="nameText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("4vw")}>{data.name}</Textfit>
-                                <div className="cryptoContainer">
-                                    <Textfit className="cryptoText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5vw")}>{data.crypto < 1000 ? formatNumber(data.crypto) : formatBigNumber(data.crypto)}</Textfit>
+                                transform: `translate(${x}vw, ${y}vh)`,
+                                backgroundColor: isFrenzy ? (i + 1) % 3 == 0 ? "#9b97d6" : (i + 1) % 3 == 1 ? "#9ccfe7" : "#f5a9cb" : null
+                            }} onClick={() => setUserToBlock(data.name)} className={`fishStandingContainer`}>
+                                <div className="fishStandingInside">
+                                    <Textfit className="placeText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("4vw")}>{i + 1}</Textfit>
+                                    <div className="superPlaceText">{getOrdinal(i + 1)}</div>
+                                    <Blook name={data.blook} className="blookBox"></Blook>
+                                    <Textfit className="nameText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("3vw")}>{data.name}</Textfit>
+                                    <Textfit className="weightText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("3vw")}>{(data.weight < 1000 ? formatNumber(data.weight) : formatBigNumber(data.weight)) + " lbs"}</Textfit>
                                 </div>
                             </div>
                         })}
                     </div>}
                 </NodeGroup>
-                <div className={`hackChatroom invisibleScrollbar`}>
-                    {alerts.length
-                        ? alerts.map((alert, i) => <Alert key={`alert${i}`} name={alert.name} blook={alert.blook} message={alert.msg} glitchInfo={alert.info} night={true} />)
-                        : <div id="noAlerts">
-                            <i className="noAlertsIcon fas fa-satellite-dish" />
-                            <div id="noAlertsText">Waiting For Hacks...</div>
-                        </div>}
-                </div>
-                <div className="totalCryptoContainer">
-                    <div className="totalCryptoText">{"₿ " + formatNumber(totalCrypto)}</div>
-                </div>
-                <div className="noise"></div>
-                <div className="overlay"></div>
+                {fish.map(fish => {
+                    return <div key={fish.id} className="jumpingContainer" style={{
+                        left: fish.left,
+                        top: fish.top,
+                        zIndex: fish.zIndex
+                    }}>
+                        {fish.lure
+                            ? <div className="lureUpgrade">
+                                <div className="lureUpgradeInside">
+                                    <img src={lures[fish.lure]} alt="Lure" className="lureUpgradeImg" />
+                                </div>
+                            </div>
+                            : <Blook name={fish.name} className="jumpingFish" />}
+                        <div className="jumpingText">{fish.fisher}</div>
+                    </div>
+                })}
             </div>
-            {isIntro && <div className="loadingText">{loadingText}<br />Loading</div>}
+            {isFrenzy && <div className="frenzyText">Frenzy!</div>}
+            {party && <Party fish={party} />}
         </div>
         {userToBlock && <div className="blockModal">
             <div className="blockContainer">
@@ -275,7 +335,7 @@ export default function HackHost() {
     </>
 }
 
-export function HackFinal() {
+export function FishFinal() {
     const { standings: { current: standings }, liveGameController, deleteHost, host: { current: host }, hostId } = useGame();
     const { http: { post } } = useAuth();
     const [state, setState] = useState({
@@ -314,9 +374,9 @@ export function HackFinal() {
                 if (!standings.length) return;
                 post("https://play.blooket.com/api/history", {
                     t: hostId.current,
-                    standings: standings.map(({ b: blook, n: name, p: place, cr: crypto }) => ({
+                    standings: standings.map(({ b: blook, n: name, p: place, w: weight }) => ({
                         blook, name, place,
-                        crypto: isNaN(crypto) ? 0 : Math.min(Math.round(Number(crypto)), 9223372036854775000),
+                        weight: isNaN(weight) ? 0 : Math.min(Math.round(Number(weight)), 9223372036854775000),
                         corrects: results[name]?.corrects || {},
                         incorrects: results[name]?.incorrects || {}
                     })),
@@ -336,15 +396,15 @@ export function HackFinal() {
     }, []);
     if (host?.standings?.[0] || state.standings?.[0]) return <div className="body" style={{
         overflowY: state.ready ? "auto" : "hidden",
-        backgroundColor: "#000"
+        backgroundColor: "linear-gradient(to bottom, #9be2fe 0%,#67d1fb 100%)"
     }}>
         {state.standings.length > 0 && <Standings
             standings={state.standings}
-            stats={state.standings.map(e => "₿ " + formatNumber(e.cr))}
+            stats={state.standings.map(e => formatNumber(e.w) + " lbs")}
             gameId={hostCopy.setId}
             historyId={state.historyId}
             muted={state.muted}
-            theme="hack"
+            theme="fish"
             ready={state.ready}
         />}
     </div>;

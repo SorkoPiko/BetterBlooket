@@ -397,7 +397,7 @@ export function GoldFinal() {
                 if (!standings.length) return;
                 post("https://play.blooket.com/api/history", {
                     t: hostId.current,
-                    standings: standings.map(({ blook, name, place, gold }) => ({
+                    standings: standings.map(({ b: blook, n: name, p: place, g: gold }) => ({
                         blook, name, place,
                         gold: isNaN(gold) ? 0 : Math.min(Math.round(Number(gold)), 9223372036854775000),
                         corrects: results[name]?.corrects || {},

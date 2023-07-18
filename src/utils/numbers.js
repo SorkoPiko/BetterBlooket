@@ -56,3 +56,11 @@ export function listKeys(players) {
     else list += `, ${names[i]}`;
     return list
 }
+
+export function randomFloat(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+export function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
