@@ -100,6 +100,7 @@ export default function GoldHost() {
     const navigate = useNavigate();
     const endGame = useRef(false);
     const getClients = useCallback(() => {
+        window.dispatchEvent(new Event('resize')); // Fix React-Textfit not sizing right
         liveGameController.getDatabaseVal("c", snapshot => {
             const val = snapshot || {};
             if (!val || Object.keys(val).length == 0) return;
