@@ -93,7 +93,7 @@ export default function Host() {
                 </div>
                 <div className="gameModeInfoRow">
                     <i className="gameModeInfoIcon fas fa-users"></i>
-                    <div className="gameModeInfoText">{selected.limit.replace(/Player Limit: \d+ \((\d+) for Plus\)/g, "Player Limit: $1")}</div>
+                    <div className="gameModeInfoText">{selected.limit.replace(/Player Limit: \d+ \((\d+) (for Plus|for Plus & HW)\)/g, "Player Limit: $1").replace(" for Plus", "")}</div>
                 </div>
                 <div className="gameModeInfoRow">
                     <i className="gameModeInfoIcon fas fa-tasks"></i>
