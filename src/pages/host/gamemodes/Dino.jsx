@@ -12,7 +12,7 @@ import { useAuth } from "../../../context/AuthContext";
 import { dino } from "../../../utils/images";
 // import Blook from "../../../blooks/Blook";
 
-function Paper({ content, onClick, className, style }) {
+function Panel({ content, onClick, className, style }) {
     useEffect(() => {
         import("./dino.css");
     }, [])
@@ -74,18 +74,18 @@ export function DinoInstruct() {
             <div className="container" style={{
                 backgroundImage: `url(${dino.paperTexture})`,
             }}>
-                <Paper className="text n1" content={<div className="textInside">Answer Questions</div>} />
-                <Paper className="text n2" content={<div className="textInside">Excavate or Investigate</div>} />
-                <Paper className="text n3" content={<div className="textInside">Excavate: Choose rocks to collect fossils</div>} />
-                <Paper className="text n4" content={<div className="textInside">You can also "Cheat" to see inside the rocks</div>} />
-                <Paper className="text n5" content={<div className="textInside">Investigate: Check if a player is cheating</div>} />
-                <Paper className="text n6" content={<div className="textInside">If you catch a cheater, you'll take some of their fossils</div>} />
-                <Paper className="text n7" content={<div className="textInside">
+                <Panel className="text n1" content={<div className="textInside">Answer Questions</div>} />
+                <Panel className="text n2" content={<div className="textInside">Excavate or Investigate</div>} />
+                <Panel className="text n3" content={<div className="textInside">Excavate: Choose rocks to collect fossils</div>} />
+                <Panel className="text n4" content={<div className="textInside">You can also "Cheat" to see inside the rocks</div>} />
+                <Panel className="text n5" content={<div className="textInside">Investigate: Check if a player is cheating</div>} />
+                <Panel className="text n6" content={<div className="textInside">If you catch a cheater, you'll take some of their fossils</div>} />
+                <Panel className="text n7" content={<div className="textInside">
                     {host.settings.mode == "Time"
                         ? `Most fossils after ${formatNumber(host.settings.amount)} minute${host.settings.amount == 1 ? "s" : ""} wins!`
                         : `First player to have ${formatNumber(host.settings.amount)} fossils wins!`}
                 </div>} />
-                <Paper className="text n8" content={<div className="textInside">Good Luck!</div>} />
+                <Panel className="text n8" content={<div className="textInside">Good Luck!</div>} />
             </div>
         </div>
         <div id="skipButton" onClick={skip}>Skip</div>
@@ -231,7 +231,7 @@ export default function DinoHost() {
                     leave={() => ({ x: [-60], timing: 1000 })}>
                     {(standings) => <div className="dinoLeft invisibleScrollbar">
                         {standings.map(({ key, data, state: { x, y } }, i) => {
-                            return <Paper key={key} className="dinoStandingContainer" onClick={() => setUserToBlock(data.name)} style={{
+                            return <Panel key={key} className="dinoStandingContainer" onClick={() => setUserToBlock(data.name)} style={{
                                 opacity: userToBlock == data.name ? 0.4 : null,
                                 transform: `translate(${x}vw, ${y}vh)`
                             }} content={<div className="dinoStandingInside">
@@ -247,7 +247,7 @@ export default function DinoHost() {
                         })}
                     </div>}
                 </NodeGroup>
-                <Paper className="dinoChatroom" content={<div className="dinoChatroomInside invisibleScrollbar">
+                <Panel className="dinoChatroom" content={<div className="dinoChatroomInside invisibleScrollbar">
                     {alerts.length
                         ? alerts.map((alert, i) => <Alert key={`alert${i}`} name={alert.name} blook={alert.blook} message={alert.msg} glitchInfo={alert.info} night={true} />)
                         : <div className="noAlerts">
@@ -255,7 +255,7 @@ export default function DinoHost() {
                             <div className="noAlertsText">Waiting To Party...</div>
                         </div>}
                 </div>} />
-                <Paper className="totalFossilsContainer" content={<div className="totalFossilsInside">
+                <Panel className="totalFossilsContainer" content={<div className="totalFossilsInside">
                     <div className="totalFossilsText">{formatNumber(totalFossils)}</div>
                     <i className="fas fa-bone totalFossilsIcon" />
                 </div>} />
@@ -338,7 +338,7 @@ function DinoStandings({ muted, historyId, gameId, standings, stats, ready }) {
         <div className="hostRegularBody">
             <a className="again" href={"/host?id=" + gameId}>Play Again</a>
             {standings[0] && <div className="containerOne">
-                <Paper className="dino" content={<>
+                <Panel className="dino" content={<>
                     <Textfit className="nameTextOne" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>{standings[0].n}</Textfit>
                     <Textfit className="scoreTextOne" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>{stats[0]}</Textfit>
                     <Blook className="firstBlook" name={standings[0].b} />
@@ -349,7 +349,7 @@ function DinoStandings({ muted, historyId, gameId, standings, stats, ready }) {
                 </div>
             </div>}
             {standings[1] && <div className="containerTwo">
-                <Paper className="dino" content={<>
+                <Panel className="dino" content={<>
                     <Textfit className="nameTextTwo" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>{standings[1].n}</Textfit>
                     <Textfit className="scoreTextTwo" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>{stats[1]}</Textfit>
                     <Blook className="secondBlook" name={standings[1].b} />
@@ -360,7 +360,7 @@ function DinoStandings({ muted, historyId, gameId, standings, stats, ready }) {
                 </div>
             </div>}
             {standings[2] && <div className="containerThree">
-                <Paper className="dino" content={<>
+                <Panel className="dino" content={<>
                     <Textfit className="nameTextThree" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>{standings[2].n}</Textfit>
                     <Textfit className="scoreTextThree" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>{stats[2]}</Textfit>
                     <Blook className="thirdBlook" name={standings[2].b} />
@@ -372,7 +372,7 @@ function DinoStandings({ muted, historyId, gameId, standings, stats, ready }) {
             </div>}
             {standings[3] && <div className="standingsArray">
                 {standings.slice(3, standings.length).map(standing => {
-                    return <Paper key={standing.n} className="standingHolder" content={
+                    return <Panel key={standing.n} className="standingHolder" content={
                         <div className={`standingContainer`}>
                             <div className="standingPlaceText">{standing.place}</div>
                             <div className="standingSuperPlaceText">{getOrdinal(standing.place)}</div>
