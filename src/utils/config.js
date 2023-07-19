@@ -18,5 +18,7 @@ export const audios = {
     defense2: "https://ac.blooket.com/play/42da6af92276ca568b237a4f706a6d7a.mp3",
     monsterBrawl: "https://ac.blooket.com/play/a48284f68d36557fffbdd27d83d0df3e.mp3",
     spookyBrawl: "https://ac.blooket.com/play/e44fb428489db3775720c6228f6d2a9a.mp3",
-    deceptiveDinos: "https://ac.blooket.com/play/1f74e423a2c0280b20b83da7c3d8492f.mp3"
+    deceptiveDinos: "https://ac.blooket.com/play/1f74e423a2c0280b20b83da7c3d8492f.mp3",
+    towerDefense: "https://ac.blooket.com/play/42da6af92276ca568b237a4f706a6d7a.mp3",
+    defenseEvent: "https://ac.blooket.com/play/d0768411f06dacca0b25e7159d395419.mp3"
 }

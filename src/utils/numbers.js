@@ -64,3 +64,19 @@ export function randomFloat(min, max) {
 export function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
+
+export function ratedRandom(array, length) {
+    let result = [];
+    for (; result.length < length;) {
+        let rand = Math.random(),
+            total = 0,
+            pick = null;
+        for (let i = 0; i < array.length; i++)
+            if ((total += array[i].rate) >= rand) {
+                pick = array[i];
+                break
+            }
+        if (pick && !result.includes(pick)) result.push(pick)
+    }
+    return result
+}

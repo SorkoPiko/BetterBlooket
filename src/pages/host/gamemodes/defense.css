@@ -1,0 +1,261 @@
+.container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    animation: inAndOut 5.9s forwards
+}
+
+@keyframes inAndOut {
+    0% {
+        transform: scale(0)
+    }
+
+    6% {
+        transform: scale(1)
+    }
+
+    94% {
+        transform: scale(1)
+    }
+
+    to {
+        transform: scale(0)
+    }
+}
+
+.noLeave {
+    animation: justIn 354ms forwards
+}
+
+@keyframes justIn {
+    0% {
+        transform: scale(0)
+    }
+
+    to {
+        transform: scale(1)
+    }
+}
+
+.tdEventBlook,
+.tdEventIcon {
+    width: 20vw;
+    margin-bottom: 5vh
+}
+
+.tdEventIcon {
+    height: 20vw;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    box-shadow: 0 0 8px 3px rgba(0, 0, 0, .2);
+    font-size: 11vw
+}
+
+.tdEventName {
+    font-family: Adventure;
+    font-size: 5vw;
+    margin: 0 auto
+}
+
+.tdEventDesc,
+.tdEventName {
+    color: #fff;
+    text-shadow: 2px 2px 8px grey;
+    text-align: center;
+    width: 90%
+}
+
+.tdEventDesc {
+    font-size: 2.5vw;
+    margin: 2px auto
+}
+
+.tdEventButtonContainer {
+    width: 90%;
+    max-width: 500px;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    margin: 15px auto
+}
+
+.tdEventButton,
+.tdEventButtonContainer {
+    display: flex;
+    align-items: center
+}
+
+.tdEventButton {
+    width: 180px;
+    height: 60px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 8px 3px rgba(0, 0, 0, .2);
+    font-size: 32px;
+    color: #3a3a3a;
+    justify-content: center;
+    margin: 10px;
+    cursor: pointer;
+    outline: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    transition: .2s
+}
+
+.tdEventButton:hover {
+    transform: scale(.95)
+}
+
+@media only screen and (max-width:800px) {
+
+    .tdEventBlook,
+    .tdEventIcon {
+        width: 40vw
+    }
+
+    .tdEventIcon {
+        height: 40vw;
+        font-size: 22vw
+    }
+
+    .tdEventName {
+        font-size: 10vw
+    }
+
+    .tdEventDesc {
+        font-size: 5vw
+    }
+
+    .tdEventButton {
+        width: 120px;
+        height: 40px;
+        font-size: 24px
+    }
+}
+
+.playersContainer {
+    flex-flow: row wrap;
+    align-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}
+
+.playerBox,
+.playersContainer {
+    display: flex;
+    justify-content: center
+}
+
+.playerBox {
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    box-shadow: 0 0 6px 2px rgba(0, 0, 0, .15);
+    margin: 4px;
+    border-radius: 7px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    outline: none;
+    cursor: pointer
+}
+
+.playerBox:hover {
+    opacity: .4
+}
+
+.placeText {
+    text-align: right;
+    top: 3%;
+    right: 17%;
+    width: 50%;
+    height: 22.5%
+}
+
+.placeText,
+.superPlaceText {
+    color: #fff;
+    text-shadow: 2px 2px 8px grey;
+    font-family: Adventure;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    position: absolute
+}
+
+.superPlaceText {
+    text-align: left;
+    top: 3.5%;
+    right: 4%;
+    width: 12.5%;
+    height: 15%
+}
+
+.blookBox {
+    height: 55%;
+    width: 50%;
+    margin-bottom: 2.5%
+}
+
+.nameText {
+    font-weight: 700;
+    width: 95%;
+    height: 15%;
+    text-align: left;
+    text-align: center
+}
+
+.dmgContainer,
+.nameText {
+    color: #fff;
+    text-shadow: 2px 2px 8px grey
+}
+
+.dmgContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 12.5%
+}
+
+.dmgText {
+    height: 100%;
+    text-align: right
+}
+
+.dmgIcon {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    margin-left: 7px
+}
+
+.tdParticles {
+    opacity: 0;
+    animation: fadeIn .5s linear 1s forwards
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}

@@ -26,6 +26,7 @@ import FishHost, { FishFinal, FishInstruct } from "./pages/host/gamemodes/Fish";
 import Defense2Host, { Defense2Final } from "./pages/host/gamemodes/Defense2";
 import BrawlHost, { BrawlFinal } from "./pages/host/gamemodes/Brawl";
 import DinoHost, { DinoFinal, DinoInstruct } from "./pages/host/gamemodes/Dino";
+import DefenseHost, { DefenseFinal } from "./pages/host/gamemodes/Defense";
 
 function App() {
     return <AuthProvider>
@@ -65,6 +66,8 @@ function App() {
                 <Route path="/host/dino/instructions" element={<AuthRoute><DinoInstruct /></AuthRoute>}></Route>
                 <Route path="/host/dino" element={<AuthRoute><DinoHost /></AuthRoute>}></Route>
                 <Route path="/host/dino/final" element={<AuthRoute><DinoFinal /></AuthRoute>}></Route>
+                <Route path="/host/defense" element={<AuthRoute><DefenseHost /></AuthRoute>}></Route>
+                <Route path="/host/defense/final" element={<AuthRoute><DefenseFinal /></AuthRoute>}></Route>
             </Route>
             <Route path="/*" element={<Navigate to="/"></Navigate>}></Route>
         </Routes>

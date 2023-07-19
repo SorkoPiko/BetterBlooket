@@ -256,7 +256,7 @@ export function Defense2Final() {
     }}>
         {state.standings.length > 0 && <Standings
             standings={state.standings}
-            stats={state.standings.map(e => formatNumber(e.dmg) + " Damage")}
+            stats={state.standings.map(e => formatNumber(e.d) + " Damage")}
             gameId={hostCopy.setId}
             historyId={state.historyId}
             muted={state.muted}
