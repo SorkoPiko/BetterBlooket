@@ -1,0 +1,680 @@
+.wrapper {
+    position: relative;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 22px;
+    color: #f4e1a4
+}
+
+.button {
+    outline: none;
+    cursor: pointer;
+    transition: .2s
+}
+
+.button:hover {
+    transform: scale(.95)
+}
+
+.inside {
+    border: 4px solid #af8942;
+    padding: 4px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%
+}
+
+.corner1,
+.corner2,
+.corner3,
+.corner4,
+.corner5,
+.corner6,
+.corner7,
+.corner8 {
+    border: 4px solid #af8942;
+    background-color: #ead49a;
+    background-image: radial-gradient(rgba(220, 184, 86, 0), rgba(220, 184, 86, .2)), url(https://ac.blooket.com/play/111cb7e0ee6607ac3d1a13d534c0e0f1.png);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    position: absolute;
+    top: -12px;
+    left: -12px
+}
+
+.corner2,
+.corner3 {
+    left: calc(100% - 12px)
+}
+
+.corner3,
+.corner4 {
+    top: calc(100% - 12px)
+}
+
+.corner5 {
+    top: -14px;
+    left: -14px
+}
+
+.corner6 {
+    top: -14px
+}
+
+.corner6,
+.corner7 {
+    left: calc(100% - 10px)
+}
+
+.corner7,
+.corner8 {
+    top: calc(100% - 10px)
+}
+
+.corner8 {
+    left: -14px
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    background-color: #af8942
+}
+
+.container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    overflow: hidden;
+    background-color: #ead49a;
+    font-family: Macondo, sans-serif
+}
+
+.text {
+    position: absolute !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, calc(-100% - 50vh))
+}
+
+.textInside {
+    text-align: center;
+    font-size: 6vw;
+    line-height: 6.25vw;
+    padding: 1.5vw 2.5vw
+}
+
+.n1 {
+    animation: slideIn .3s linear 0ms forwards, slideOut .3s linear 2.5s forwards
+}
+
+.n2 {
+    animation: slideIn .3s linear 2.5s forwards, slideOut .3s linear 5.5s forwards
+}
+
+.n3 {
+    animation: slideIn .3s linear 5.5s forwards, slideOut .3s linear 9.5s forwards
+}
+
+.n4 {
+    animation: slideIn .3s linear 9.5s forwards, slideOut .3s linear 13.5s forwards
+}
+
+.n5 {
+    animation: slideIn .3s linear 13.5s forwards, slideOut .3s linear 17.5s forwards
+}
+
+.n6 {
+    animation: slideIn .3s linear 17.5s forwards, slideOut .3s linear 21.5s forwards
+}
+
+.n7 {
+    animation: slideIn .3s linear 21.5s forwards, slideOut .3s linear 25.5s forwards
+}
+
+.n8 {
+    animation: slideIn .3s linear 25.5s forwards, slideOut .3s linear 27.5s forwards
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translate(-50%, calc(-100% - 50vh))
+    }
+
+    to {
+        transform: translate(-50%, -50%)
+    }
+}
+
+@keyframes slideOut {
+    0% {
+        transform: translate(-50%, -50%)
+    }
+
+    to {
+        transform: translate(-50%, calc(100% + 50vh))
+    }
+}
+
+.dinoBackground {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #ead49a
+}
+
+.dinoLeft {
+    position: absolute;
+    height: 85%;
+    top: 6%;
+    width: 35vw;
+    padding: 1.5% 1.25vw;
+    left: 2.5vw;
+    overflow-y: auto
+}
+
+.dinoStandingContainer {
+    position: absolute !important;
+    height: calc(8vh + 25px);
+    width: calc(35vw - 5px)
+}
+
+.dinoStandingContainer:hover {
+    opacity: .4
+}
+
+.dinoStandingInside {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%
+}
+
+.placeText {
+    padding: .5vh 0 1vh .5vw;
+    min-width: 2.5vw;
+    height: 8.5vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: right
+}
+
+.placeText,
+.superPlaceText {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none
+}
+
+.superPlaceText {
+    text-align: left;
+    width: 1.4vw;
+    font-size: 1.4vw;
+    margin-top: 4px;
+    margin-left: 1px
+}
+
+.blookBox {
+    width: 6.25vh;
+    height: 7.1875vh;
+    margin: auto 0 auto 1vw;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none
+}
+
+.nameText {
+    font-weight: 700;
+    line-height: 6vh;
+    height: 6vh;
+    margin: auto 1vw;
+    text-align: left;
+    flex-grow: 1
+}
+
+.fossilsContainer {
+    height: 6vh;
+    margin: auto 1vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end
+}
+
+.fossilsText {
+    width: 6.5vw;
+    height: 6vh;
+    text-align: right
+}
+
+.fossilsIcon {
+    font-size: 1.3vw;
+    margin-left: .5vw;
+    transform: rotate(-45deg)
+}
+
+.dinoChatroom {
+    width: 55vw;
+    height: calc(70% - 30px);
+    position: absolute !important;
+    left: 42.5vw;
+    top: 7.5%
+}
+
+.dinoChatroomInside {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding: 15px 0;
+    text-align: left
+}
+
+.invisibleScrollbar::-webkit-scrollbar {
+    display: none
+}
+
+.noAlerts {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    text-align: center
+}
+
+.noAlertsIcon {
+    font-size: 8vw;
+    margin: 0 auto 2vh
+}
+
+.noAlertsText {
+    font-weight: 700;
+    font-size: 3vw
+}
+
+.totalFossilsContainer {
+    position: absolute !important;
+    left: 45vw;
+    top: 80%;
+    width: 50vw;
+    height: 15%
+}
+
+.totalFossilsInside {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center
+}
+
+.totalFossilsText {
+    font-weight: 700;
+    font-size: 4vw
+}
+
+.totalFossilsIcon {
+    margin-left: 1.2vw;
+    font-size: 2.2vw;
+    transform: rotate(-45deg)
+}
+
+.again {
+    font-size: 32px;
+    font-family: Adventure;
+    text-shadow: 2px 2px 8px grey;
+    text-decoration: none;
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    color: #fff;
+    cursor: pointer;
+    outline: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    opacity: 0;
+    transition: transform .4s cubic-bezier(.39, .5, .15, 1.36);
+    animation: fadeIn .5s linear 5.5s forwards
+}
+
+.again:hover {
+    transform: scale(1.05)
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+.placeText {
+    text-align: right;
+    width: 2.6vw;
+    height: 5vw;
+    top: .5vw;
+    left: .75vw
+}
+
+.placeText,
+.superPlaceText {
+    position: absolute;
+    font-family: Adventure;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    float: left
+}
+
+.superPlaceText {
+    text-align: center;
+    top: .75vw;
+    left: 3.45vw;
+    height: 1.7vw;
+    width: 1.85vw;
+    text-align: left
+}
+
+.containerOne {
+    position: absolute !important;
+    height: calc(85vh - 65px);
+    width: 25vw;
+    top: 105vh;
+    left: 37.5vw;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    animation: slideUp .35s linear 4.75s forwards
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(0)
+    }
+
+    to {
+        transform: translateY(calc(-100% - 12vh - 3vw))
+    }
+}
+
+.dino {
+    width: 100%;
+    height: 100%
+}
+
+.nameTextOne {
+    height: 12.5vh;
+    top: 2vh;
+    font-weight: 700
+}
+
+.nameTextOne,
+.scoreTextOne {
+    position: absolute;
+    text-align: center;
+    width: 20vw;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column
+}
+
+.scoreTextOne {
+    height: 7.5vh;
+    top: 17vh
+}
+
+.firstBlook {
+    position: absolute;
+    top: calc(100% - 22vw);
+    left: 50%;
+    transform: translateX(-50%);
+    height: 20.7vw;
+    width: 18vw
+}
+
+.placeOne {
+    opacity: 0;
+    position: absolute;
+    height: 6vw;
+    width: 6vw;
+    top: -3vw;
+    right: -4.5vw;
+    border-radius: 10px;
+    color: #fff;
+    background-color: #ffe900;
+    box-shadow: 0 0 8px 3px rgba(0, 0, 0, .2);
+    animation: fadeIn .25s linear 5.1s forwards
+}
+
+.containerTwo {
+    position: absolute !important;
+    height: calc(67.5vh - 65px);
+    width: 25vw;
+    top: 105vh;
+    left: 7.5vw;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    animation: slideUp .35s linear 2.75s forwards
+}
+
+.nameTextTwo {
+    height: 10vh;
+    top: 2vh;
+    font-weight: 700
+}
+
+.nameTextTwo,
+.scoreTextTwo {
+    position: absolute;
+    text-align: center;
+    width: 20vw;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column
+}
+
+.scoreTextTwo {
+    height: 6vh;
+    top: 13.5vh
+}
+
+.secondBlook {
+    position: absolute;
+    top: calc(100% - 16.94vw);
+    left: 50%;
+    transform: translateX(-50%);
+    height: 15.64vw;
+    width: 13.6vw
+}
+
+.placeTwo {
+    opacity: 0;
+    position: absolute;
+    height: 6vw;
+    width: 6vw;
+    top: -3vw;
+    right: -4.5vw;
+    border-radius: 10px;
+    color: #fff;
+    background-color: #818181;
+    box-shadow: 0 0 8px 3px rgba(0, 0, 0, .2);
+    animation: fadeIn .25s linear 3.1s forwards
+}
+
+.containerThree {
+    position: absolute !important;
+    height: calc(55vh - 65px);
+    width: 25vw;
+    top: 105vh;
+    left: 67.5vw;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    animation: slideUp .35s linear 1.5s forwards
+}
+
+.nameTextThree {
+    height: 8.5vh;
+    top: 2vh;
+    font-weight: 700
+}
+
+.nameTextThree,
+.scoreTextThree {
+    position: absolute;
+    text-align: center;
+    width: 20vw;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column
+}
+
+.scoreTextThree {
+    height: 5vh;
+    top: 11.75vh
+}
+
+.thirdBlook {
+    position: absolute;
+    top: calc(100% - 11.995vw);
+    left: 50%;
+    transform: translateX(-50%);
+    height: 10.695vw;
+    width: 9.3vw
+}
+
+.placeThree {
+    opacity: 0;
+    position: absolute;
+    height: 6vw;
+    width: 6vw;
+    top: -3vw;
+    right: -4.5vw;
+    border-radius: 10px;
+    color: #fff;
+    background-color: #cd7f32;
+    box-shadow: 0 0 8px 3px rgba(0, 0, 0, .2);
+    animation: fadeIn .25s linear 1.9s forwards
+}
+
+.standingsArray {
+    position: absolute;
+    top: 96vh;
+    left: 10vw;
+    width: 80vw;
+    padding: 1vh 0 4vh;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeIn .4s linear 5.5s forwards
+}
+
+.standingHolder,
+.standingsArray {
+    display: flex;
+    flex-direction: column
+}
+
+.standingHolder {
+    width: 100%;
+    margin: 12.5px auto
+}
+
+.standingContainer {
+    display: flex;
+    flex-direction: row;
+    height: 70px;
+    width: 100%
+}
+
+.standingPlaceText {
+    padding-left: 10px;
+    min-width: 60px;
+    line-height: 70px;
+    font-size: 45px;
+    text-align: right
+}
+
+.standingPlaceText,
+.standingSuperPlaceText {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none
+}
+
+.standingSuperPlaceText {
+    text-align: left;
+    width: 22px;
+    font-size: 22px;
+    margin-top: 8px;
+    margin-left: 2px;
+    margin-right: 10px
+}
+
+.standingBlook {
+    height: 57.5px;
+    width: 50px;
+    margin: 6.25px 10px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none
+}
+
+.standingNameText {
+    font-weight: 700;
+    margin-left: 12px;
+    line-height: 70px;
+    font-size: 36px;
+    text-align: left;
+    flex-grow: 1
+}
+
+.standingStatText {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 70px;
+    text-align: right;
+    margin-right: 20px
+}

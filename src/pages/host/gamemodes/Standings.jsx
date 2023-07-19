@@ -19,7 +19,7 @@ export default function Standings({ muted, theme, historyId, gameId, standings, 
         brawl: { standing: "brawlContainer", container: ["brawlContainer"], inside: [""], place: [""] },
         factory: { standing: "factoryStandingContainer", container: ["factoryContainer"], inside: [""], place: [""] },
         defense2: { standing: "defense2Container", container: ["defense2Container"], inside: [""], place: [""] },
-    })[theme])
+    })?.[theme] || { standing: "", container: [""], inside: [""], place: [""] })
     useEffect(() => {
         import("./standings.css");
         audio.volume = 0.7;
