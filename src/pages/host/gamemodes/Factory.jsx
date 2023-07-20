@@ -13,6 +13,7 @@ import Alert from "../../../components/Alert";
 import { factoryGlitches, factoryJokes } from "../../../utils/gameModes";
 import { shuffleArray, random } from "../../../utils/questions";
 import { factory } from "../../../utils/images";
+import Modal from "../../../components/Modal";
 
 const glitches = {
     names: {
@@ -470,15 +471,9 @@ export default function FactoryHost() {
                 {glitch.dance && <Dance name={glitch.name} blook={glitch.blook} />}
             </div>
         </div>
-        {userToBlock && <div className="blockModal">
-            <div className="blockContainer">
-                <div className="blockHeader">Remove {userToBlock} from the game?</div>
-                <div className="blockButtonContainer">
-                    <div className="blockYesButton" onClick={blockUser}>Yes</div>
-                    <div className="blockNoButton" onClick={() => setUserToBlock("")}>No</div>
-                </div>
-            </div>
-        </div>}
+        {userToBlock && <Modal text={`Remove ${userToBlock} from the game?`}
+            buttonOne={{ text: "Yes", click: blockUser, color: "#ce1313" }}
+            buttonTwo={{ text: "No", click: () => setUserToBlock(""), color: "var(--accent1)" }} />}
     </>
 }
 
@@ -575,14 +570,12 @@ export function FactoryFinal() {
             theme="factory"
             ready={state.ready}
         />}
-        {askPlayAgain && <div className="blockModal">
-            <div className="blockContainer">
-                <div className="blockHeader">Would you like to play again right now with the same players and settings?</div>
-                <div className="blockButtonContainer">
-                    <div className="blockNoButton" onClick={() => onPlayAgain(true)}>Yes!</div>
-                    <div className="blockNoButton" onClick={() => onPlayAgain(false)}>No</div>
-                </div>
-            </div>
-        </div>}
+        {askPlayAgain && <Modal text="Would you like to play again right now with the same players and settings?" buttonOne={{
+            text: "Yes!",
+            click: () => onPlayAgain(true)
+        }} buttonTwo={{
+            text: "No",
+            click: () => onPlayAgain(false)
+        }} />}
     </div>;
 }

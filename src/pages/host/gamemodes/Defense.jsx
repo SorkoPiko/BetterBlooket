@@ -14,6 +14,7 @@ import { loadFull } from "tsparticles";
 import { defenseMaps } from "../../../utils/gameModes";
 import FlipMove from "react-flip-move";
 import { defense } from "../../../utils/images";
+import Modal from "../../../components/Modal";
 
 const events = {
     'Question Frenzy': {
@@ -339,15 +340,9 @@ export default function DefenseHost() {
                 {event?.short && <DefenseEvent icon={event.icon} blook={event.blook} color={event.color} name={eventNames[event.short]} desc={event.desc} />}
             </div>
         </div>
-        {userToBlock && <div className="blockModal">
-            <div className="blockContainer">
-                <div className="blockHeader">Remove {userToBlock} from the game?</div>
-                <div className="blockButtonContainer">
-                    <div className="blockYesButton" onClick={blockUser}>Yes</div>
-                    <div className="blockNoButton" onClick={() => setUserToBlock("")}>No</div>
-                </div>
-            </div>
-        </div>}
+        {userToBlock && <Modal text={`Remove ${userToBlock} from the game?`}
+            buttonOne={{ text: "Yes", click: blockUser, color: "#ce1313" }}
+            buttonTwo={{ text: "No", click: () => setUserToBlock(""), color: "var(--accent1)" }} />}
     </>
 }
 
@@ -458,14 +453,12 @@ export function DefenseFinal() {
             muted={state.muted}
             ready={state.ready}
         />}
-        {askPlayAgain && <div className="blockModal">
-            <div className="blockContainer">
-                <div className="blockHeader">Would you like to play again right now with the same players and settings?</div>
-                <div className="blockButtonContainer">
-                    <div className="blockNoButton" onClick={() => onPlayAgain(true)}>Yes!</div>
-                    <div className="blockNoButton" onClick={() => onPlayAgain(false)}>No</div>
-                </div>
-            </div>
-        </div>}
+        {askPlayAgain && <Modal text="Would you like to play again right now with the same players and settings?" buttonOne={{
+            text: "Yes!",
+            click: () => onPlayAgain(true)
+        }} buttonTwo={{
+            text: "No",
+            click: () => onPlayAgain(false)
+        }} />}
     </div>;
 }

@@ -14,6 +14,7 @@ import { factoryGlitches, factoryJokes } from "../../../utils/gameModes";
 import { shuffleArray, random } from "../../../utils/questions";
 import { basic, factory } from "../../../utils/images";
 import { Tooltip } from "react-tooltip";
+import Modal from "../../../components/Modal";
 
 const messages = [
     { text: "Ready", time: 5500 },
@@ -267,14 +268,12 @@ export function RacingFinal() {
             muted={state.muted}
             ready={state.ready}
         />}
-        {askPlayAgain && <div className="blockModal">
-            <div className="blockContainer">
-                <div className="blockHeader">Would you like to play again right now with the same players and settings?</div>
-                <div className="blockButtonContainer">
-                    <div className="blockNoButton" onClick={() => onPlayAgain(true)}>Yes!</div>
-                    <div className="blockNoButton" onClick={() => onPlayAgain(false)}>No</div>
-                </div>
-            </div>
-        </div>}
+        {askPlayAgain && <Modal text="Would you like to play again right now with the same players and settings?" buttonOne={{
+            text: "Yes!",
+            click: () => onPlayAgain(true)
+        }} buttonTwo={{
+            text: "No",
+            click: () => onPlayAgain(false)
+        }} />}
     </div>;
 }
