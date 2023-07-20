@@ -444,7 +444,7 @@ export function GoldFinal() {
             theme={holidays.halloween ? "spooky" : holidays.lucky ? "shamrock" : "royal"}
             ready={state.ready}
         />}
-        {askPlayAgain && <Modal text="Would you like to play again right now with the same players and settings?" buttonOne={{
+        {askPlayAgain && <Modal text="Would you like to play again right now with the same settings?" buttonOne={{
             text: "Yes!",
             click: () => onPlayAgain(true)
         }} buttonTwo={{

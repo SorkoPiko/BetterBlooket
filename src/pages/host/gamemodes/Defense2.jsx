@@ -220,10 +220,6 @@ export function Defense2Final() {
                     } else results[client].corrects = user.c;
                 }
             });
-            if (liveGameController.liveGameCode && liveGameController.isHost) {
-                liveGameController.removeHostAndDeleteGame();
-                deleteHost();
-            }
             window.dispatchEvent(new Event('resize')); // Fix React-Textfit not sizing right
             waitTimeout.current = setTimeout(function () {
                 if (!standings.length) return;
@@ -278,7 +274,7 @@ export function Defense2Final() {
             theme="defense2"
             ready={state.ready}
         />}
-        {askPlayAgain && <Modal text="Would you like to play again right now with the same players and settings?" buttonOne={{
+        {askPlayAgain && <Modal text="Would you like to play again right now with the same settings?" buttonOne={{
             text: "Yes!",
             click: () => onPlayAgain(true)
         }} buttonTwo={{
