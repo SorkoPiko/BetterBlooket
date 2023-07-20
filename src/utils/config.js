@@ -21,5 +21,7 @@ export const audios = {
     deceptiveDinos: "https://ac.blooket.com/play/1f74e423a2c0280b20b83da7c3d8492f.mp3",
     towerDefense: "https://ac.blooket.com/play/42da6af92276ca568b237a4f706a6d7a.mp3",
     defenseEvent: "https://ac.blooket.com/play/d0768411f06dacca0b25e7159d395419.mp3",
-    cafe: "https://ac.blooket.com/play/59c5d4b865f7159866d27f085d39ffd0.mp3"
+    cafe: "https://ac.blooket.com/play/59c5d4b865f7159866d27f085d39ffd0.mp3",
+    factory: "https://ac.blooket.com/play/fceda506acdd4985212dba69fb6c98d7.mp3",
+    factoryDance: "https://ac.blooket.com/play/41882fa7d61e5d2e7b66f9bd74301988.mp3"
 }

@@ -18,7 +18,9 @@ import spooky from "./packs/spooky";
 import tropical from "./packs/tropical";
 import wonderland from "./packs/wonderland";
 
-export default {
+let allBlooks
+
+export default allBlooks = {
     ...farm,
     ...pet,
     ...forest,
@@ -242,3 +244,7 @@ export const rarityColors = {
 
 export const freeBlooks = ["Chick", "Chicken", "Cow", "Goat", "Horse", "Pig", "Sheep", "Duck", "Alpaca", "Dog", "Cat", "Rabbit", "Goldfish", "Hamster", "Turtle", "Kitten", "Puppy", "Bear", "Moose", "Fox", "Raccoon", "Squirrel", "Owl", "Hedgehog", "Deer", "Wolf", "Beaver", "Tiger", "Orangutan", "Cockatoo", "Parrot", "Anaconda", "Jaguar", "Macaw", "Toucan", "Panther", "Capuchin", "Gorilla", "Hippo", "Rhino", "Giraffe", "Snowy Owl", "Polar Bear", "Arctic Fox", "Baby Penguin", "Penguin", "Arctic Hare", "Seal", "Walrus"];
 export const colorBlooks = ["Light Blue", "Black", "Red", "Purple", "Pink", "Orange", "Lime", "Green", "Teal", "Tan", "Maroon", "Gray", "Mint", "Salmon", "Burgandy", "Baby Blue", "Dust", "Brown", "Dull Blue", "Yellow", "Blue"];
+
+export function blookColor(blook) {
+    return blook.includes("#") ? "#0bc2cf" : allBlooks[blook].color;
+}
