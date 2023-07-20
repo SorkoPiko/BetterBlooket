@@ -3,17 +3,6 @@
 version = 3
 
 [[package]]
-name = "BetterBlooket"
-version = "0.0.0"
-dependencies = [
- "declarative-discord-rich-presence",
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
-]
-
-[[package]]
 name = "adler"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -114,6 +103,17 @@ name = "base64"
 version = "0.21.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "604178f6c5c21f02dc555784810edfb88d34ac2c73b2eae109655649ee73ce3d"
+
+[[package]]
+name = "better_blooket"
+version = "0.0.0"
+dependencies = [
+ "declarative-discord-rich-presence",
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+]
 
 [[package]]
 name = "bitflags"

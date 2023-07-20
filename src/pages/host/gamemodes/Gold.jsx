@@ -368,10 +368,13 @@ export function GoldFinal() {
         ready: false,
         muted: !!host && host.muted
     });
+    const [askPlayAgain, setAskPlayAgain] = useState(false);
     const { current: hostCopy } = useRef(JSON.parse(JSON.stringify(host)));
     const navigate = useNavigate();
     const startTimeout = useRef();
     const waitTimeout = useRef();
+    const askTimeout = useRef();
+    const restarting = useRef(false);
     useEffect(() => {
         console.log(state, hostId);
         if (!state.standings?.[0]) return navigate("/sets");
@@ -390,10 +393,6 @@ export function GoldFinal() {
                     } else results[client].corrects = user.c;
                 }
             });
-            if (liveGameController.liveGameCode && liveGameController.isHost) {
-                liveGameController.removeHostAndDeleteGame();
-                deleteHost();
-            }
             window.dispatchEvent(new Event('resize')); // Fix React-Textfit not sizing right
             waitTimeout.current = setTimeout(function () {
                 if (!standings.length) return;
@@ -407,17 +406,33 @@ export function GoldFinal() {
                     })),
                     settings: hostCopy.settings,
                     setId: hostCopy.setId
-                }).then(({ data }) => setState(s => ({ ...s, historyId: data.id, ready: true }))).catch(console.error);
+                }).then(({ data }) => {
+                    setState(s => ({ ...s, historyId: data.id, ready: true }));
+                    askTimeout.current = setTimeout(() => setAskPlayAgain(true), 3000);
+                }).catch(console.error);
             }, 2000);
         }, 3500);
         return () => {
             clearTimeout(startTimeout.current);
             clearTimeout(waitTimeout.current);
-            if (liveGameController.liveGameCode && liveGameController.isHost) {
+            if (!restarting.current && liveGameController.liveGameCode && liveGameController.isHost) {
                 liveGameController.removeHostAndDeleteGame();
                 deleteHost();
             }
         }
+    }, []);
+    const onPlayAgain = useCallback(async (again) => {
+        if (!again) {
+            if (liveGameController.liveGameCode && liveGameController.isHost) {
+                liveGameController.removeHostAndDeleteGame();
+                deleteHost();
+            }
+            return setAskPlayAgain(false);
+        }
+        restarting.current = true;
+        await liveGameController.removeVal("st");
+        await liveGameController.removeVal("c");
+        liveGameController.setStage({ stage: "join" }, () => navigate("/host/join"));
     }, []);
     if (host?.standings?.[0] || state.standings?.[0]) return <div className="body" style={{
         overflowY: state.ready ? "auto" : "hidden",
@@ -434,6 +449,15 @@ export function GoldFinal() {
             theme={holidays.halloween ? "spooky" : holidays.lucky ? "shamrock" : "royal"}
             ready={state.ready}
         />}
+        {askPlayAgain && <div className="blockModal">
+            <div className="blockContainer">
+                <div className="blockHeader">Would you like to play again right now with the same players and settings?</div>
+                <div className="blockButtonContainer">
+                    <div className="blockNoButton" onClick={() => onPlayAgain(true)}>Yes!</div>
+                    <div className="blockNoButton" onClick={() => onPlayAgain(false)}>No</div>
+                </div>
+            </div>
+        </div>}
         {holidays.halloween && <Fog />}
     </div>;
 }
