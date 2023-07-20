@@ -13,6 +13,7 @@ import Alert from "../../../components/Alert";
 import { factoryGlitches, factoryJokes } from "../../../utils/gameModes";
 import { shuffleArray, random } from "../../../utils/questions";
 import { factory } from "../../../utils/images";
+import Modal from "../../../components/Modal";
 
 const glitches = {
     names: {
@@ -470,15 +471,9 @@ export default function FactoryHost() {
                 {glitch.dance && <Dance name={glitch.name} blook={glitch.blook} />}
             </div>
         </div>
-        {userToBlock && <div className="blockModal">
-            <div className="blockContainer">
-                <div className="blockHeader">Remove {userToBlock} from the game?</div>
-                <div className="blockButtonContainer">
-                    <div className="blockYesButton" onClick={blockUser}>Yes</div>
-                    <div className="blockNoButton" onClick={() => setUserToBlock("")}>No</div>
-                </div>
-            </div>
-        </div>}
+        {userToBlock && <Modal text={`Remove ${userToBlock} from the game?`}
+            buttonOne={{ text: "Yes", click: blockUser, color: "#ce1313" }}
+            buttonTwo={{ text: "No", click: () => setUserToBlock(""), color: "var(--accent1)" }} />}
     </>
 }
 
@@ -491,10 +486,13 @@ export function FactoryFinal() {
         ready: false,
         muted: !!host && host.muted
     });
+    const [askPlayAgain, setAskPlayAgain] = useState(false);
     const { current: hostCopy } = useRef(JSON.parse(JSON.stringify(host)));
     const navigate = useNavigate();
     const startTimeout = useRef();
     const waitTimeout = useRef();
+    const askTimeout = useRef();
+    const restarting = useRef(false);
     useEffect(() => {
         console.log(state, hostId);
         if (!state.standings?.[0]) return navigate("/sets");
@@ -513,10 +511,6 @@ export function FactoryFinal() {
                     } else results[client].corrects = user.c;
                 }
             });
-            if (liveGameController.liveGameCode && liveGameController.isHost) {
-                liveGameController.removeHostAndDeleteGame();
-                deleteHost();
-            }
             window.dispatchEvent(new Event('resize')); // Fix React-Textfit not sizing right
             waitTimeout.current = setTimeout(function () {
                 if (!standings.length) return;
@@ -530,17 +524,34 @@ export function FactoryFinal() {
                     })),
                     settings: hostCopy.settings,
                     setId: hostCopy.setId
-                }).then(({ data }) => setState(s => ({ ...s, historyId: data.id, ready: true }))).catch(console.error);
+                }).then(({ data }) => {
+                    setState(s => ({ ...s, historyId: data.id, ready: true }));
+                    askTimeout.current = setTimeout(() => setAskPlayAgain(true), 3000);
+                }).catch(console.error);
             }, 2000);
         }, 3500);
         return () => {
             clearTimeout(startTimeout.current);
             clearTimeout(waitTimeout.current);
-            if (liveGameController.liveGameCode && liveGameController.isHost) {
+            clearTimeout(askTimeout.current);
+            if (!restarting.current && liveGameController.liveGameCode && liveGameController.isHost) {
                 liveGameController.removeHostAndDeleteGame();
                 deleteHost();
             }
         }
+    }, []);
+    const onPlayAgain = useCallback(async (again) => {
+        if (!again) {
+            if (liveGameController.liveGameCode && liveGameController.isHost) {
+                liveGameController.removeHostAndDeleteGame();
+                deleteHost();
+            }
+            return setAskPlayAgain(false);
+        }
+        restarting.current = true;
+        await liveGameController.removeVal("st");
+        await liveGameController.removeVal("c");
+        liveGameController.setStage({ stage: "join" }, () => navigate("/host/join"));
     }, []);
     if (host?.standings?.[0] || state.standings?.[0]) return <div className="body factoryBackground" style={{
         overflowY: state.ready ? "auto" : "hidden",
@@ -555,5 +566,12 @@ export function FactoryFinal() {
             theme="factory"
             ready={state.ready}
         />}
+        {askPlayAgain && <Modal text="Would you like to play again right now with the same settings?" buttonOne={{
+            text: "Yes!",
+            click: () => onPlayAgain(true)
+        }} buttonTwo={{
+            text: "No",
+            click: () => onPlayAgain(false)
+        }} />}
     </div>;
 }

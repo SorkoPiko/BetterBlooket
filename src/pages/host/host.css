@@ -213,7 +213,7 @@
     top: 0;
     left: 0;
     z-index: -1;
-    width: 100%;
+    width: 100vw;
     min-height: 100vh;
     overflow-x: hidden;
     background-color: #f7f7f7;
@@ -228,86 +228,4 @@
     top: 65px;
     left: 0;
     z-index: -1;
-}
-
-.blockModal {
-    display: block;
-    position: fixed;
-    z-index: 15;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, .6);
-}
-
-.blockContainer {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 500px;
-    background-color: var(--main1);
-    box-shadow: 0 0 8px 3px rgba(0, 0, 0, .2);
-    border-radius: 7px;
-    text-align: center;
-}
-
-.blockHeader {
-    font-size: 32px;
-    font-weight: 700;
-    margin: 35px;
-}
-
-.blockButtonContainer {
-    width: 100%;
-    margin-top: 15px;
-    margin-bottom: 25px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-.blockYesButton {
-    border-color: white;
-    border-style: solid;
-    border-radius: 6px;
-    width: 125px;
-    height: 45px;
-    margin: auto;
-    font-size: 23px;
-    text-align: center;
-    line-height: 45px;
-    outline: none;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.blockYesButton:hover {
-    border-color: #ce1313;
-    color: #ce1313;
-    font-weight: 700;
-}
-
-.blockNoButton {
-    border-color: white;
-    border-style: solid;
-    border-radius: 6px;
-    width: 125px;
-    height: 45px;
-    margin: auto;
-    font-size: 23px;
-    text-align: center;
-    line-height: 45px;
-    outline: none;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.blockNoButton:hover {
-    border-color: var(--accent1);
-    color: var(--accent1);
-    font-weight: 700;
 }

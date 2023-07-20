@@ -1,5 +1,5 @@
 [package]
-name = "BetterBlooket"
+name = "better_blooket"
 version = "0.0.0"
 description = "A Blooket remake using Tauri"
 authors = ["you"]

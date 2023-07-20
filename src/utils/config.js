@@ -23,5 +23,11 @@ export const audios = {
     defenseEvent: "https://ac.blooket.com/play/d0768411f06dacca0b25e7159d395419.mp3",
     cafe: "https://ac.blooket.com/play/59c5d4b865f7159866d27f085d39ffd0.mp3",
     factory: "https://ac.blooket.com/play/fceda506acdd4985212dba69fb6c98d7.mp3",
-    factoryDance: "https://ac.blooket.com/play/41882fa7d61e5d2e7b66f9bd74301988.mp3"
+    factoryDance: "https://ac.blooket.com/play/41882fa7d61e5d2e7b66f9bd74301988.mp3",
+    racing: "https://ac.blooket.com/play/fceda506acdd4985212dba69fb6c98d7.mp3",
+    readySetGo: [
+        "https://ac.blooket.com/play/0b46773f998e7e0fab6c9e87afe8ac2e.mp3",
+        "https://ac.blooket.com/play/60cffe6f4ff3840c00b6e68b42663c08.mp3",
+        "https://ac.blooket.com/play/4477601a5244d54e3fedbdaa78294b9a.mp3"
+    ]
 }
