@@ -103,7 +103,7 @@ export default function GoldHost() {
         window.dispatchEvent(new Event('resize')); // Fix React-Textfit not sizing right
         liveGameController.getDatabaseVal("c", snapshot => {
             const val = snapshot || {};
-            if (!val || Object.keys(val).length == 0) return;
+            if (!val || Object.keys(val).length == 0) return setPlayers([]);
             let clients = [];
             for (const [name, { b: blook, g: gold = 0 }] of Object.entries(val)) clients.push({ name, blook, gold: gold || 0 });
             clients.sort((a, b) => b.gold - a.gold);

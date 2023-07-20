@@ -108,7 +108,7 @@ export default function DinoHost() {
         window.dispatchEvent(new Event('resize')); // Fix React-Textfit not sizing right
         liveGameController.getDatabaseVal("c", snapshot => {
             const val = snapshot || {};
-            if (!val || Object.keys(val).length == 0) return;
+            if (!val || Object.keys(val).length == 0) return setPlayers([]);
             let clients = [];
             for (const [name, { b: blook, f: fossils = 0 }] of Object.entries(val)) clients.push({ name, blook, fossils });
             clients.sort((a, b) => b.fossils - a.fossils);
