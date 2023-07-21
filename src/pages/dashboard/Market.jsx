@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Sidebar from "./SideBar";
+import Sidebar from "./SideBar.jsx";
 import packs, { market, packTop, token } from "../../blooks/packs";
 import "./market.css";
 import { setActivity } from "../../utils/discordRPC";
