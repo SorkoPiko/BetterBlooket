@@ -1,0 +1,425 @@
+.instructContainer {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    overflow: hidden;
+    background: repeating-linear-gradient(45deg, transparent, transparent 12vw, #e6e6e6 0, #e6e6e6 24vw)
+}
+
+.instructContainer,
+.text {
+    position: absolute
+}
+
+.text {
+    width: 80%;
+    top: 50%;
+    left: 10%;
+    text-align: center;
+    font-family: Adventure;
+    text-shadow: 2px 2px 8px grey;
+    color: #fff;
+    font-size: 5.5vw;
+    border-radius: 10px;
+    opacity: 0
+}
+
+.text,
+.textInside {
+    background-color: #36c
+}
+
+.textInside {
+    border: 5px solid #fff;
+    margin: 10px;
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    padding: 1vw;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px
+}
+
+.n1 {
+    animation: fadeIn .15s linear 0ms forwards, fadeOut .15s linear 3s forwards
+}
+
+.n2 {
+    animation: fadeIn .15s linear 3s forwards, fadeOut .15s linear 6.5s forwards
+}
+
+.n3 {
+    animation: fadeIn .15s linear 6.5s forwards, fadeOut .15s linear 10s forwards
+}
+
+.n4 {
+    animation: fadeIn .15s linear 10s forwards, fadeOut .15s linear 13.5s forwards
+}
+
+.n5 {
+    animation: fadeIn .15s linear 13.5s forwards, fadeOut .15s linear 17s forwards
+}
+
+.n6 {
+    animation: fadeIn .15s linear 17s forwards, fadeOut .15s linear 20s forwards
+}
+
+.n7 {
+    animation: fadeIn .15s linear 20s forwards, fadeOut .15s linear 22s forwards
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(.5) translateY(-50%)
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(-50%)
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1) translateY(-50%)
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(.5) translateY(-50%)
+    }
+}
+
+.background {
+    background: repeating-linear-gradient(45deg, transparent, transparent 12vw, #e6e6e6 0, #e6e6e6 24vw)
+}
+
+.rushBoxesHolder {
+    left: 5%;
+    width: 90%;
+    flex-flow: row wrap;
+    align-content: space-evenly
+}
+
+.rushBoxesHolder,
+.shelves {
+    position: absolute;
+    top: 1.5%;
+    height: 93.5%;
+    display: flex;
+    justify-content: space-evenly
+}
+
+.shelves {
+    width: 100%;
+    left: 0;
+    flex-direction: column
+}
+
+.shelfContainer {
+    width: 100%;
+    height: 45%;
+    position: relative;
+    margin: 0 auto
+}
+
+.shelf {
+    bottom: -5%;
+    height: 70%;
+    background-color: #36c
+}
+
+.shelf,
+.shelfBot {
+    position: absolute;
+    left: 0;
+    width: 100%
+}
+
+.shelfBot {
+    bottom: -15%;
+    height: 10%;
+    background-color: #2952a3;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, .2)
+}
+
+.wrapper {
+    width: 22.5%;
+    height: 45%;
+    border-radius: 1.5vw;
+    overflow: hidden;
+    position: relative;
+    background-color: #af705a;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none
+}
+
+.bigBox {
+    width: 27vw;
+    height: 25vw
+}
+
+.boxButton {
+    outline: none;
+    cursor: pointer
+}
+
+.hoverButton {
+    transition: .2s
+}
+
+.hoverButton:hover {
+    transform: scale(.95)
+}
+
+.fenceContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 3vw);
+    border-radius: 1.5vw;
+    box-sizing: border-box;
+    background-color: #c9987a
+}
+
+.bigBox>.fenceContainer {
+    height: calc(100% - 4vw)
+}
+
+.topWall {
+    position: absolute;
+    top: .6vw;
+    left: .6vw;
+    height: calc(100% - 1.2vw);
+    width: calc(100% - 1.2vw);
+    background-color: #ac6b53;
+    border-radius: 1vw
+}
+
+.bigTopWall {
+    top: .9vw;
+    left: .9vw;
+    height: calc(100% - 1.8vw);
+    width: calc(100% - 1.8vw)
+}
+
+.container {
+    width: calc(100% - 1.2vw);
+    height: calc(100% - 3.7vw);
+    position: absolute;
+    top: 3.1vw;
+    left: .6vw;
+    border-radius: 1vw;
+    background-color: #bc815c
+}
+
+.bigContainer {
+    width: calc(100% - 1.8vw);
+    height: calc(100% - 5.1vw);
+    top: 4.4vw;
+    left: .9vw
+}
+
+.sketchWrapper {
+    position: absolute;
+    top: -2.5vw;
+    left: 0;
+    width: 100%;
+    height: calc(100% + 2.5vw);
+    border-radius: 1vw;
+    overflow: hidden
+}
+
+.sketchHolder {
+    height: calc(100% + 1.5vw)
+}
+
+.sketchCanvas,
+.sketchHolder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%
+}
+
+.sketchCanvas {
+    height: 100%
+}
+
+.textRow {
+    position: absolute;
+    bottom: .25vw;
+    left: 6%;
+    height: 2.5vw;
+    width: 88%;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1.3vw
+}
+
+.boxText,
+.textRow {
+    display: flex;
+    align-items: center
+}
+
+.boxText {
+    height: 100%;
+    padding: 0 .5vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+    color: #fff;
+    font-weight: 700;
+    justify-content: center;
+    border: .3vw solid #8a5542;
+    border-radius: .3vw;
+    box-sizing: border-box
+}
+
+.bigBox>.textRow {
+    height: 3vw;
+    bottom: .5vw;
+    font-size: 1.8vw
+}
+
+.shieldContainer {
+    width: 3.5vw;
+    height: 3.5vw;
+    position: absolute;
+    top: .25vw;
+    right: .1vw;
+    font-size: 2.1vw
+}
+
+.shieldImg {
+    width: 95%;
+    height: 95%;
+    position: absolute;
+    left: 2.5%;
+    top: 7%
+}
+
+.shieldText {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    font-family: Adventure;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    letter-spacing: .5px;
+    text-shadow: -1px -1px 0 #646464, 1px -1px 0 #646464, -1px 1px 0 #646464, 2px 2px 0 #646464
+}
+
+.bigBox>.shieldContainer {
+    width: 5vw;
+    height: 5vw;
+    font-size: 2.9vw
+}
+
+@media only screen and (max-width:700px) {
+    .wrapper {
+        width: 45%;
+        height: 22.5%;
+        border-radius: 3vw
+    }
+
+    .fenceContainer {
+        height: calc(100% - 5vw);
+        border-radius: 3vw
+    }
+
+    .topWall {
+        top: 1.5vw;
+        height: calc(100% - 3vw)
+    }
+
+    .container,
+    .topWall {
+        left: 1.5vw;
+        width: calc(100% - 3vw);
+        border-radius: 2vw
+    }
+
+    .container {
+        height: calc(100% - 6.5vw);
+        top: 5vw
+    }
+
+    .textRow {
+        height: 4vw;
+        bottom: .5vw;
+        font-size: 2.5vw
+    }
+
+    .boxText {
+        border: .5vw solid #8a5542;
+        padding: 0 1vw;
+        border-radius: 1vw
+    }
+
+    .shieldContainer {
+        width: 8vw;
+        height: 8vw;
+        font-size: 5vw
+    }
+
+    .bigBox {
+        width: 75vw;
+        height: 30vh;
+        border-radius: 4vw
+    }
+
+    .bigBox>.fenceContainer {
+        height: calc(100% - 8vw);
+        border-radius: 4vw
+    }
+
+    .bigTopWall {
+        top: 2.5vw;
+        height: calc(100% - 5vw)
+    }
+
+    .bigContainer,
+    .bigTopWall {
+        left: 2.5vw;
+        width: calc(100% - 5vw);
+        border-radius: 3vw
+    }
+
+    .bigContainer {
+        height: calc(100% - 11vw);
+        top: 8.5vw
+    }
+
+    .bigBox>.textRow {
+        height: 6vw;
+        bottom: 1.25vw;
+        font-size: 4vw
+    }
+
+    .bigBox>.shieldContainer {
+        width: 12vw;
+        height: 12vw;
+        font-size: 7vw
+    }
+
+    .bigText {
+        border: 1vw solid #8a5542;
+        padding: 0 1.5vw;
+        border-radius: 1vw
+    }
+}

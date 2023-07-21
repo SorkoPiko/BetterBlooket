@@ -12,16 +12,11 @@ import { useAuth } from "../../../context/AuthContext";
 import Standings from "./Standings";
 import Modal from "../../../components/Modal";
 
-const instructs = ["Choose a Password", "Answer Questions", "Mine Crypto", "Hack Other Players By Guessing Their Passwords"];
-
 export function FishInstruct() {
     const { host: { current: host }, updateHost, liveGameController } = useGame();
     const { current: audio } = useRef(new Audio(audios.fishingFrenzy));
     const [muted, setMuted] = useState(!!host && host.muted);
-    const [instructions, setInstructions] = useState(instructs);
-    const [text, setText] = useState("");
     const timeout = useRef();
-    const typingInterval = useRef();
     const navigate = useNavigate();
     const skip = useCallback(() => navigate("/host/fishing"), []);
     const changeMuted = useCallback(() => {
@@ -29,39 +24,19 @@ export function FishInstruct() {
         audio.muted = !muted;
         updateHost({ muted: !muted });
     }, [muted]);
-    const nextInstruction = useCallback((ind) => {
-        setText("");
-        if (ind >= instructions.length) skip();
-        else timeout.current = setTimeout(function () {
-            let char = 0;
-            typingInterval.current = setInterval(function () {
-                char++;
-                setText(instructions[ind].slice(0, char));
-                if (char >= instructions[ind].length) {
-                    clearInterval(typingInterval.current);
-                    timeout.current = setTimeout(function () {
-                        ind++;
-                        nextInstruction(ind);
-                    }, 3000);
-                }
-            }, 40);
-        }, 1000);
-    }, []);
     useEffect(() => {
         if (host?.settings) {
             import("./fish.css");
-            setInstructions(i => [...i].concat([host?.settings && "Time" === host.settings.mode ? `Most Crypto after ${formatNumber(host.settings.amount)} ${"1" === host.settings.amount ? "minute" : "minutes"} wins!` : `First player to have ₿ ${formatNumber(host.settings.amount)} wins!`, "Good Luck"]));
             audio.volume = 0.15;
             audio.play();
             audio.addEventListener("ended", function () {
                 audio.currentTime = 0;
                 audio.play();
             }, false);
-            nextInstruction(0);
+            timeout.current = setTimeout(skip, 24500);
         }
         return () => {
             clearTimeout(timeout.current);
-            clearTimeout(typingInterval.current);
             audio.currentTime = 0;
             audio.pause();
             audio.removeEventListener("ended", function () {
