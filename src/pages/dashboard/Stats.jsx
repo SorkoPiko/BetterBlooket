@@ -3,7 +3,7 @@ import CustomBlook from "../../blooks/CustomBlook";
 import banners from "../../blooks/banners";
 import titles from "../../blooks/titles";
 import statistics, { icons } from "../../blooks/stats";
-import Sidebar from "./SideBar";
+import Sidebar from "./SideBar.jsx";
 import "./stats.css";
 import allBlooks, { freeBlooks } from "../../blooks/allBlooks";
 import { setActivity } from "../../utils/discordRPC";

@@ -149,7 +149,7 @@ class RushBox extends React.Component {
                     backgroundPosition: pack.imgPosition
                 }}>
                     <div className="sketchWrapper"><Sketch setup={(p5, canvasParent) => {
-                        if (!canvasParentRef) return;
+                        if (!this.canvasParentRef) return;
                         this.p5Ref = p5;
                         this.canvasParentRef = canvasParent;
                         this.canvasParentRef.className = "sketchHolder";
