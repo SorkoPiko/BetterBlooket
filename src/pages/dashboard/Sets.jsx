@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Sidebar from "./SideBar";
+import Sidebar from "./SideBar.jsx";
 import { setActivity } from "../../utils/discordRPC";
 function Sets() {
     useEffect(() => {
