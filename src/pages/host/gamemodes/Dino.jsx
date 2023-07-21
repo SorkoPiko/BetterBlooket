@@ -3,7 +3,7 @@ import { useGame } from "../../../context/GameContext";
 import { audios } from "../../../utils/config";
 import { diffObjects, formatBigNumber, formatNumber, getDimensions, getOrdinal, listKeys } from "../../../utils/numbers";
 import { useNavigate } from "react-router-dom";
-import TopBar from "../topBar";
+import TopBar from "../TopBar.jsx";
 import { Textfit } from "react-textfit";
 import Blook from "../../../blooks/Blook";
 import Alert from "../../../components/Alert";

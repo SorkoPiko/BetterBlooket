@@ -7,7 +7,7 @@
     -moz-user-select: none;
     user-select: none;
     overflow: hidden;
-    background: repeating-linear-gradient(45deg, transparent, transparent 12vw, #e6e6e6 0, #e6e6e6 24vw)
+    background: repeating-linear-gradient(45deg, white, white 12vw, #e6e6e6 0, #e6e6e6 24vw)
 }
 
 .instructContainer,
@@ -100,7 +100,7 @@
 }
 
 .background {
-    background: repeating-linear-gradient(45deg, transparent, transparent 12vw, #e6e6e6 0, #e6e6e6 24vw)
+    background: repeating-linear-gradient(45deg, white, white 12vw, #e6e6e6 0, #e6e6e6 24vw)
 }
 
 .rushBoxesHolder {
@@ -153,8 +153,8 @@
 }
 
 .wrapper {
-    width: 22.5%;
-    height: 45%;
+    width: 100%;
+    height: 100%;
     border-radius: 1.5vw;
     overflow: hidden;
     position: relative;
@@ -422,4 +422,9 @@
         padding: 0 1.5vw;
         border-radius: 1vw
     }
+}
+
+.rushBoxesHolder > div {
+    width: 22.5%;
+    height: 45%;
 }

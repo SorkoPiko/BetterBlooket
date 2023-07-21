@@ -111,8 +111,8 @@ export default function Standings({ muted, theme, historyId, gameId, standings, 
                     <Textfit className="nameTextTwo" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>{standings[1].n}</Textfit>
                     <Textfit className="scoreTextTwo" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>{stats[1]}</Textfit>
                     <div className={`placeTwo ${classes.place[1] || classes.place[0]}`}>
-                        <Textfit className="placeText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5.5vw")}>2</Textfit>
-                        <Textfit className="superPlaceText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("2.5vw")}>nd</Textfit>
+                        <Textfit className="placeText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5.5vw")}>{standings[1].p}</Textfit>
+                        <Textfit className="superPlaceText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("2.5vw")}>{getOrdinal(standings[1].p)}</Textfit>
                     </div>
                     <Blook className="secondBlook" name={standings[1].b} />
                 </div>
@@ -128,23 +128,25 @@ export default function Standings({ muted, theme, historyId, gameId, standings, 
                     <Textfit className="nameTextThree" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>{standings[2].n}</Textfit>
                     <Textfit className="scoreTextThree" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>{stats[2]}</Textfit>
                     <div className={`placeThree ${classes.place[2] || classes.place[0]}`}>
-                        <Textfit className="placeText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5.5vw")}>3</Textfit>
-                        <Textfit className="superPlaceText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("2.5vw")}>rd</Textfit>
+                        <Textfit className="placeText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5.5vw")}>{standings[2].p}</Textfit>
+                        <Textfit className="superPlaceText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("2.5vw")}>{getOrdinal(standings[2].p)}</Textfit>
                     </div>
                     <Blook className="thirdBlook" name={standings[2].b} />
                 </div>
             </div>}
             {(standings[3] || team) && <div className="standingsArray">
-                {standings.slice(team ? 0 : 3, standings.length).map(standing => {
+                {standings.slice(team ? 0 : 3, standings.length).map((standing, i) => {
                     return <div key={standing.n} className="standingHolder">
                         <div className={`standingContainer ${classes.standing}`}>
-                            <div className="standingPlaceText">{standing.place}</div>
-                            <div className="standingSuperPlaceText">{getOrdinal(standing.place)}</div>
+                            <div className="standingPlaceText">{standing.p}</div>
+                            <div className="standingSuperPlaceText">{getOrdinal(standing.p)}</div>
                             <Blook name={standing.b} className="standingBlook" />
                             <div className="standingNameText">{standing.n}</div>
                             <div className="standingStatText">{stats[standings.indexOf(standing)]}</div>
-                            {standing.players && <div className="playerText">{listKeys(standing.players)}</div>}
                         </div>
+                        {standing.players && <div className="standingPlayerContainer">
+                            <div className="playerText">{listKeys(standing.players)}</div>
+                        </div>}
                     </div>
                 })}
             </div>}

@@ -19,7 +19,6 @@
     "@tauri-apps/api": "^1.4.0",
     "axios": "^1.4.0",
     "firebase": "^10.0.0",
-    "i": "^0.3.7",
     "net-browserify": "^0.2.4",
     "npm": "^9.8.0",
     "phaser": "^3.60.0",
