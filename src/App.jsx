@@ -30,6 +30,7 @@ import DefenseHost, { DefenseFinal } from "./pages/host/gamemodes/Defense";
 import CafeHost, { CafeFinal } from "./pages/host/gamemodes/Cafe";
 import FactoryHost, { FactoryFinal } from "./pages/host/gamemodes/Factory";
 import RacingHost, { RacingFinal } from "./pages/host/gamemodes/Racing";
+import RushHost, { RushFinal, RushInstruct } from "./pages/host/gamemodes/Rush";
 
 function App() {
     return <AuthProvider>
@@ -77,6 +78,9 @@ function App() {
                 <Route path="/host/factory/final" element={<AuthRoute><FactoryFinal /></AuthRoute>}></Route>
                 <Route path="/host/racing" element={<AuthRoute><RacingHost /></AuthRoute>}></Route>
                 <Route path="/host/racing/final" element={<AuthRoute><RacingFinal /></AuthRoute>}></Route>
+                <Route path="/host/rush/instructions" element={<AuthRoute><RushInstruct /></AuthRoute>}></Route>
+                <Route path="/host/rush" element={<AuthRoute><RushHost /></AuthRoute>}></Route>
+                <Route path="/host/rush/final" element={<AuthRoute><RushFinal /></AuthRoute>}></Route>
             </Route>
             <Route path="/*" element={<Navigate to="/"></Navigate>}></Route>
         </Routes>

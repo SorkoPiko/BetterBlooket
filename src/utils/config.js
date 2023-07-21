@@ -29,5 +29,6 @@ export const audios = {
         "https://ac.blooket.com/play/0b46773f998e7e0fab6c9e87afe8ac2e.mp3",
         "https://ac.blooket.com/play/60cffe6f4ff3840c00b6e68b42663c08.mp3",
         "https://ac.blooket.com/play/4477601a5244d54e3fedbdaa78294b9a.mp3"
-    ]
+    ],
+    blookRush: "https://ac.blooket.com/play/e8bdfd5b84ec78a046dd9111d1503cc6.mp3"
 }

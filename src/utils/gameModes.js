@@ -1,5 +1,6 @@
 import { blookColor } from "../blooks/allBlooks"
 import { holidays } from "./config"
+import { basic, dino } from "./images"
 
 export const defense2Maps = {
     meadow: {
@@ -1243,6 +1244,135 @@ export const factoryJokes = [
     ['What do you call a cow with no legs?', 'Ground Beef!'],
 ]
 
+export const rushBoxes = {
+    Classic: {
+        base: '#af705a',
+        top: '#ac6b53',
+        fence: '#c9987a',
+        border: '#8a5542',
+        inside: '#bc815c',
+    },
+    'Arctic Animal': {
+        base: '#21a2de',
+        top: '#1e92c8',
+        fence: '#64bee8',
+        border: '#1b82b1',
+        inside: '#37abe1',
+        insideImg: 'linear-gradient(#1fa3e0, #7ac7eb)',
+    },
+    Blizzard: {
+        base: '#21a2de',
+        top: '#1e92c8',
+        fence: '#64bee8',
+        border: '#1b82b1',
+        inside: '#37abe1',
+        insideImg: 'linear-gradient(#1fa3e0, #7ac7eb)',
+    },
+    Breakfast: {
+        base: '#af705a',
+        top: '#ac6b53',
+        fence: '#c9987a',
+        border: '#8a5542',
+        inside: '#fff',
+        insideImg: 'linear-gradient(90deg, rgba(200,0,0,.5) 50%, transparent 50%), linear-gradient(rgba(200,0,0,.5) 50%, transparent 50%)',
+        imgSize: '50px 50px',
+    },
+    Space: {
+        base: '#3a3a3a',
+        top: '#333333',
+        fence: '#4d4d4d',
+        border: '#262626',
+        inside: '#404040',
+    },
+    Spooky: {
+        base: '#3a3a3a',
+        top: '#333333',
+        fence: '#e57e25',
+        border: '#e57e25',
+        inside: '#404040',
+    },
+    Aquatic: {
+        base: '#2179ea',
+        top: '#1466d2',
+        fence: '#2a9eea',
+        border: '#1466d2',
+        inside: '#1d86ea',
+    },
+    Medieval: {
+        base: '#99b1b2',
+        top: '#8ba6a7',
+        fence: '#c5d3d3',
+        border: '#8ba7a7',
+        inside: '#99b1b2',
+        insideImg: `url(${basic.castleTile})`,
+        imgSize: '74.5px',
+    },
+    Wonderland: {
+        base: '#7b36b0',
+        top: '#6d309c',
+        fence: '#944fc9',
+        border: '#6d309c',
+        inside: '#9048c6',
+        insideImg: 'repeating-linear-gradient(45deg, #9b5acb 25%, transparent 25%, transparent 75%, #9b5acb 75%, #9b5acb), repeating-linear-gradient(45deg, #9b5acb 25%, #9048c6 25%, #9048c6 75%, #9b5acb 75%, #9b5acb)',
+        imgSize: '40px 40px',
+        imgPosition: '0 0, 20px 20px',
+    },
+    Bot: {
+        base: '#999999',
+        top: '#8c8c8c',
+        fence: '#bfbfbf',
+        border: '#808080',
+        inside: '#b3b3b3',
+        insideImg: 'linear-gradient(#808080 1px, transparent 1px), linear-gradient(to right, #808080 1px, #b3b3b3 1px)',
+        imgSize: '20px 20px',
+    },
+    'Forest Animal': {
+        base: '#2d8659',
+        top: '#26734d',
+        fence: '#39ac73',
+        border: '#26734d',
+        inside: '#339966',
+    },
+    Pet: {
+        base: '#cc0000',
+        top: '#b30000',
+        fence: '#ff0000',
+        border: '#b30000',
+        inside: '#ffdd99',
+    },
+    'Tropical Animal': {
+        base: '#228062',
+        top: '#02745e',
+        fence: '#46925a',
+        border: '#02745e',
+        inside: '#195d84',
+    },
+    Safari: {
+        base: '#b89261',
+        top: '#b0864f',
+        fence: '#7b5e37',
+        border: '#9e7947',
+        inside: '#c6a880',
+    },
+    Dino: {
+        base: '#947438',
+        top: '#816531',
+        fence: '#af8942',
+        border: '#816531',
+        inside: '#ead49a',
+        insideImg: `radial-gradient(rgba(220, 184, 86, 0), rgba(220, 184, 86, 0.2)), url(${dino.paperTexture})`,
+    },
+    'Ice Monster': {
+        base: '#1a4c5e',
+        top: '#10303c',
+        fence: '#216178',
+        border: '#10303c',
+        inside: '#1a4c5e',
+        insideImg: `url(${basic.snowTile})`,
+        imgSize: '300px',
+    },
+}
+
 export default {
     Racing: {
         name: "Racing",
@@ -1670,12 +1800,16 @@ export default {
             Solo: {
                 title: "Solo",
                 desc: "Everyone competes for themselves",
-                icon: "fas fa-user"
+                icon: "fas fa-user",
+                input: "Time (minutes)",
+                inputIcon: "fa-regular fa-clock"
             },
             Teams: {
                 title: "Teams",
                 desc: "Random teams compete together (4+ players) (Recommended)",
                 icon: "fas fa-users",
+                input: "Time (minutes)",
+                inputIcon: "fa-regular fa-clock"
             }
         },
         settings: {
