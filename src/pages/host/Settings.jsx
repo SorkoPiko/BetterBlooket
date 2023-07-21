@@ -171,7 +171,7 @@ export default function HostSettings() {
                     {gameMode.modes?.[settings.mode]?.input && <div id="amountContainer">
                         <i className={`${gameMode.modes[settings.mode].inputIcon}`} />
                         <div>{gameMode.modes[settings.mode].input}</div>
-                        <input type="number" max={settings.mode == "Time" ? 30 : settings.type == "Brawl" ? 2591 : 1e12} value={settings.amount} onChange={e => setSettings({ ...settings, amount: Math.max(1, Math.min(settings.mode == "Time" ? 30 : settings.type == "Brawl" ? 2591 : 1e12, parseInt(e.target.value))) })} />
+                        <input type="number" max={settings.mode == "Time" ? 30 : settings.type == "Brawl" ? 2591 : 1e12} value={settings.amount} onChange={e => setSettings({ ...settings, amount: Math.max(1, Math.min((settings.mode == "Time" || settings.type == "Rush") ? 30 : settings.type == "Brawl" ? 2591 : 1e12, parseInt(e.target.value))) })} />
                     </div>}
                     {gameMode.extra?.map && <>
                         <div id="hostSettingsHeader">Map Selection</div>
