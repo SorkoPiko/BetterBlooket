@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Sidebar from "./SideBar.jsx";
+import Sidebar from "./Sidebar.jsx";
 import { setActivity } from "../../utils/discordRPC";
 function Favorites() {
     useEffect(() => {

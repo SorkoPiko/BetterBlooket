@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Sidebar from "./SideBar.jsx";
+import Sidebar from "./Sidebar.jsx";
 import { useAuth } from "../../context/AuthContext";
 import allBlooks, { freeBlooks, rarityColors } from "../../blooks/allBlooks";
 import packs, { GenericSetBackground } from "../../blooks/packs";
