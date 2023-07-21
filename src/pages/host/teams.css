@@ -1,0 +1,218 @@
+.teamHolder {
+    display: flex;
+    flex-direction: column;
+    width: 30vw;
+    margin: 0 auto 6vh
+}
+
+.teamContainer {
+    height: 11vh;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 7px;
+    padding-bottom: 6px;
+    box-shadow: inset 0 -6px rgba(0, 0, 0, .2);
+    z-index: 2
+}
+
+.energyContainer,
+.teamContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center
+}
+
+.energyContainer {
+    height: 9vh;
+    width: 4vw;
+    margin: 1vh 0 1vh .5vw;
+    justify-content: center
+}
+
+.energyText {
+    color: #3a3a3a;
+    font-size: 3vw;
+    text-align: right
+}
+
+.energyIcon {
+    color: #9a49aa;
+    font-size: 2.25vw;
+    padding-left: .5vw
+}
+
+.teamBlook {
+    margin: auto .75vw auto 1vw;
+    height: 8.05vh;
+    width: 7vh;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none
+}
+
+.teamText {
+    color: #3a3a3a;
+    font-weight: 700;
+    font-size: 2.5vw;
+    text-align: left;
+    white-space: nowrap
+}
+
+.teamPlayersContainer {
+    margin: -2vh auto 0;
+    padding-top: 2.5vh;
+    min-height: 8vh;
+    width: 90%;
+    background-color: #fff;
+    border-radius: 7px;
+    padding-bottom: 6px;
+    box-shadow: inset 0 -6px rgba(0, 0, 0, .2);
+    align-content: flex-start;
+    flex-flow: row wrap;
+    z-index: 1
+}
+
+.playerContainer,
+.teamPlayersContainer {
+    justify-content: flex-start;
+    display: flex
+}
+
+.playerContainer {
+    flex-direction: row;
+    align-items: center;
+    height: 8vh;
+    width: 50%;
+    color: #3a3a3a;
+    outline: none;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    transition: all .3s cubic-bezier(.39, .5, .15, 1.36)
+}
+
+.playerContainer:hover {
+    transform: scale(.9);
+    color: #0bc2cf
+}
+
+.playerContainerNo {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 8vh;
+    width: 50%;
+    color: #3a3a3a;
+    outline: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none
+}
+
+.selected {
+    color: var(--accent2)
+}
+
+.playerBlook {
+    margin: auto .7vw auto 1vw;
+    height: 6.325vh;
+    width: 5.5vh
+}
+
+.playerText {
+    height: 6vh;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: calc(100% - 5.5vh - 2.2vw);
+    text-align: left;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column
+}
+
+.teamsArray {
+    width: 100vw;
+    margin: 3vh auto 0;
+    justify-content: center;
+    align-content: flex-start;
+    display: flex;
+    flex-flow: row wrap;
+    opacity: 0;
+    animation: fadeIn .4s linear .75s forwards
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+.invisible {
+    opacity: 0;
+    transition: all .5s linear
+}
+
+.buttonContainer {
+    width: 80vw;
+    margin: 0 auto;
+    height: 150px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    opacity: 0;
+    animation: fadeIn .4s linear .75s forwards
+}
+
+.button {
+    line-height: 75px;
+    height: 75px;
+    width: 360px;
+    background-color: #fff;
+    padding-bottom: 6px;
+    box-shadow: inset 0 -6px rgba(0, 0, 0, .2);
+    border-radius: 7px;
+    font-size: 42px;
+    color: #3a3a3a;
+    font-weight: 700;
+    text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    outline: none;
+    transition: transform .2s cubic-bezier(.39, .5, .15, 1.36)
+}
+
+.button:hover {
+    transform: scale(1.05)
+}
+
+.teamsBackground {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: linear-gradient(var(--accent2), var(--accent4));
+    overflow: hidden
+}
+
+.blooksBackground {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: 50%;
+    left: 50%;
+    background-size: 1000px;
+    background-position: -100px -100px;
+    opacity: .1;
+    transform: translate(-50%, -50%) rotate(15deg)
+}

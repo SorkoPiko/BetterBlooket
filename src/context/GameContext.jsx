@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import LiveGameController from "../utils/LiveGameController";
 import { useCallback } from "react";
 import { useRef } from "react";
+import { random, shuffleArray } from "../utils/questions";
 // import { fetch, Body } from "@tauri-apps/api/http";
 const GameContext = createContext();
 
@@ -12,6 +13,10 @@ export function useGame() {
 }
 
 let liveGameController;
+
+function copy(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
 
 export const GameProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
@@ -64,8 +69,73 @@ export const GameProvider = ({ children }) => {
         hostId.current = id;
     }, [standings]);
 
+    const nextRoyale = useCallback((players, isTeams, used, played, questions, dead) => {
+        let a = copy(players || []),
+            s = shuffleArray(a.filter(x => x?.name && x.blook)),
+            c = copy(questions || []);
+        if (c.length == 0) return null;
+        let usedQuestions = copy(used || []);
+        if (usedQuestions.length == c.length) usedQuestions = [];
+        let l = c.filter(t => !usedQuestions.includes(t.number)),
+            p = random(l);
+        usedQuestions.push(p.number);
+        let questionsPlayed = [...(played || [])];
+        if (questionsPlayed.length < c.length) questionsPlayed.push(p.number);
+        let answers = [...p.answers];
+        if (p.random) answers = shuffleArray(answers);
+        let question = { ...p, answers }, d = [];
+        for (let m = 0; m < p.answers.length; m++) d.push(answers.indexOf(p.answers[m]));
+        let answerString = d.join(""), matches = [], dbPlayers = {};
+        if (s.length % 2 == 1) {
+            let $ = random(s);
+            s.splice(s.indexOf($), 1);
+            let w = random(s);
+            matches.push([
+                { ...$, time: 0, correct: false },
+                { ...w, clone: true, time: 0, correct: false }
+            ]);
+            dbPlayers[$.name] = {
+                b: $.blook,
+                e: $.energy,
+                op: w.name
+            }
+        }
+        for (let _ = 0; _ < s.length; _ += 2) matches.unshift([
+            { ...s[_], time: 0, correct: false },
+            { ...s[_ + 1], time: 0, correct: false }
+        ]);
+        dbPlayers[s[_].name] = {
+            b: s[_].blook,
+            e: s[_].energy,
+            op: s[_ + 1].name
+        }
+        dbPlayers[s[_ + 1].name] = {
+            b: s[_ + 1].blook,
+            e: s[_ + 1].energy,
+            op: s[_].name
+        }
+        for (let t in dead)
+            for (let o of dead[t]) dbPlayers[o.name] = { b: o.blook, e: 0 };
+        if (isTeams) {
+            let x = {};
+            for (const team in dbPlayers) {
+                let n = copy(a).find(x => x.blook == dbPlayers[team].b);
+                if (n?.players)
+                    for (const [client, { blook }] of Object.entries(n.players))
+                        x[client] = {
+                            b: blook,
+                            e: dbPlayers[client].e,
+                            op: dbPlayers[client].op,
+                            p: n.name
+                        }
+            }
+            dbPlayers = x;
+        }
+        return { question, usedQuestions, questionsPlayed, matches, answerString, dbPlayers };
+    }, []);
+
     return (
-        <GameContext.Provider value={{ liveGameController, host, client, addGameId, setSettings, addHostQuestions, deleteHost, hostId, setHostId, updateHost, setPlayers, updateStandings, standings }}>
+        <GameContext.Provider value={{ liveGameController, host, client, addGameId, setSettings, addHostQuestions, deleteHost, hostId, setHostId, updateHost, setPlayers, updateStandings, standings, nextRoyale }}>
             {!loading && children}
         </GameContext.Provider>
     )

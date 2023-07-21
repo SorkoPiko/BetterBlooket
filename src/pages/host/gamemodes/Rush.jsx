@@ -1,9 +1,9 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useGame } from "../../../context/GameContext";
 import { audios } from "../../../utils/config";
 import { diffObjects, formatBigNumber, formatNumber, getDimensions, getOrdinal, randomFloat, randomInt } from "../../../utils/numbers";
 import { useNavigate } from "react-router-dom";
-import TopBar from "../topBar";
+import TopBar from "../TopBar.jsx";
 import { useAuth } from "../../../context/AuthContext";
 import Standings from "./Standings";
 import Modal from "../../../components/Modal";
@@ -129,51 +129,47 @@ class RushBlook {
     }
 }
 
-class RushBox extends React.Component {
-    constructor() {
-        super();
-        this.p5Ref = null;
-        this.canvasParentRef = null;
-        this.blooks = [];
-    }
-    render() {
-        const { name, blook, numBlooks, numDefense, bigBox, letMove, onClick } = this.props;
-        let pack = rushBoxes[allBlooks[blook]?.realSet || allBlooks[blook]?.set] || rushBoxes.Classic;
-        return <div className={`wrapper${bigBox ? " bigBox" : ""}${onClick ? " hoverButton" : !letMove && onClick}`} style={{ backgroundColor: pack.base }} onClick={onClick}>
-            <div className="fenceContainer" style={{ backgroundColor: pack.fence }}>
-                <div className={`topWall${bigBox ? " bigTopWall" : ""}`} style={{ backgroundColor: pack.top }}></div>
-                <div className={`container${bigBox ? " bigContainer" : ""}`} style={{
-                    backgroundColor: pack.inside,
-                    backgroundImage: pack.insideImg,
-                    backgroundSize: pack.imgSize,
-                    backgroundPosition: pack.imgPosition
-                }}>
-                    <div className="sketchWrapper"><Sketch setup={(p5, canvasParent) => {
-                        if (!this.canvasParentRef) return;
-                        this.p5Ref = p5;
-                        this.canvasParentRef = canvasParent;
-                        this.canvasParentRef.className = "sketchHolder";
-                        const canvas = p5.createCanvas(canvasParent.offsetWidth, canvasParent.offsetHeight);
-                        canvas.canvas.className = "sketchCanvas";
-                        canvas.parent(canvasParent);
-                        p5.frameRate(40);
-                    }} draw={(p5) => {
-                        for (p5.clear(); this.blooks.length < numBlooks;) this.blooks.push(new RushBlook(this.canvasParentRef.offsetWidth, this.canvasParentRef.offsetHeight, blook, p5));
-                        for (; this.blooks.length > numBlooks;) this.blooks.pop();
-                        for (let i = this.blooks.length - 1; i >= 0; i--) this.blooks[i].update(this.canvasParentRef.offsetWidth, this.canvasParentRef.offsetHeight);
-                    }} /></div>
-                </div>
+function RushBox({ name, blook, numBlooks, numDefense, bigBox, letMove, onClick }) {
+    const p5Ref = useRef();
+    const canvasParentRef = useRef();
+    const blooks = useRef([]);
+    let pack = rushBoxes[allBlooks[blook]?.realSet || allBlooks[blook]?.set] || rushBoxes.Classic;
+    return <div className={`wrapper${bigBox ? " bigBox" : ""}${!letMove && onClick ? " hoverButton" : ""}`} style={{ backgroundColor: pack.base }} onClick={onClick}>
+        <div className="fenceContainer" style={{ backgroundColor: pack.fence }}>
+            <div className={`topWall${bigBox ? " bigTopWall" : ""}`} style={{ backgroundColor: pack.top }}></div>
+            <div className={`container${bigBox ? " bigContainer" : ""}`} style={{
+                backgroundColor: pack.inside,
+                backgroundImage: pack.insideImg,
+                backgroundSize: pack.imgSize,
+                backgroundPosition: pack.imgPosition
+            }}>
+                <div className="sketchWrapper"><Sketch setup={(p5, canvasParent) => {
+                    if (!canvasParent) return;
+                    p5Ref.current = p5;
+                    canvasParentRef.current = canvasParent;
+                    canvasParentRef.current.className = "sketchHolder";
+                    const canvas = p5.createCanvas(canvasParent.offsetWidth, canvasParent.offsetHeight);
+                    canvas.canvas.className = "sketchCanvas";
+                    canvas.parent(canvasParent);
+                    p5.frameRate(40);
+                }} draw={(p5) => {
+                    for (p5.clear(); blooks.current.length < numBlooks;) blooks.current.push(new RushBlook(canvasParentRef.current.offsetWidth, canvasParentRef.current.offsetHeight, blook, p5));
+                    for (; blooks.current.length > numBlooks;) blooks.current.pop();
+                    for (let i = blooks.current.length - 1; i >= 0; i--) {
+                        blooks.current[i].update(canvasParentRef.current.offsetWidth, canvasParentRef.current.offsetHeight);
+                    }
+                }} /></div>
             </div>
-            <div className="textRow">
-                <div className={`boxText${bigBox ? " bigText" : ""}`} style={{ borderColor: pack.border }}>{name}</div>
-                <div className={`boxText${bigBox ? " bigText" : ""}`} style={{ borderColor: pack.border }}>{numBlooks}</div>
-            </div>
-            {numDefense != null && <div className="shieldContainer">
-                <img src={basic.shield} alt="Shield" className="shieldImg" />
-                <div className="shieldText">{numDefense}</div>
-            </div>}
         </div>
-    }
+        <div className="textRow">
+            <div className={`boxText${bigBox ? " bigText" : ""}`} style={{ borderColor: pack.border }}>{name}</div>
+            <div className={`boxText${bigBox ? " bigText" : ""}`} style={{ borderColor: pack.border }}>{numBlooks}</div>
+        </div>
+        {numDefense != null && <div className="shieldContainer">
+            <img src={basic.shield} alt="Shield" className="shieldImg" />
+            <div className="shieldText">{numDefense}</div>
+        </div>}
+    </div>
 }
 
 export default function RushHost() {
@@ -188,13 +184,28 @@ export default function RushHost() {
     const endGame = useRef(false);
     const getClients = useCallback(async (first) => {
         window.dispatchEvent(new Event('resize')); // Fix React-Textfit not sizing right
-        liveGameController.getDatabaseVal("c", snapshot => {
+        if (host.settings.mode == "Teams") liveGameController.getDatabaseVal("a", snapshot => {
+            const val = snapshot || {};
+            let teams = [];
+            for (const team of host.players) teams.push({
+                name: team.name,
+                blook: team.blook,
+                numBlooks: first ? 3 : playersRef.current.find(x => x.name == team.name)?.numBlooks || 0,
+                numDefense: first ? 0 : playersRef.current.find(x => x.name == team.name)?.numDefense || 0,
+            });
+            teams.sort((a, b) => b.numBlooks == a.numBlooks ? b.numDefense - a.numDefense : b.numBlooks - a.numBlooks);
+            setPlayers(teams.map(team => ({ ...team, players: host.players.find(x => x.name == team.name).players })));
+            liveGameController.setVal({ path: "c", val: teams.reduce((c, { name, numBlooks, numDefense, blook }) => (c[name] = { bs: numBlooks || 0, d: numDefense || 0, b: blook }, c), {}) });
+
+        });
+        else liveGameController.getDatabaseVal("c", snapshot => {
             const val = snapshot || {};
             if (!val || Object.keys(val).length == 0) return setPlayers([]);
             let clients = [];
             for (const [name, { b: blook, bs, d }] of Object.entries(val)) clients.push({ name, blook, numBlooks: first ? 3 : bs || 0, numDefense: first ? 0 : d || 0 });
             clients.sort((a, b) => b.numBlooks == a.numBlooks ? b.numDefense - a.numDefense : b.numBlooks - a.numBlooks);
             setPlayers(clients);
+            if (first) liveGameController.setVal({ path: "c", val: clients.reduce((c, { name, numBlooks, numDefense, blook }) => (c[name] = { bs: numBlooks, d: numDefense, b: blook }, c), {}) });
         });
     }, [players]);
     const goNext = useCallback(() => {
@@ -211,7 +222,7 @@ export default function RushHost() {
                 p: place
             });
         }
-        updateStandings(val);
+        updateStandings(val.map(x => ({ ...x, players: host.players.find(e => e.name == x.n).players })));
         liveGameController.setVal({
             path: "st", val
         }, () => liveGameController.setStage({ stage: "fin" }, () => navigate("/host/rush/final")));
@@ -263,14 +274,16 @@ export default function RushHost() {
                 dbRef.current = await liveGameController.getDatabaseRef("a");
                 dbRef.current.on("value", function (snapshot) {
                     const clients = snapshot.val() || {};
+                    console.warn(clients)
                     liveGameController.removeVal("a");
-                    for (const [client, data] of Object.entries(clients)) if (data.tat) {
-                        let at = playersRef.current.find(x => x.name == data.tat);
-                        if (at.numDefense > 0) liveGameController.setVal({ path: `c/${data.tat}/d`, val: at.numDefense - 1 });
-                        else if (at.numBlooks >= 1) {
-                            liveGameController.setVal({ path: `c/${data.tat}/bs`, val: at.numBlooks - 1 });
-                            liveGameController.setVal({ path: `c/${client}/bs`, val: playersRef.current.find(x => x.name == client).numBlooks + 1 });
-                        }
+                    for (const [client, data] of Object.entries(clients)) {
+                        let team = playersRef.current.find(x => x.players[client]);
+                        if (data.tat) {
+                            let at = playersRef.current.find(x => x.name == data.tat);
+                            if (at?.numDefense > 0) setPlayers(p => [...p.map(x => x.name == at.name ? { ...x, numDefense: x.numDefense - 1 } : x)]);
+                            else if (at?.numBlooks >= 1) setPlayers(p => [...p.map(x => x.name == at.name ? { ...x, numBlooks: x.numBlooks - 1 } : x.name == team.name ? { ...x, numBlooks: x.numBlooks + 1 } : x)]);
+                        } else if (data.d) setPlayers(p => [...p.map(x => x.name == team.name ? { ...x, numDefense: Math.min(4, x.numDefense + 1) } : x)]);
+                        else if (data.bs) setPlayers(p => [...p.map(x => x.name == team.name ? { ...x, numBlooks: x.numBlooks + 1 } : x)]);
                     }
                 });
             } else {
@@ -285,7 +298,7 @@ export default function RushHost() {
                         if (at.d > 0) liveGameController.setVal({ path: `c/${data.tat}/d`, val: at.d - 1 });
                         else if (at.bs >= 1) {
                             liveGameController.setVal({ path: `c/${data.tat}/bs`, val: at.bs - 1 });
-                            liveGameController.setVal({ path: `c/${client}/bs`, val: clients[client].bs + 1 });
+                            liveGameController.setVal({ path: `c/${client}/bs`, val: (clients[client].bs || 0) + 1 });
                         }
                     }
                     lastClients.current = clients;
@@ -304,11 +317,13 @@ export default function RushHost() {
         }
     }, []);
     useEffect(() => {
+        console.log(players);
+        window.setPlayers = setPlayers
         if (endGame.current) goNext();
     }, [players])
     if (!host?.settings) return navigate("/sets");
     return <>
-        <div className="body" style={{
+        <div className="body background" style={{
             overflow: "hidden"
         }}>
             <TopBar left="Blooket" center={timer} right={host.settings.lateJoin ? `ID: ${liveGameController.liveGameCode}` : ""} muted={muted} changeMuted={changeMuted} onRightClick={() => (endGame.current = true, getClients())} />
@@ -323,8 +338,7 @@ export default function RushHost() {
                 </div>
                 <FlipMove className="rushBoxesHolder" duration={1000} style={{ position: "absolute" }}>
                     {players.slice(0, 8).map(player => {
-                        console.log(player)
-                        return <React.Fragment key={player.name}>
+                        return <div key={player.name}>
                             <RushBox
                                 name={player.name}
                                 blook={player.blook}
@@ -332,7 +346,7 @@ export default function RushHost() {
                                 numDefense={player.numDefense}
                                 onClick={host?.settings?.mode == "Teams" ? null : () => setUserToBlock(player.name)}
                                 letMove={true} />
-                        </React.Fragment>
+                        </div>
                     })}
                 </FlipMove>
             </div>
@@ -419,18 +433,16 @@ export function RushFinal() {
         await liveGameController.removeVal("c");
         liveGameController.setStage({ stage: "join" }, () => navigate("/host/join"));
     }, []);
-    if (host?.standings?.[0] || state.standings?.[0]) return <div className="body" style={{
-        overflowY: state.ready ? "auto" : "hidden",
-        background: "linear-gradient(to bottom, #9be2fe 0%,#67d1fb 100%)"
-    }}>
+    if (host?.standings?.[0] || state.standings?.[0]) return <div className="body background" style={{ overflowY: state.ready ? "auto" : "hidden" }}>
         {state.standings.length > 0 && <Standings
             standings={state.standings}
-            stats={state.standings.map(e => formatNumber(e.w) + " lbs")}
+            stats={state.standings.map(e => formatNumber(e.bs) + (e.bs == 1 ? " Blook" : " Blooks"))}
             gameId={hostCopy.setId}
             historyId={state.historyId}
             muted={state.muted}
-            theme="fish"
+            theme="rush"
             ready={state.ready}
+            team={hostCopy.settings.mode == "Teams"}
         />}
         {askPlayAgain && <Modal text="Would you like to play again right now with the same settings?"
             buttonOne={{ text: "Yes!", click: () => onPlayAgain(true) }}
