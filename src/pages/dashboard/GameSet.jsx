@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import Sidebar from "./SideBar.jsx";
+import Sidebar from "./Sidebar.jsx";
 import { setActivity } from "../../utils/discordRPC";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
