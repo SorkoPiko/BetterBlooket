@@ -38,5 +38,5 @@ jobs:
           tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
           releaseName: 'BetterBlooket ${{ github.ref_name }}' # tauri-action replaces \_\_VERSION\_\_ with the app version.
           releaseBody: 'Compiled versions of BetterBlooket ${{ github.ref_name }}'
-          releaseDraft: true
-          prerelease: ${{ github.ref_name[0] != 0 }}
+          releaseDraft: false
+          prerelease: ${{ github.ref_name[0] == 0 }}
