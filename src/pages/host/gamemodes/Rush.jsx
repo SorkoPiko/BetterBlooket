@@ -55,10 +55,10 @@ export function RushInstruct() {
                     <div className="textInside">The goal is to collect as many Blooks as you can</div>
                 </div>
                 <div className="text n2">
-                    <div className="textInside">After answering correctly, you can neither Attack or Defend</div>
+                    <div className="textInside">After answering correctly, you can either Attack or Defend</div>
                 </div>
                 <div className="text n3">
-                    <div className="textInside">Defensing will increase your shields by 1</div>
+                    <div className="textInside">Defending will increase your shields by 1</div>
                 </div>
                 <div className="text n4">
                     <div className="textInside">Attacking will reduce enemy shields by 1</div>
@@ -67,7 +67,7 @@ export function RushInstruct() {
                     <div className="textInside">If they have no shields, you'll take one of their Blooks</div>
                 </div>
                 <div className="text n6">
-                    <div className="textInside">Most Blooks after ${formatNumber(host.settings.amount)} minute{host.settings.amount == 1 ? "s" : ""} wins!</div>
+                    <div className="textInside">Most Blooks after {formatNumber(host.settings.amount)} minute{host.settings.amount == 1 ? "" : "s"} wins!</div>
                 </div>
                 <div className="text n7">
                     <div className="textInside">Good Luck!</div>
