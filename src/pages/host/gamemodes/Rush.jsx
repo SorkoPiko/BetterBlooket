@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useGame } from "../../../context/GameContext";
 import { audios } from "../../../utils/config";
-import { diffObjects, formatBigNumber, formatNumber, getDimensions, getOrdinal, randomFloat, randomInt } from "../../../utils/numbers";
+import { diffObjects, formatNumber, randomFloat, randomInt } from "../../../utils/numbers";
 import { useNavigate } from "react-router-dom";
 import TopBar from "../TopBar.jsx";
 import { useAuth } from "../../../context/AuthContext";
@@ -14,7 +14,7 @@ import { rushBoxes } from "../../../utils/gameModes";
 import { basic } from "../../../utils/images";
 
 export function RushInstruct() {
-    const { host: { current: host }, updateHost, liveGameController } = useGame();
+    const { host: { current: host }, updateHost } = useGame();
     const { current: audio } = useRef(new Audio(audios.blookRush));
     const [muted, setMuted] = useState(!!host && host.muted);
     const timeout = useRef();
@@ -323,9 +323,7 @@ export default function RushHost() {
     }, [players])
     if (!host?.settings) return navigate("/sets");
     return <>
-        <div className="body background" style={{
-            overflow: "hidden"
-        }}>
+        <div className="body background" style={{ overflow: "hidden" }}>
             <TopBar left="Blooket" center={timer} right={host.settings.lateJoin ? `ID: ${liveGameController.liveGameCode}` : ""} muted={muted} changeMuted={changeMuted} onRightClick={() => (endGame.current = true, getClients())} />
             <div className="hostRegularBody">
                 <div className="shelves">
