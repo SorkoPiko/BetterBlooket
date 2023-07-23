@@ -10,24 +10,28 @@ window.tfetch = fetch;
 
 addStyles();
 
-let hasOwn = {}.hasOwnProperty;
-window.className = function className() {
-    let classes = [];
-    for (let i = 0; i < arguments.length; i++) {
-        const arg = arguments[i];
-        if (!arg) continue;
+Object.defineProperty(window, "className", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function className() {
+        let classes = [];
+        for (let i = 0; i < arguments.length; i++) {
+            const arg = arguments[i];
+            if (!arg) continue;
 
-        const argType = typeof arg;
-        if (argType == "string" || argType == "number") classes.push(arg);
-        else if (Array.isArray(arg)) {
-            if (arg.length) classes.push(className.apply(null, arg));
-        } else if (argType == "object") {
-            if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes('[native code]')) classes.push(arg.toString());
-            else for (var key in arg) if (hasOwn.call(arg, key) && arg[key]) classes.push(key);
+            const argType = typeof arg;
+            if (argType == "string" || argType == "number") classes.push(arg);
+            else if (Array.isArray(arg)) {
+                if (arg.length) classes.push(className.apply(null, arg));
+            } else if (argType == "object") {
+                if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes('[native code]')) classes.push(arg.toString());
+                else for (var key in arg) if (Object.hasOwnProperty.call(arg, key) && arg[key]) classes.push(key);
+            }
         }
+        return classes.join(" ");
     }
-    return classes.join(" ");
-}
+});
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     // <React.StrictMode> // strict mode makes useEffect render twice on dev server, breaking protobuf
