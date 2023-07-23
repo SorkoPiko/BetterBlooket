@@ -392,11 +392,28 @@ export function RushFinal() {
             window.dispatchEvent(new Event('resize')); // Fix React-Textfit not sizing right
             waitTimeout.current = setTimeout(function () {
                 if (!standings.length) return;
-                post("https://play.blooket.com/api/history", {
+                if (hostCopy.settings.mode == "Teams") post("https://play.blooket.com/api/history", {
                     t: hostId.current,
-                    standings: standings.map(({ b: blook, n: name, p: place, w: weight }) => ({
+                    standings: standings.map(({ b: blook, n: name, p: place, bs: numBlooks, players }) => ({
                         blook, name, place,
-                        weight: isNaN(weight) ? 0 : Math.min(Math.round(Number(weight)), 9223372036854775000),
+                        numBlooks: isNaN(numBlooks) ? 0 : Math.min(Math.round(Number(numBlooks)), 9223372036854775000),
+                        players: Object.entries(players).map(([name, data]) => ({
+                            name, blook: data.blook,
+                            corrects: results[name]?.corrects || {},
+                            incorrects: results[name]?.incorrects || {}
+                        }))
+                    })),
+                    settings: hostCopy.settings,
+                    setId: hostCopy.setId
+                }).then(({ data }) => {
+                    setState(s => ({ ...s, historyId: data.id, ready: true }));
+                    askTimeout.current = setTimeout(() => setAskPlayAgain(true), 3000);
+                }).catch(console.error);
+                else post("https://play.blooket.com/api/history", {
+                    t: hostId.current,
+                    standings: standings.map(({ b: blook, n: name, p: place, bs: numBlooks }) => ({
+                        blook, name, place,
+                        numBlooks: isNaN(numBlooks) ? 0 : Math.min(Math.round(Number(numBlooks)), 9223372036854775000),
                         corrects: results[name]?.corrects || {},
                         incorrects: results[name]?.incorrects || {}
                     })),
