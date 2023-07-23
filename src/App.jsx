@@ -32,6 +32,7 @@ import FactoryHost, { FactoryFinal } from "./pages/host/gamemodes/Factory";
 import RacingHost, { RacingFinal } from "./pages/host/gamemodes/Racing";
 import RushHost, { RushFinal, RushInstruct } from "./pages/host/gamemodes/Rush";
 import HostTeams from "./pages/host/Teams";
+import { RoyaleFinal, RoyaleInstruct, RoyaleMatchResults, RoyalePreview, RoyaleQuestion, RoyaleQuestionResults } from "./pages/host/gamemodes/Royale";
 
 function App() {
     return <AuthProvider>
@@ -83,6 +84,13 @@ function App() {
                 <Route path="/host/rush/instructions" element={<AuthRoute><RushInstruct /></AuthRoute>}></Route>
                 <Route path="/host/rush" element={<AuthRoute><RushHost /></AuthRoute>}></Route>
                 <Route path="/host/rush/final" element={<AuthRoute><RushFinal /></AuthRoute>}></Route>
+                <Route path="/host/battle-royale/instructions" element={<AuthRoute><RoyaleInstruct /></AuthRoute>}></Route>
+                <Route path="/host/battle-royale/match/preview" element={<AuthRoute><RoyalePreview /></AuthRoute>}></Route>
+                <Route path="/host/battle-royale/question" element={<AuthRoute><RoyaleQuestion /></AuthRoute>}></Route>
+                <Route path="/host/battle-royale/question/results" element={<AuthRoute><RoyaleQuestionResults /></AuthRoute>}></Route>
+                <Route path="/host/battle-royale/match/results" element={<AuthRoute><RoyaleMatchResults /></AuthRoute>}></Route>
+                <Route path="/host/battle-royale/final" element={<AuthRoute><RoyaleFinal /></AuthRoute>}></Route>
+
             </Route>
             <Route path="/*" element={<Navigate to="/"></Navigate>}></Route>
         </Routes>

@@ -18,7 +18,7 @@ import { colorBlooks, freeBlooks } from "../../blooks/allBlooks";
 import { random } from "../../utils/questions";
 
 export default function HostLobby() {
-    const { hostRef, liveGameController, hostId, setPlayers, updateHost, nextRoyale, prepareRoyale } = useGame();
+    const { host: hostRef, liveGameController, hostId, setPlayers, updateHost, nextRoyale, prepareRoyale } = useGame();
     const { current: host } = hostRef;
     const { http: { get, post }, userData } = useAuth();
     const navigate = useNavigate();

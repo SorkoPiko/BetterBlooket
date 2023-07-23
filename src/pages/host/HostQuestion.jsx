@@ -1,3 +1,10 @@
+import { useCallback, useEffect, useRef, useState } from "react";
+import { audios } from "../../utils/config";
+import PlayAudio from "../../components/PlayAudio";
+import { StaticMathField } from "react-mathquill";
+import { imageUrl, questionColors } from "../../utils/questions";
+import { Textfit } from "react-textfit";
+
 export default function HostQuestion({ next, question, numAnswers, numClients, transitioning, muted, theme }) {
     const [timer, setTimer] = useState(question.timeLimit);
     const [timerChange, setTimerChange] = useState(true);

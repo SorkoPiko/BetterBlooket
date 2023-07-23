@@ -11,17 +11,16 @@ import { royale } from "../../../utils/images";
 import { imageUrl, questionColors, random } from "../../../utils/questions";
 import PlayAudio from "../../../components/PlayAudio";
 import { StaticMathField } from "react-mathquill";
-import { Doughnut } from "react-chartjs-2";
 import Standings from "./Standings";
 import HostQuestion from "../HostQuestion";
 import HostResults from "../HostResults";
 
-import "royale.css";
+import "./royale.css";
 
 const timeouts = [4200, 2850, 7150, 8150, 8150, 8150, 2575];
 
 export function RoyaleInstruct() {
-    const { host: hostRef, nextRoyale, prepareRoyale, updateHost } = useGame();
+    const { host: hostRef, nextRoyale, prepareRoyale, updateHost, liveGameController } = useGame();
     const { current: host } = hostRef;
     const navigate = useNavigate();
     const [stage, setStage] = useState(2);
@@ -30,7 +29,7 @@ export function RoyaleInstruct() {
     const timeout = useRef();
     const skip = useCallback(() => {
         let royale = nextRoyale(hostRef.current.players, host.settings.mode == "Teams", host.usedQuestions, host.questionsPlayed, host.questions, host.dead);
-        prepareRoyale(1, royale.usedQuestions, royale.questionsPlayed, `q-${royale.question.stdNumber}-${answerString}`, royale.question, royale.matches);
+        prepareRoyale(1, royale.usedQuestions, royale.questionsPlayed, `q-${royale.question.stdNumber}-${royale.answerString}`, royale.question, royale.matches);
         liveGameController.setVal({
             path: "c",
             val: royale.dbPlayers
@@ -70,6 +69,7 @@ export function RoyaleInstruct() {
             }, false);
         }
     }, []);
+    if (!host?.settings) return navigate("/sets");
     return <div className="body">
         <TopBar left="" center="Instructions" muted={muted} changeMuted={changeMuted} />
         {stage == 2
@@ -279,10 +279,10 @@ export function RoyalePreview() {
 }
 
 export function RoyaleQuestion() {
-    const { host: hostRef } = useGame();
+    const { host: hostRef, liveGameController } = useGame();
     const { current: host } = hostRef;
     const [numAnswers, setNumAnswers] = useState(0);
-    const [numClients, setNumClients] = useRef(0);
+    const [numClients, setNumClients] = useState(0);
     const [players, setPlayers] = useState(0);
     const [transitioning, setTransitioning] = useState(false);
     const [muted, setMuted] = useState(!!host?.muted);
@@ -382,7 +382,10 @@ export function RoyaleQuestion() {
     const transitionTimeout = useRef();
     useEffect(() => {
         return (async () => {
-            if (!host?.question || !host.matches) return navigate("/sets");
+            if (!host?.question || !host.matches) {
+                navigate("/sets");
+                return () => {};
+            }
             if (host.settings.mode == "Teams") setNumClients(Object.values(host.players).reduce((a, b) => a + Object.keys(b.players).length, 0));
             else liveGameController.getDatabaseVal("c", (val) => {
                 setNumClients(Object.keys(val || {}).length);

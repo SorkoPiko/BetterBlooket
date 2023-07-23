@@ -1,3 +1,11 @@
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Doughnut } from "react-chartjs-2";
+import { audios } from "../../utils/config";
+import PlayAudio from "../../components/PlayAudio";
+import { StaticMathField } from "react-mathquill";
+import { Textfit } from "react-textfit";
+import { imageUrl, questionColors } from "../../utils/questions";
+
 export default function HostResults({ next, time, question, clientAnswers, numClients, transitioning, muted, canSkip, theme }) {
     const [timer, setTimer] = useState(time);
     const [timerChange, setTimerChange] = useState(true);
@@ -11,7 +19,7 @@ export default function HostResults({ next, time, question, clientAnswers, numCl
     const [numCorrectAnswers, setNumCorrectAnswers] = useState(0);
     const played = useRef(false);
     const getChartData = useCallback(() => {
-        let a = ready ? 0.5 : 1;
+        let opacity = ready ? 0.5 : 1;
         return {
             datasets: [
                 {
@@ -20,18 +28,18 @@ export default function HostResults({ next, time, question, clientAnswers, numCl
                         ? ['#d9d9d9', '#4bc22e']
                         : [
                             'spooky' === theme
-                                ? `rgba(229, 126, 37, ${question.correctAnswers.includes(question.answers[1]) ? 1 : ready})`
-                                : `rgba(51, 120, 255, ${question.correctAnswers.includes(question.answers[1]) ? 1 : ready})`,
+                                ? `rgba(229, 126, 37, ${question.correctAnswers.includes(question.answers[1]) ? 1 : opacity})`
+                                : `rgba(51, 120, 255, ${question.correctAnswers.includes(question.answers[1]) ? 1 : opacity})`,
                             'spooky' === theme
-                                ? `rgba(247, 128, 0, ${question.correctAnswers.includes(question.answers[3]) ? 1 : ready})`
-                                : `rgba(255, 70, 43, ${question.correctAnswers.includes(question.answers[3]) ? 1 : ready})`,
+                                ? `rgba(247, 128, 0, ${question.correctAnswers.includes(question.answers[3]) ? 1 : opacity})`
+                                : `rgba(255, 70, 43, ${question.correctAnswers.includes(question.answers[3]) ? 1 : opacity})`,
                             'spooky' === theme
-                                ? `rgba(225, 116, 0, ${question.correctAnswers.includes(question.answers[2]) ? 1 : ready})`
-                                : `rgba(0, 207, 119, ${question.correctAnswers.includes(question.answers[2]) ? 1 : ready})`,
+                                ? `rgba(225, 116, 0, ${question.correctAnswers.includes(question.answers[2]) ? 1 : opacity})`
+                                : `rgba(0, 207, 119, ${question.correctAnswers.includes(question.answers[2]) ? 1 : opacity})`,
                             'spooky' === theme
-                                ? `rgba(211, 118, 18, ${question.correctAnswers.includes(question.answers[0]) ? 1 : ready})`
-                                : `rgba(255, 163, 30, ${question.correctAnswers.includes(question.answers[0]) ? 1 : ready})`,
-                            'spooky' === theme ? `rgba(217, 217, 217, ${ready})` : '#d9d9d9',
+                                ? `rgba(211, 118, 18, ${question.correctAnswers.includes(question.answers[0]) ? 1 : opacity})`
+                                : `rgba(255, 163, 30, ${question.correctAnswers.includes(question.answers[0]) ? 1 : opacity})`,
+                            'spooky' === theme ? `rgba(217, 217, 217, ${opacity})` : '#d9d9d9',
                         ]
                 }
             ]

@@ -3,6 +3,11 @@ import { createPromiseClient } from "@bufbuild/connect";
 import { MethodKind, proto3, ScalarType } from "@bufbuild/protobuf";
 import { fetch, Body, ResponseType } from "@tauri-apps/api/http";
 import Queue from "./queue";
+const dashboardLayout = proto3.makeEnum('dashboardservice.v1.DashboardLayout', [
+    { no: 0, name: 'DASHBOARD_LAYOUT_UNKNOWN', localName: 'UNKNOWN' },
+    { no: 1, name: 'DASHBOARD_LAYOUT_TEACHER', localName: 'TEACHER' },
+    { no: 2, name: 'DASHBOARD_LAYOUT_STUDENT', localName: 'STUDENT' },
+]);
 const blook = proto3.makeMessageType("dashboardservice.v1.ProfileBlook", () => [
     { no: 1, name: "name", kind: "scalar", T: ScalarType.STRING },
     { no: 2, name: "svg_url", kind: "scalar", T: ScalarType.STRING },
@@ -22,7 +27,8 @@ export default (bisd, csrf, cb) => createPromiseClient({
             I: proto3.makeMessageType("dashboardservice.v1.MeRequest", []),
             O: proto3.makeMessageType("dashboardservice.v1.MeReply", () => [
                 { no: 1, name: "name", kind: "scalar", T: ScalarType.STRING },
-                { no: 2, name: "blook", kind: "message", T: blook }
+                { no: 2, name: "blook", kind: "message", T: blook },
+                { no: 3, name: 'dashboard_layout', kind: 'enum', T: proto3.getEnumType(dashboardLayout) }
             ]),
             kind: MethodKind.Unary
         },
@@ -65,6 +71,12 @@ export default (bisd, csrf, cb) => createPromiseClient({
             I: proto3.makeMessageType("dashboardservice.v1.ListUnlockedBlooksRequest", []),
             O: proto3.makeMessageType("dashboardservice.v1.ListUnlockedBlooksReply", () => [{ no: 1, name: "blooks", kind: "message", T: blook, repeated: true }]),
             kind: MethodKind.Unary
+        },
+        setDashboardLayout: {
+            name: "SetDashboardLayout",
+            I: proto3.makeMessageType('dashboardservice.v1.SetDashboardLayoutRequest', () => [{ no: 1, name: 'layout', kind: 'enum', T: proto3.getEnumType(dashboardLayout) }]),
+            O: proto3.makeMessageType('dashboardservice.v1.SetDashboardLayoutReply', []),
+            kind: MethodKind.Unary
         }
     }
 }, createConnectTransport({
@@ -106,7 +118,7 @@ export default (bisd, csrf, cb) => createPromiseClient({
         queue.end(symbol);
     })(), function (next) {
         return async function (req) {
-            if(queue.queueWaiting.size() > 5) console.warn("/logout");
+            if (queue.queueWaiting.size() > 5) console.warn("/logout");
             let symbol = Symbol("csrfinterceptor");
             await queue.wait(symbol, -1);
             if (!csrfToken) throw Error("could not make request without csrf token");
