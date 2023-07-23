@@ -105,7 +105,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "604178f6c5c21f02dc555784810edfb88d34ac2c73b2eae109655649ee73ce3d"
 
 [[package]]
-name = "better_blooket"
+name = "betterblooket"
 version = "0.0.0"
 dependencies = [
  "declarative-discord-rich-presence",
