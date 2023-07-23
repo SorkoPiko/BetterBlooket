@@ -134,8 +134,12 @@ export const GameProvider = ({ children }) => {
         return { question, usedQuestions, questionsPlayed, matches, answerString, dbPlayers };
     }, []);
 
+    const prepareRoyale = useCallback((round, usedQuestions, questionsPlayed, questionString, question, matches) => {
+        host.current = { ...host.current, round, usedQuestions, questionsPlayed, questionString, question, matches };
+    }, []);
+
     return (
-        <GameContext.Provider value={{ liveGameController, host, client, addGameId, setSettings, addHostQuestions, deleteHost, hostId, setHostId, updateHost, setPlayers, updateStandings, standings, nextRoyale }}>
+        <GameContext.Provider value={{ liveGameController, host, client, addGameId, setSettings, addHostQuestions, deleteHost, hostId, setHostId, updateHost, setPlayers, updateStandings, standings, nextRoyale, prepareRoyale }}>
             {!loading && children}
         </GameContext.Provider>
     )
