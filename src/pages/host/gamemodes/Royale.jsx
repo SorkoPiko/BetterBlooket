@@ -13,6 +13,10 @@ import PlayAudio from "../../../components/PlayAudio";
 import { StaticMathField } from "react-mathquill";
 import { Doughnut } from "react-chartjs-2";
 import Standings from "./Standings";
+import HostQuestion from "../HostQuestion";
+import HostResults from "../HostResults";
+
+import "royale.css";
 
 const timeouts = [4200, 2850, 7150, 8150, 8150, 8150, 2575];
 
@@ -66,89 +70,89 @@ export function RoyaleInstruct() {
             }, false);
         }
     }, []);
-    return <div className="hostBody">
+    return <div className="body">
         <TopBar left="" center="Instructions" muted={muted} changeMuted={changeMuted} />
         {stage == 2
-            ? <div className="container">
-                <Textfit className="headerOne" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("12vw")}>Step One:</Textfit>
-                <Textfit className="headerTwo" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>Prepare</Textfit>
-                <Blook name="Dog" className="leftBlook" />
-                <div className="vsText">VS</div>
-                <Blook name="Cat" className="rightBlook" />
-                <Textfit className="headerThree" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("8vw")}>Each Round You'll Be Randomly Matched Up Against {host.settings.mode == "Teams" ? "A Team" : "Someone"}</Textfit>
+            ? <div className="instruct1_container">
+                <Textfit className="instruct1_headerOne" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("12vw")}>Step One:</Textfit>
+                <Textfit className="instruct1_headerTwo" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>Prepare</Textfit>
+                <Blook name="Dog" className="instruct1_leftBlook" />
+                <div className="instruct1_vsText">VS</div>
+                <Blook name="Cat" className="instruct1_rightBlook" />
+                <Textfit className="instruct1_headerThree" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("8vw")}>Each Round You'll Be Randomly Matched Up Against {host.settings.mode == "Teams" ? "A Team" : "Someone"}</Textfit>
             </div>
             : stage == 3
-                ? <div className="container">
-                    <Textfit className="headerOne" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("12vw")}>Step Two:</Textfit>
-                    <Textfit className="headerTwo" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>Answer Questions Correctly</Textfit>
-                    <div className="answerBox">
-                        <div className="answerHeader"></div>
-                        <div className="answerOne"></div>
-                        <div className="answerTwo"></div>
-                        <div className="answerThree"></div>
-                        <div className="answerFour"></div>
+                ? <div className="instruct2_container">
+                    <Textfit className="instruct2_headerOne" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("12vw")}>Step Two:</Textfit>
+                    <Textfit className="instruct2_headerTwo" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>Answer Questions Correctly</Textfit>
+                    <div className="instruct2_answerBox">
+                        <div className="instruct2_answerHeader"></div>
+                        <div className="instruct2_answerOne"></div>
+                        <div className="instruct2_answerTwo"></div>
+                        <div className="instruct2_answerThree"></div>
+                        <div className="instruct2_answerFour"></div>
                     </div>
-                    <div className="arrowContainer">
+                    <div className="instruct2_arrowContainer">
                         <i className="fas fa-arrow-right"></i>
                     </div>
-                    <div className="checkBoxBorder">
-                        <div className="checkBox">
+                    <div className="instruct2_checkBoxBorder">
+                        <div className="instruct2_checkBox">
                             <i className="fas fa-check"></i>
                         </div>
                     </div>
-                    <Textfit className="headerThree" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("8vw")}>{host.settings.mode == "Teams" ? "Incorrect Answers Count For The Maximum Time" : "Answer Quickly to Beat Your Opponent"}</Textfit>
+                    <Textfit className="instruct2_headerThree" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("8vw")}>{host.settings.mode == "Teams" ? "Incorrect Answers Count For The Maximum Time" : "Answer Quickly to Beat Your Opponent"}</Textfit>
                 </div>
                 : stage == 4
-                    ? <div className="container">
-                        <Textfit className="headerOne" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("12vw")}>Step Three:</Textfit>
-                        <Textfit className="headerTwo" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>Showdown</Textfit>
-                        <Blook name="Dog" className="leftBlook" />
-                        <div className="vsText">VS</div>
-                        <Blook name="Cat" className="rightBlook" />
-                        <Textfit className="headerThree" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("8vw")}>{host.settings.mode == "Teams" ? "The Team With The Lowest Average Time Will Keep Their Energy" : "Answer Correctly and More Quickly To Keep Your Energy"}</Textfit>
+                    ? <div className="instruct3_container">
+                        <Textfit className="instruct3_headerOne" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("12vw")}>Step Three:</Textfit>
+                        <Textfit className="instruct3_headerTwo" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>Showdown</Textfit>
+                        <Blook name="Dog" className="instruct3_leftBlook" />
+                        <div className="instruct3_vsText">VS</div>
+                        <Blook name="Cat" className="instruct3_rightBlook" />
+                        <Textfit className="instruct3_headerThree" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("8vw")}>{host.settings.mode == "Teams" ? "The Team With The Lowest Average Time Will Keep Their Energy" : "Answer Correctly and More Quickly To Keep Your Energy"}</Textfit>
                     </div>
                     : stage == 5
-                        ? <div className="container">
-                            <Textfit className="headerOne" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("12vw")}>Step Four:</Textfit>
-                            <Textfit className="headerTwo" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>Survive</Textfit>
-                            <Blook name="Chicken" className="blookOne" />
-                            <Blook name="Dog" className="blookTwo" />
-                            <Blook name="Fox" className="blookThree" />
-                            <Blook name="Pig" className="blookFour" />
-                            <Blook name="Sheep" className="blookFive" />
-                            <Textfit className="headerThree" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("8vw")}>The Last {host.settings.mode == "Teams" ? "Team" : "Player"} With Energy Remaining Wins</Textfit>
+                        ? <div className="instruct4_container">
+                            <Textfit className="instruct4_headerOne" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("12vw")}>Step Four:</Textfit>
+                            <Textfit className="instruct4_headerTwo" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("10vw")}>Survive</Textfit>
+                            <Blook name="Chicken" className="instruct4_blookOne" />
+                            <Blook name="Dog" className="instruct4_blookTwo" />
+                            <Blook name="Fox" className="instruct4_blookThree" />
+                            <Blook name="Pig" className="instruct4_blookFour" />
+                            <Blook name="Sheep" className="instruct4_blookFive" />
+                            <Textfit className="instruct4_headerThree" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("8vw")}>The Last {host.settings.mode == "Teams" ? "Team" : "Player"} With Energy Remaining Wins</Textfit>
                         </div>
-                        : stage == 6 && <div className="container">
-                            <Textfit className="headerOne" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("15vw")}>Good Luck</Textfit>
-                            <Textfit className="headerTwo" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("15vw")}>& Let's Go!</Textfit>
+                        : stage == 6 && <div className="instruct5_container">
+                            <Textfit className="instruct5_headerOne" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("15vw")}>Good Luck</Textfit>
+                            <Textfit className="instruct5_headerTwo" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("15vw")}>& Let's Go!</Textfit>
                         </div>}
         <div id="skipButton" onClick={skip}>Skip</div>
     </div>
 }
 
 function Opponent({ energy, name, blook, done, win, left, ready, safe }) {
-    return <div className={`row${!win && done ? " rowLose" : ""}${left ? "" : " rowRight"}`}>
-        <img src={royale.nameplateLeft} alt="background" className={`background${left ? "" : " backgroundRight"}`} />
-        <Blook name={blook} className={`blook${left ? "" : " blookRight"}`} />
-        <Textfit className="name" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5vw")}>{name}</Textfit>
-        <div className="energyContainer">
-            <div className="energyText" style={{ color: left ? "#ff490f" : "#324cff" }}>
+    return <div className={className("opponent_row", { opponent_rowLose: !win && done, opponent_rowRight: left })}>
+        <img src={royale.nameplateLeft} alt="background" className={className("opponent_background", { opponent_backgroundRight: left })} />
+        <Blook name={blook} className={className("opponent_blook", { opponent_blookRight: left })} />
+        <Textfit className="opponent_name" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5vw")}>{name}</Textfit>
+        <div className="opponent_energyContainer">
+            <div className="opponent_energyText" style={{ color: left ? "#ff490f" : "#324cff" }}>
                 {done && ready && !win && !safe ? energy - 1 : energy}
             </div>
-            <img src={left ? royale.boltOrange : royale.boltBlue} alt="Energy" className="energyIcon" />
+            <img src={left ? royale.boltOrange : royale.boltBlue} alt="Energy" className="opponent_energyIcon" />
         </div>
     </div>
 }
 
 function Match({ match: [first, second], ready, safe }) {
     let done = Boolean(first.time || second.time);
-    return <div className="container">
+    return <div className="match_container">
         <Opponent
             energy={first.energy}
             name={first.name} blook={first.blook} done={done}
             win={(first.correct && !second.correct) || (first.correct && first.time < second.time)}
             ready={ready} safe={safe} left={true} />
-        <img src={royale.lobbyVs} alt="VS" className="vsImg" />
+        <img src={royale.lobbyVs} alt="VS" className="match_vsImg" />
         <Opponent
             energy={second.energy}
             name={second.clone ? `${second.name} \uD83D\uDC7E` : second.name} blook={second.blook} done={done}
@@ -164,10 +168,8 @@ function SingleMatch({ name, match, maxEnergy, team, timer }) {
         if (matches.me && matches.opp) {
             let meEnergy = [], oppEnergy = [];
             for (let i = 0; i < maxEnergy; i++) {
-                if (matches.me.energy > i) meEnergy.push(true);
-                else meEnergy.push(false);
-                if (matches.opp.energy > i) oppEnergy.push(true);
-                else oppEnergy.push(false);
+                meEnergy.push(matches.me.energy > i);
+                oppEnergy.push(matches.opp.energy > i);
             }
             oppEnergy.reverse();
             setEnergyArrays({ me: meEnergy, opp: oppEnergy });
@@ -179,46 +181,46 @@ function SingleMatch({ name, match, maxEnergy, team, timer }) {
             opp: match[0].name == name ? match[1] : match[0],
         });
     }, []);
-    return <div className="background">
-        <div className="rightBackground"></div>
-        <img src={royale.bgStarburst} alt="Background" className="backgroundOverlay" />
-        <img src={royale.vsLightningTop} alt="Lightning Top" className="lightningTop" />
-        <img src={royale.vsLightningBottom} alt="Lightning Bottom" className="lightningBottom" />
-        <Blook name={matches.me.blook} className="leftBlookShadow3" />
-        <img src={royale.orangeNameplate} alt="Nameplate" className="leftNameplate" />
-        <Textfit className="leftName" mode="single" min={1} max={getDimensions("8vw")} forceSingleModeWidth={false}>{matches.me.name}</Textfit>
-        <Blook name={matches.me.blook} className="leftBlookShadow2" />
-        <Blook name={matches.me.blook} className="leftBlookShadow1" />
-        <Blook name={matches.me.blook} className="leftBlook" />
-        <div className="leftEnergyContainer">
-            <img src={royale.energyBg} alt="Energy Bar" className="leftEnergyBar" />
-            <img src={royale.boltBlue} alt="Energy Bolt" className="leftEnergyBolt" />
+    return <div className="singlematch_background">
+        <div className="singlematch_rightBackground"></div>
+        <img src={royale.bgStarburst} alt="Background" className="singlematch_backgroundOverlay" />
+        <img src={royale.vsLightningTop} alt="Lightning Top" className="singlematch_lightningTop" />
+        <img src={royale.vsLightningBottom} alt="Lightning Bottom" className="singlematch_lightningBottom" />
+        <Blook name={matches.me.blook} className="singlematch_leftBlookShadow3" />
+        <img src={royale.orangeNameplate} alt="Nameplate" className="singlematch_leftNameplate" />
+        <Textfit className="singlematch_leftName" mode="single" min={1} max={getDimensions("8vw")} forceSingleModeWidth={false}>{matches.me.name}</Textfit>
+        <Blook name={matches.me.blook} className="singlematch_leftBlookShadow2" />
+        <Blook name={matches.me.blook} className="singlematch_leftBlookShadow1" />
+        <Blook name={matches.me.blook} className="singlematch_leftBlook" />
+        <div className="singlematch_leftEnergyContainer">
+            <img src={royale.energyBg} alt="Energy Bar" className="singlematch_leftEnergyBar" />
+            <img src={royale.boltBlue} alt="Energy Bolt" className="singlematch_leftEnergyBolt" />
             {energyArrays.me.map((energy, i) => {
-                return <img src={energy ? royale.energyBarBlue : royale.energyBarEmpty} alt="Energy" className="leftEnergy" style={{ marginRight: i == energyArrays.me.length - 1 ? "17%" : null }} />
+                return <img src={energy ? royale.energyBarBlue : royale.energyBarEmpty} alt="Energy" className="singlematch_leftEnergy" style={{ marginRight: i == energyArrays.me.length - 1 ? "17%" : null }} />
             })}
         </div>
 
-        <Blook name={matches.opp.blook} className="rightBlookShadow3" />
-        <img src={royale.blueNameplate} alt="Nameplate" className="rightNameplate" />
-        <Textfit className="rightName" mode="single" min={1} max={getDimensions("8vw")} forceSingleModeWidth={false}>{matches.opp.name}</Textfit>
-        <Blook name={matches.opp.blook} className="rightBlookShadow2" />
-        <Blook name={matches.opp.blook} className="rightBlookShadow1" />
-        <Blook name={matches.opp.blook} className="rightBlook" />
-        <div className="rightEnergyContainer">
-            <img src={royale.energyBg} alt="Energy Bar" className="rightEnergyBar" />
+        <Blook name={matches.opp.blook} className="singlematch_rightBlookShadow3" />
+        <img src={royale.blueNameplate} alt="Nameplate" className="singlematch_rightNameplate" />
+        <Textfit className="singlematch_rightName" mode="single" min={1} max={getDimensions("8vw")} forceSingleModeWidth={false}>{matches.opp.name}</Textfit>
+        <Blook name={matches.opp.blook} className="singlematch_rightBlookShadow2" />
+        <Blook name={matches.opp.blook} className="singlematch_rightBlookShadow1" />
+        <Blook name={matches.opp.blook} className="singlematch_rightBlook" />
+        <div className="singlematch_rightEnergyContainer">
+            <img src={royale.energyBg} alt="Energy Bar" className="singlematch_rightEnergyBar" />
             {energyArrays.opp.map((energy, i) => {
-                return <img src={energy ? royale.energyBarOrange : royale.energyBarEmpty} alt="Energy" className="rightEnergy" style={{ marginLeft: i == 0 ? "17%" : null }} />
+                return <img src={energy ? royale.energyBarOrange : royale.energyBarEmpty} alt="Energy" className="singlematch_rightEnergy" style={{ marginLeft: i == 0 ? "17%" : null }} />
             })}
-            <img src={royale.boltOrange} alt="Energy Bolt" className="rightEnergyBolt" />
+            <img src={royale.boltOrange} alt="Energy Bolt" className="singlematch_rightEnergyBolt" />
         </div>
 
         {timer == 3
-            ? <img src={royale.countdown3} alt="3" className="numText" />
+            ? <img src={royale.countdown3} alt="3" className="singlematch_numText" />
             : timer == 2
-                ? <img src={royale.countdown2} alt="2" className="numText" />
+                ? <img src={royale.countdown2} alt="2" className="singlematch_numText" />
                 : timer == 1
-                    ? <img src={royale.countdown1} alt="1" className="numText" />
-                    : <img src={royale.vs} alt="VS" className="vs" />}
+                    ? <img src={royale.countdown1} alt="1" className="singlematch_numText" />
+                    : <img src={royale.vs} alt="VS" className="singlematch_vs" />}
     </div>
 }
 
@@ -263,9 +265,9 @@ export function RoyalePreview() {
         return <div className="body" style={{ backgroundColor: host.matches.length == 1 ? "#f7f7f7" : "var(--accent2)", overflow: "hidden" }}>
             <TopBar left={`Round ${host.round}`} right={`${host.players.length} ${host.settings.mode == "Teams" ? "Teams" : "Players"} Remain`} muted={muted} changeMuted={changeMuted} />
             {host.matches.length !== 1 ? <div className="hostRegularBody" style={{ backgroundColor: "3907c0" }}>
-                <img src={royale.wavyBg} alt="Waves" className="wavesBg" />
-                <div className="header">Starting In {timer}</div>
-                <ScrollElement className="matchArray" id="matches">
+                <img src={royale.wavyBg} alt="Waves" className="preview_wavesBg" />
+                <div className="preview_header">Starting In {timer}</div>
+                <ScrollElement className="preview_matchArray" id="matches">
                     {host.matches.map((match, i) => {
                         <Match match={match} key={i} />
                     })}
@@ -274,139 +276,6 @@ export function RoyalePreview() {
                 <SingleMatch name={host.matches[0][0].name} match={host.matches[0]} maxEnergy={host.settings.energy} timer={timer} />
             </div>}
         </div>
-}
-
-function HostQuestion({ next, question, numAnswers, numClients, transitioning, muted, theme }) {
-    const [timer, setTimer] = useState(question.timeLimit);
-    const [timerChange, setTimerChange] = useState(true);
-    const [isZoomed, setIsZoomed] = useState(false);
-    const { current: audio } = useRef(new Audio(random(audios.questionMusic)));
-    const readingAloud = useRef(false);
-    const onReadAloud = useCallback(() => {
-        audio.muted = true;
-        readingAloud.current = true;
-    }, []);
-    const onReadAloudEnd = useCallback(() => {
-        audio.muted = muted;
-        readingAloud.current = false;
-    }, []);
-    const timerInterval = useRef();
-    const timerTimeout = useRef();
-    useEffect(() => {
-        audio.muted = muted;
-        audio.volume = 0.6;
-        audio.play();
-        audio.addEventListener("ended", function () {
-            audio.currentTime = 0;
-            audio.play();
-        }, false);
-        let seconds = question.timeLimit;
-        timerInterval.current = setInterval(() => {
-            if ((seconds -= 1) <= 0) {
-                clearInterval(timerInterval.current);
-                return next();
-            }
-            if (seconds <= 5) {
-                setTimerChange(true);
-                timerTimeout.current = setTimeout(() => {
-                    setTimer(seconds);
-                    setTimerChange(false);
-                }, 15);
-            } else setTimer(seconds);
-        }, 1000);
-        return () => {
-            clearTimeout(timerTimeout.current);
-            clearInterval(timerInterval.current);
-            audio.currentTime = 0;
-            audio.pause();
-            audio.removeEventListener("ended", function () {
-                audio.currentTime = 0;
-                audio.play();
-            }, false);
-        }
-    }, []);
-    useEffect(() => {
-        if (!readingAloud.current) audio.muted = muted;
-    });
-    return <div>
-        <div className={transitioning ? "invisible" : ""}>
-            <div className="upperContainer">
-                {question.audio
-                    ? <div className={`imageContainer${theme == "spooky" ? " spooky" : ""}`}>
-                        <PlayAudio audioUrl={question.audio} onStart={onReadAloud} onEnd={onReadAloudEnd} autoplay={true} width="80%" />
-                    </div>
-                    : question.image
-                        ? <div className={`imageContainer${theme == "spooky" ? " spooky" : ""}`} onClick={() => setIsZoomed(true)}>
-                            <img src={imageUrl(question.image)} alt="Missing" className="image" draggable={false} />
-                        </div>
-                        : question.question.includes("`*`") && <div className={`imageContainer funcContainer${theme == "spooky" ? " spooky" : ""}`}>
-                            <StaticMathField className="qMathField">
-                                {question.question.slice(question.question.indexOf("`*`") + 3, question.question.length - 3)}
-                            </StaticMathField>
-                        </div>}
-                <div className={`${(question.image || question.audio || question.question.includes("`*`")) ? "questionContainerImage" : "questionContainerNoImage"}${theme == "spooky" ? " spooky" : ""}`}>
-                    <Textfit className={(question.image || question.audio || question.question.includes("`*`")) ? "questionTextImage" : "questionTextNoImage"} mode="multi" min={1} max={getDimensions("4vw")}>
-                        {question.question.includes('`*`')
-                            ? question.question.slice(0, question.question.indexOf('`*`'))
-                            : question.question}
-                    </Textfit>
-                </div>
-                <div className={`upperRightContainer${theme == "spooky" ? " spooky" : ""}`}>
-                    <div className={timer == 0 ? "timerContainerDone" : "timerContainer"} style={{ background: theme == "spooky" ? timer == 0 ? "#d37612" : "#ef9c43" : null }}>
-                        <div className={timerChange ? "timer" : "timerAnimate"}>{timer}</div>
-                        <div className={timer == 0 ? "spinnerContainerOne" : "spinnerContainer"}>
-                            <div className="spinner" style={{
-                                animationIterationCount: question.timeLimit,
-                                background: theme == "spooky" ? "#e57e25" : null
-                            }}></div>
-                            <div className="filler" style={{
-                                animationIterationCount: question.timeLimit,
-                                background: theme == "spooky" ? "#e57e25" : null
-                            }}></div>
-                            <div className="mask" style={{ animationIterationCount: question.timeLimit }}></div>
-                        </div>
-                    </div>
-                    <div className="numAnswersText">{`${numAnswers}/${numClients}`}</div>
-                </div>
-                <div className={`nextButton${theme == "spooky" ? " spooky" : ""}`} onClick={next}>
-                    <div className="nextText">Next</div>
-                </div>
-            </div>
-        </div>
-        {question.qType == "typing"
-            ? <div className="typingAnswerWrapper">
-                <div className="typingAnswerHolder">
-                    <div className="typingAnswerHeader">Students Type Your Answer</div>
-                    <div className="typingAnswerSubheader">(not case sensitive)</div>
-                    <div className="typingAnswerContainer">
-                        <input type="text" className="typingAnswerInput" value="" placeholder="Answer" onChange={() => { }} />
-                    </div>
-                </div>
-            </div>
-            : <div className="answerHolder">
-                {question.answers.map((answer, i) => {
-                    return <div className={`answerContainer${question.answers.length == 2 ? " answerTwo" : ""}${question.answers.length == 3 && i == 2 ? " answerThree" : ""}`} style={{
-                        backgroundColor: questionColors[theme == "spooky" ? "spooky" : "default"].answers[i].background
-                    }} key={answer}>
-                        {answer.split("`~`").length == 2
-                            ? <div className="answerImgContainer">
-                                <img src={imageUrl(answer.split("`~`")[1])} alt="Answer" className="answerImg" />
-                            </div>
-                            : '`*`' == answer.slice(0, 3)
-                                ? <div className="answerImgContainer">
-                                    <StaticMathField className="mathField" style={{
-                                        color: questionColors[theme == "spooky" ? "spooky" : "default"].answers[i].text,
-                                        borderColor: questionColors[theme == "spooky" ? "spooky" : "default"].answers[i].text
-                                    }}>{answer.slice(3, answer.length - 3)}</StaticMathField>
-                                </div>
-                                : <Textfit className="answerText" mode="multi" min={1} max={getDimensions("2.5vw")} style={{ color: questionColors[theme == "spooky" ? "spooky" : "default"].answers[i].text }}>{answer}</Textfit>}
-                    </div>
-                })}
-            </div>}
-        {isZoomed && <div className="modal modalButton" onClick={() => setIsZoomed(false)}>
-            <img src={imageUrl(question.image, true)} alt="Upload" className="bigImage" draggable={false} />
-        </div>}
-    </div>
 }
 
 export function RoyaleQuestion() {
@@ -535,260 +404,6 @@ export function RoyaleQuestion() {
     </div>
 }
 
-function HostResults({ next, time, question, clientAnswers, numClients, transitioning, muted, canSkip, theme }) {
-    const [timer, setTimer] = useState(time);
-    const [timerChange, setTimerChange] = useState(true);
-    const [ready, setReady] = useState(false);
-    const [paused, setPaused] = useState(false);
-    const [unpause, setUnpause] = useState(false);
-    const [showImage, setShowImage] = useState(false);
-    const [answerAmounts, setAnswerAmounts] = useState([]);
-    const [isZoomed, setIsZoomed] = useState(false);
-    const [numAnswers, setNumAnswers] = useState(0);
-    const [numCorrectAnswers, setNumCorrectAnswers] = useState(0);
-    const played = useRef(false);
-    const getChartData = useCallback(() => {
-        let a = ready ? 0.5 : 1;
-        return {
-            datasets: [
-                {
-                    data: answerAmounts,
-                    backgroundColor: question.qType == "typing"
-                        ? ['#d9d9d9', '#4bc22e']
-                        : [
-                            'spooky' === theme
-                                ? `rgba(229, 126, 37, ${question.correctAnswers.includes(question.answers[1]) ? 1 : ready})`
-                                : `rgba(51, 120, 255, ${question.correctAnswers.includes(question.answers[1]) ? 1 : ready})`,
-                            'spooky' === theme
-                                ? `rgba(247, 128, 0, ${question.correctAnswers.includes(question.answers[3]) ? 1 : ready})`
-                                : `rgba(255, 70, 43, ${question.correctAnswers.includes(question.answers[3]) ? 1 : ready})`,
-                            'spooky' === theme
-                                ? `rgba(225, 116, 0, ${question.correctAnswers.includes(question.answers[2]) ? 1 : ready})`
-                                : `rgba(0, 207, 119, ${question.correctAnswers.includes(question.answers[2]) ? 1 : ready})`,
-                            'spooky' === theme
-                                ? `rgba(211, 118, 18, ${question.correctAnswers.includes(question.answers[0]) ? 1 : ready})`
-                                : `rgba(255, 163, 30, ${question.correctAnswers.includes(question.answers[0]) ? 1 : ready})`,
-                            'spooky' === theme ? `rgba(217, 217, 217, ${ready})` : '#d9d9d9',
-                        ]
-                }
-            ]
-        }
-    }, [ready, answerAmounts]);
-    const pausePlay = useCallback(() => {
-        if (paused) {
-            setUnpause(true);
-            unpauseTimeout.current = setTimeout(() => {
-                intervalSetup();
-                setUnpause(false);
-                setPaused(false);
-            }, 25);
-        } else {
-            clearInterval(interval.current);
-            setPaused(true);
-        }
-    }, [paused]);
-    const intervalSetup = useCallback(() => {
-        if (!played.current) {
-            audio.play();
-            played.current = true;
-        }
-        let seconds = timer;
-        interval.current = setInterval(() => {
-            if (paused) return;
-            if ((seconds -= 1) == time - 2) setReady(true);
-            if (seconds <= 0) {
-                clearInterval(interval.current);
-                return next();
-            }
-            if (seconds <= 5) {
-                setTimerChange(true);
-                timeout.current = setTimeout(() => {
-                    setTimer(seconds);
-                    setTimerChange(false);
-                }, 15);
-            }
-            setTimer(seconds);
-        }, 1000);
-    }, [timer, paused]);
-    const { current: audio } = useRef(new Audio(audios.questionResults));
-    const interval = useRef();
-    const timeout = useRef();
-    const unpauseTimeout = useRef();
-    useEffect(() => {
-        let totalCorrect = 0;
-        if (question.qType == "typing") for (const clientAnswer of clientAnswers) {
-            let correct = false;
-            for (let i = 0; i < question.answers.length; i++)
-                if ((question.answerTypes[i] == "contains" && question.answers[i].toLowerCase().trim().includes(clientAnswer.toLowerCase().trim())) || question.answers[i].toLowerCase().trim() == clientAnswer.toLowerCase().trim()) correct = true;
-            if (correct) totalCorrect++;
-        } else for (let i = 0; i < question.correctAnswers.length; i++)
-            totalCorrect += clientAnswers.filter(x => question.answers[x] == question.correctAnswers[i]).length;
-        let thing = question.qType == "typing"
-            ? [totalCorrect == 0 ? 1 : numClients - totalCorrect, totalCorrect]
-            : [
-                clientAnswers.filter(x => 1 == x).length,
-                clientAnswers.filter(x => 3 == x).length,
-                clientAnswers.filter(x => 2 == x).length,
-                clientAnswers.filter(x => 0 == x).length,
-                clientAnswers.length == 0 ? 1 : numClients - clientAnswers.length
-            ];
-        setAnswerAmounts(thing);
-        setNumAnswers(Math.max(1, numClients));
-        setNumCorrectAnswers(totalCorrect);
-        intervalSetup();
-        return () => {
-            audio.currentTime = 0;
-            audio.pause();
-            clearInterval(interval.current);
-            clearTimeout(timeout.current);
-            clearTimeout(unpauseTimeout.current);
-        }
-    }, []);
-    useEffect(() => { audio.muted = muted });
-    let isSpooky = theme == "spooky";
-    return <div className={transitioning ? "invisible" : null}>
-        <div className="transition">
-            <div className="upperContainer">
-                {question.image || question.audio || question.question.includes('`*`')
-                    ? <div>
-                        {showImage
-                            ? question.audio
-                                ? <div className={className("questionContainerImage", { spooky: isSpooky })}>
-                                    <PlayAudio audioUrl={question.audio} autoplay={true} width="80%" />
-                                </div>
-                                : question.image
-                                    ? <div className={className("questionContainerImage", { spooky: isSpooky })} onClick={() => setIsZoomed(true)} style={{ cursor: "pointer" }}>
-                                        <img src={imageUrl(question.image)} alt="Question" className="image" />
-                                    </div>
-                                    : <div className={className("questionContainerImage", { spooky: isSpooky })}>
-                                        <StaticMathField className="qMathField">
-                                            {question.question.slice(question.question.indexOf("`*`") + 3, question.question.length - 3)}
-                                        </StaticMathField>
-                                    </div>
-                            : <div className={className("questionContainerImage", { spooky: isSpooky })}>
-                                <Textfit className="questionText" mode="multi" min={1} max={getDimensions("3vw")}>
-                                    {question.question.includes('`*`')
-                                        ? question.question.slice(0, question.question.indexOf('`*`'))
-                                        : question.question}
-                                </Textfit>
-                            </div>}
-                        <div className={className("mediaButton", { spooky: isSpooky })} onClick={() => setShowImage(s => !s)}>
-                            <i className="mediaIcon far fa-image"></i>
-                            <div className="mediaText">
-                                {showImage ? "Hide" : "Show"} {question.audio ? "Audio" : question.image ? "Image" : "Math"}
-                            </div>
-                        </div>
-                    </div>
-                    : <div className={className("questionContainerImage", { spooky: isSpooky })}>
-                        <Textfit className="questionText" mode="multi" min={1} max={getDimensions("3vw")}>
-                            {question.question.includes('`*`')
-                                ? question.question.slice(0, question.question.indexOf('`*`'))
-                                : question.question}
-                        </Textfit>
-                    </div>}
-                <div className={className("centerContainer", { spooky: isSpooky })}>
-                    <div className="upperCenter">
-                        <div className="upperCenterText">Responses:</div>
-                    </div>
-                    <div className="lowerCenter">
-                        <Doughnut data={getChartData()} options={{
-                            maintainAspectRatio: false,
-                            responsive: true,
-                            legend: { display: false },
-                            tooltips: { enabled: false },
-                            animation: {
-                                duration: ready ? 250 : 1500,
-                                easing: ready ? 'linear' : 'easeInQuint',
-                            },
-                            layout: { padding: 15 },
-                        }} />
-                        <div className={ready ? "percentageText" : "percentageTextFaded"}>
-                            {Math.round((numCorrectAnswers / numAnswers) * 100)}%
-                        </div>
-                        {question.qType == "typing"
-                            ? <>
-                                <div className="boxOneTwo" style={{ backgroundColor: "#4bc22e" }}>
-                                    <div className="amountText">{answerAmounts[1]}</div>
-                                </div>
-                                <div className="boxTwoTwoThree" style={{ backgroundColor: "#d9d9d9" }}>
-                                    <div className="amountText">{answerAmounts[0]}</div>
-                                </div>
-                            </>
-                            : <>
-                                {question.answers[0] && <div className={className(question.answers.length == 2 ? "boxOneTwo" : "boxOneThreeFour", ready && !question.correctAnswers.include(question.answers[0]) && "faded")} style={{ backgroundColor: questionColors[isSpooky ? "spooky" : "default"].answers[0].background }}>
-                                    <div className="amountText">{answerAmounts[3]}</div>
-                                </div>}
-                                {question.answers[1] && <div className={className(question.answers.length == 4 ? "boxTwoFour" : "boxTwoTwoThree", ready && !question.correctAnswers.include(question.answers[1]) && "faded")} style={{ backgroundColor: questionColors[isSpooky ? "spooky" : "default"].answers[1].background }}>
-                                    <div className="amountText">{answerAmounts[0]}</div>
-                                </div>}
-                                {question.answers[2] && <div className={className("boxThree", ready && !question.correctAnswers.include(question.answers[2]) && "faded")} style={{ backgroundColor: questionColors[isSpooky ? "spooky" : "default"].answers[2].background }}>
-                                    <div className="amountText">{answerAmounts[2]}</div>
-                                </div>}
-                                {question.answers[3] && <div className={className("boxFour", ready && !question.correctAnswers.include(question.answers[1]) && "faded")} style={{ backgroundColor: questionColors[isSpooky ? "spooky" : "default"].answers[3].background }}>
-                                    <div className="amountText">{answerAmounts[1]}</div>
-                                </div>}
-                            </>}
-                    </div>
-                </div>
-                <div className={className("rightTopContainer", { spooky: isSpooky })}>
-                    <div className={timer == 0 ? "timerContainerDone" : "timerContainer"} style={{ background: isSpooky ? timer == 0 ? "#d37612" : "#ef9c43" : null }}>
-                        <div className={timerChange || unpause ? "timer" : "timerAnimate"} style={paused ? { animationPlayState: 'paused' } : {}}>{timer}</div>
-                        <div className={timer == 0 ? "spinnerContainerDone" : "spinnerContainer"}>
-                            <div className={unpause ? "spinner" : "spinnerAnimate"} style={{ background: isSpooky ? "#e57e35" : null, animationPlayState: paused ? 'paused' : null }}></div>
-                            <div className={unpause ? "filler" : "fillerAnimate"} style={{ background: isSpooky ? "#e57e35" : null, animationPlayState: paused ? 'paused' : null }}></div>
-                            <div className={unpause ? "mask" : "maskAnimate"} style={{ animationPlayState: paused ? 'paused' : null }}></div>
-                        </div>
-                    </div>
-                </div>
-                <div className={className("pauseButton", { spooky: isSpooky })} onClick={pausePlay} style={{ left: canSkip ? "84vw" : "87.5vw" }}>
-                    <i className={className("pauseIcon", "fas", paused ? "fa-play" : "fa-pause")}></i>
-                </div>
-                {canSkip && <div className={className("pauseButton", { spooky: isSpooky })} onClick={next} style={{ left: "91vw" }}>
-                    <i className="pauseIcon fas fa-forward"></i>
-                </div>}
-            </div>
-        </div>
-        {question.qType == "typing"
-            ? <div className="typingAnswerWrapper">
-                <div className="typingAnswerHolder">
-                    <div className="typingAnswerInside">
-                        <div className="typingAnswerHeader">Possible answers</div>
-                        {question.answers.map(answer => <div key={answer} className="typingAnswerContainer">{ready ? answer : ""}</div>)}
-                    </div>
-                </div>
-            </div>
-            : <div className="answersHolder">
-                {question.answers.map((answer, i) => {
-                    return <div className={className("answerContainer", {
-                        answerTwo: question.answers.length == 2,
-                        answerThree: question.answers.length == 3 && 2 == i,
-                        faded: ready && !question.correctAnswers.includes(answer)
-                    })} style={{ backgroundColor: questionColors[isSpooky ? "spooky" : "default"].answers[i].background }} key={answer}>
-                        {ready && question.correctAnswers.includes(answer) && <i className="selectedIcon, fas fa-check" />}
-                        {answer.split("`~`").length == 2
-                            ? <div className={className("answerImgContainer", { selectedImg: ready && question.correctAnswers.includes(answer) })}>
-                                <img src={imageUrl(answer.split("`~`")[1])} alt="Answer" className="answerImg" />
-                            </div>
-                            : '`*`' == answer.slice(0, 3)
-                                ? <div className={className("answerImgContainer", { selectedImg: ready && question.correctAnswers.includes(answer) })}>
-                                    <StaticMathField className="mathField" style={{
-                                        color: questionColors[isSpooky ? "spooky" : "default"].answers[i].text,
-                                        borderColor: questionColors[isSpooky ? "spooky" : "default"].answers[i].text
-                                    }}>{answer.slice(3, answer.length - 3)}</StaticMathField>
-                                </div>
-                                : <Textfit className={className("answerText", { selectedText: ready && question.correctAnswers.includes(answer) })} mode="multi" min={1} max={getDimensions("2.5vw")} style={{
-                                    color: questionColors[isSpooky ? "spooky" : "default"].answers[i].text
-                                }}>{answer}</Textfit>
-                        }
-                    </div>
-                })}
-            </div>}
-        {isZoomed && <div className="modal modalButton" onClick={() => setIsZoomed(false)}>
-            <img src={imageUrl(question.image, true)} alt="Upload" className="bigImage" />
-        </div>}
-    </div >
-}
-
 export function RoyaleQuestionResults() {
     const { host: hostRef, liveGameController } = useGame();
     const { current: host } = hostRef;
@@ -821,71 +436,71 @@ export function RoyaleQuestionResults() {
 function RoyaleStandings({ winner, loser, bothWin, bothLose, win, safe, isPlayer }) {
     let playerWin = !win && isPlayer ? loser : winner;
     let playerLose = !win && isPlayer ? winner : loser;
-    return <div className="background">
+    return <div className="standings_background">
         {
             win
                 ? <>
-                    <div className="winnerBackground"></div>
-                    <img src={royale.bgStarburst} alt="Background" className="winnerOverlay" />
+                    <div className="standings_winnerBackground"></div>
+                    <img src={royale.bgStarburst} alt="Background" className="standings_winnerOverlay" />
                 </>
                 : <>
-                    <img src={royale.lineBg} alt="Sadness" className="loserOverlay" />
-                    <img src={royale.wavyBg} alt="Waves" className="loserOverlay2" />
+                    <img src={royale.lineBg} alt="Sadness" className="standings_loserOverlay" />
+                    <img src={royale.wavyBg} alt="Waves" className="standings_loserOverlay2" />
                 </>
         }
-        <img src={royale.bgStarburst} alt="Background" className="resultsOverlay" />
-        <div className="resultsText">Match Results</div>
-        <Blook name={playerWin.blook} className="winnerBlookShadow3" />
-        <img src={royale.victoryDefeatBg} alt="Nameplate" className="victoryTextBg" />
-        <img src={win ? royale.victoryText : royale.defeatedText} alt={win ? "Victory" : "Defeat"} className="victoryText" />
-        <div className="winnerBlookContainer">
-            <div className="winnerCorrectContainer">
-                <img src={royale.energyBg} alt="Nameplate" className="winnerCorrectBg" />
-                <img src={playerWin.correct ? royale.greenCheck : royale.redX} alt={playerWin.correct ? "Correct" : "Incorrect"} className="winnerCheck" />
-                <div className="winnerTime" style={{ color: playerWin.correct ? "#4fcb11" : "#ff1700" }}>
+        <img src={royale.bgStarburst} alt="Background" className="standings_resultsOverlay" />
+        <div className="standings_resultsText">Match Results</div>
+        <Blook name={playerWin.blook} className="standings_winnerBlookShadow3" />
+        <img src={royale.victoryDefeatBg} alt="Nameplate" className="standings_victoryTextBg" />
+        <img src={win ? royale.victoryText : royale.defeatedText} alt={win ? "Victory" : "Defeat"} className="standings_victoryText" />
+        <div className="standings_winnerBlookContainer">
+            <div className="standings_winnerCorrectContainer">
+                <img src={royale.energyBg} alt="Nameplate" className="standings_winnerCorrectBg" />
+                <img src={playerWin.correct ? royale.greenCheck : royale.redX} alt={playerWin.correct ? "Correct" : "Incorrect"} className="standings_winnerCheck" />
+                <div className="standings_winnerTime" style={{ color: playerWin.correct ? "#4fcb11" : "#ff1700" }}>
                     {(playerWin.time / 1000 || 0).toFixed(3)}s
                 </div>
             </div>
-            <div className="winnerEnergyContainer">
-                <img src={royale.energyBg} alt="Nameplate" className="winnerCorrectBg" />
-                <div className="winnerEnergy">{playerWin.energy}</div>
-                <img src={royale.boltOrange} alt="Energy" className="winnerEnergyIcon" />
+            <div className="standings_winnerEnergyContainer">
+                <img src={royale.energyBg} alt="Nameplate" className="standings_winnerCorrectBg" />
+                <div className="standings_winnerEnergy">{playerWin.energy}</div>
+                <img src={royale.boltOrange} alt="Energy" className="standings_winnerEnergyIcon" />
             </div>
-            <Blook name={playerWin.blook} className="winnerBlookShadow2" />
-            <Blook name={playerWin.blook} className="winnerBlookShadow1" />
-            <Blook name={playerWin.blook} className={className("winnerBlook", { grayBlook: bothWin || (!win && isPlayer) })} />
+            <Blook name={playerWin.blook} className="standings_winnerBlookShadow2" />
+            <Blook name={playerWin.blook} className="standings_winnerBlookShadow1" />
+            <Blook name={playerWin.blook} className={className("standings_winnerBlook", { standings_grayBlook: bothWin || (!win && isPlayer) })} />
         </div>
-        <img src={royale.orangeNameplate} alt="Energy" className="winnerNameplate" />
-        <Textfit className="winnerName" mode="single" min={1} max={getDimensions("8vw")} forceSingleModeWidth={false}>
+        <img src={royale.orangeNameplate} alt="Energy" className="standings_winnerNameplate" />
+        <Textfit className="standings_winnerName" mode="single" min={1} max={getDimensions("8vw")} forceSingleModeWidth={false}>
             {playerWin.name}{playerWin.clone ? ' \uD83D\uDC7E' : ""}
         </Textfit>
 
-        <Blook name={playerLose.blook} className="LoserBlookShadow3" />
-        <img src={royale.victoryDefeatBg} alt="Nameplate" className="defeatTextBg" />
-        <img src={(bothWin || (!win && isPlayer)) && !bothLose ? royale.victoryText : royale.defeatedText} alt={(bothWin || (!win && isPlayer)) && !bothLose ? "Victory" : "Defeat"} className="defeatText" />
-        <div className="LoserBlookContainer">
-            <div className="loserCorrectContainer">
-                <img src={royale.energyBg} alt="Nameplate" className="loserCorrectBg" />
-                <img src={playerLose.correct ? royale.greenCheck : royale.redX} alt={playerLose.correct ? "Correct" : "Incorrect"} className="loserCheck" />
-                <div className="loserTime" style={{ color: playerLose.correct ? "#4fcb11" : "#ff1700" }}>
+        <Blook name={playerLose.blook} className="standings_LoserBlookShadow3" />
+        <img src={royale.victoryDefeatBg} alt="Nameplate" className="standings_defeatTextBg" />
+        <img src={(bothWin || (!win && isPlayer)) && !bothLose ? royale.victoryText : royale.defeatedText} alt={(bothWin || (!win && isPlayer)) && !bothLose ? "Victory" : "Defeat"} className="standings_defeatText" />
+        <div className="standings_LoserBlookContainer">
+            <div className="standings_loserCorrectContainer">
+                <img src={royale.energyBg} alt="Nameplate" className="standings_loserCorrectBg" />
+                <img src={playerLose.correct ? royale.greenCheck : royale.redX} alt={playerLose.correct ? "Correct" : "Incorrect"} className="standings_loserCheck" />
+                <div className="standings_loserTime" style={{ color: playerLose.correct ? "#4fcb11" : "#ff1700" }}>
                     {(playerLose.time / 1000 || 0).toFixed(3)}s
                 </div>
             </div>
-            <div className="loserEnergyContainer">
-                <img src={royale.energyBg} alt="Nameplate" className="loserCorrectBg" />
-                <div className="loserEnergy">{playerLose.energy}</div>
-                <img src={royale.boltBlue} alt="Energy" className="loserEnergyIcon" />
+            <div className="standings_loserEnergyContainer">
+                <img src={royale.energyBg} alt="Nameplate" className="standings_loserCorrectBg" />
+                <div className="standings_loserEnergy">{playerLose.energy}</div>
+                <img src={royale.boltBlue} alt="Energy" className="standings_loserEnergyIcon" />
             </div>
-            <Blook name={playerLose.blook} className="loserBlookShadow2" />
-            <Blook name={playerLose.blook} className="loserBlookShadow1" />
-            <Blook name={playerLose.blook} className={className("loserBlook", { grayBlook: bothLose || !(bothWin || (!win && isPlayer)) })} />
+            <Blook name={playerLose.blook} className="standings_loserBlookShadow2" />
+            <Blook name={playerLose.blook} className="standings_loserBlookShadow1" />
+            <Blook name={playerLose.blook} className={className("standings_loserBlook", { standings_grayBlook: bothLose || !(bothWin || (!win && isPlayer)) })} />
         </div>
-        <img src={royale.blueNameplate} alt="Energy" className="loserNameplate" />
-        <Textfit className="loserName" mode="single" min={1} max={getDimensions("8vw")} forceSingleModeWidth={false}>
+        <img src={royale.blueNameplate} alt="Energy" className="standings_loserNameplate" />
+        <Textfit className="standings_loserName" mode="single" min={1} max={getDimensions("8vw")} forceSingleModeWidth={false}>
             {playerLose.name}{playerLose.clone ? ' \uD83D\uDC7E' : ""}
         </Textfit>
 
-        {bothLose || bothWin && <div className="rightText">{safe ? "You Can't All Lose" : bothLose ? "You Both Lose" : bothWin ? "You Both Win" : ""}</div>}
+        {bothLose || bothWin && <div className="standings_rightText">{safe ? "You Can't All Lose" : bothLose ? "You Both Lose" : bothWin ? "You Both Win" : ""}</div>}
     </div>
 }
 
@@ -1003,9 +618,9 @@ export function RoyaleMatchResults() {
         <div className="hostRegularBody" style={{ backgroundColor: "#3907c0" }}>
             {host.matches.length !== 1
                 ? <>
-                    <img src={royale.wavyBg} alt="Waves" className="wavesBg" />
-                    <div className="header">Match Results</div>
-                    <ScrollElement className="matchArray" id="matches">
+                    <img src={royale.wavyBg} alt="Waves" className="matchresults_wavesBg" />
+                    <div className="matchresults_header">Match Results</div>
+                    <ScrollElement className="matchresults_matchArray" id="matches">
                         {host.matches.map((match, i) => <Match match={match} key={i} ready={ready} safe={host.safe} />)}
                     </ScrollElement>
                 </>
