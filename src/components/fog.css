@@ -9,7 +9,7 @@
 .fog1,
 .fog2,
 .fog3 {
-    position: absolute;
+    position: fixed;
     height: 100%
 }
 

@@ -7,6 +7,8 @@ import { Textfit } from "react-textfit";
 import { imageUrl, questionColors } from "../../utils/questions";
 import { getDimensions } from "../../utils/numbers";
 
+import "./hostResults.css";
+
 export default function HostResults({ next, time, question, clientAnswers, numClients, transitioning, muted, canSkip, theme }) {
     const [timer, setTimer] = useState(time);
     const [timerChange, setTimerChange] = useState(true);
@@ -59,6 +61,8 @@ export default function HostResults({ next, time, question, clientAnswers, numCl
             setPaused(true);
         }
     }, [paused]);
+    const pausedRef = useRef();
+    useEffect(() => { pausedRef.current = paused }, [paused]);
     const intervalSetup = useCallback(() => {
         if (!played.current) {
             audio.play();
@@ -66,10 +70,11 @@ export default function HostResults({ next, time, question, clientAnswers, numCl
         }
         let seconds = timer;
         interval.current = setInterval(() => {
-            if (paused) return;
+            if (pausedRef.current) return;
             if ((seconds -= 1) == time - 2) setReady(true);
             if (seconds <= 0) {
                 clearInterval(interval.current);
+                setTimer(seconds);
                 return next();
             }
             if (seconds <= 5) {
@@ -175,7 +180,7 @@ export default function HostResults({ next, time, question, clientAnswers, numCl
                             },
                             layout: { padding: 15 },
                         }} />
-                        <div className={ready ? "percentageText" : "percentageTextFaded"}>
+                        <div className={ready ? "hostresults_percentageText" : "hostresults_percentageTextFaded"}>
                             {Math.round((numCorrectAnswers / numAnswers) * 100)}%
                         </div>
                         {question.qType == "typing"
@@ -204,12 +209,12 @@ export default function HostResults({ next, time, question, clientAnswers, numCl
                     </div>
                 </div>
                 <div className={className("hostresults_rightTopContainer", { hostresults_spooky: isSpooky })}>
-                    <div className={timer == 0 ? "timerContainerDone" : "timerContainer"} style={{ background: isSpooky ? timer == 0 ? "#d37612" : "#ef9c43" : null }}>
-                        <div className={timerChange || unpause ? "timer" : "timerAnimate"} style={paused ? { animationPlayState: 'paused' } : {}}>{timer}</div>
-                        <div className={timer == 0 ? "spinnerContainerDone" : "spinnerContainer"}>
-                            <div className={unpause ? "spinner" : "spinnerAnimate"} style={{ background: isSpooky ? "#e57e35" : null, animationPlayState: paused ? 'paused' : null }}></div>
-                            <div className={unpause ? "filler" : "fillerAnimate"} style={{ background: isSpooky ? "#e57e35" : null, animationPlayState: paused ? 'paused' : null }}></div>
-                            <div className={unpause ? "mask" : "maskAnimate"} style={{ animationPlayState: paused ? 'paused' : null }}></div>
+                    <div className={timer == 0 ? "hostresults_timerContainerDone" : "hostresults_timerContainer"} style={{ background: isSpooky ? timer == 0 ? "#d37612" : "#ef9c43" : null }}>
+                        <div className={timerChange || unpause ? "hostresults_timer" : "hostresults_timerAnimate"} style={paused ? { animationPlayState: 'paused' } : {}}>{timer}</div>
+                        <div className={timer == 0 ? "hostresults_spinnerContainerDone" : "hostresults_spinnerContainer"}>
+                            <div className={unpause ? "hostresults_spinner" : "hostresults_spinnerAnimate"} style={{ background: isSpooky ? "#e57e35" : null, animationPlayState: paused ? 'paused' : null }}></div>
+                            <div className={unpause ? "hostresults_filler" : "hostresults_fillerAnimate"} style={{ background: isSpooky ? "#e57e35" : null, animationPlayState: paused ? 'paused' : null }}></div>
+                            <div className={unpause ? "hostresults_mask" : "hostresults_maskAnimate"} style={{ animationPlayState: paused ? 'paused' : null }}></div>
                         </div>
                     </div>
                 </div>

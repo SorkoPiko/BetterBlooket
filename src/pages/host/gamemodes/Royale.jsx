@@ -72,7 +72,7 @@ export function RoyaleInstruct() {
         }
     }, []);
     if (!host?.settings) return navigate("/sets");
-    return <div className="body">
+    return <div className="hostBody">
         <TopBar left="" center="Instructions" muted={muted} changeMuted={changeMuted} />
         {stage == 2
             ? <div className="instruct1_container">
@@ -95,11 +95,11 @@ export function RoyaleInstruct() {
                         <div className="instruct2_answerFour"></div>
                     </div>
                     <div className="instruct2_arrowContainer">
-                        <i className="fas fa-arrow-right"></i>
+                        <i className="instruct2_arrow fas fa-arrow-right"></i>
                     </div>
                     <div className="instruct2_checkBoxBorder">
                         <div className="instruct2_checkBox">
-                            <i className="fas fa-check"></i>
+                            <i className="instruct2_check fas fa-check"></i>
                         </div>
                     </div>
                     <Textfit className="instruct2_headerThree" mode="multi" forceSingleModeWidth={false} min={1} max={getDimensions("8vw")}>{host.settings.mode == "Teams" ? "Incorrect Answers Count For The Maximum Time" : "Answer Quickly to Beat Your Opponent"}</Textfit>
@@ -266,12 +266,12 @@ export function RoyalePreview() {
     if (host?.round && host.matches)
         return <div className="body" style={{ backgroundColor: host.matches.length == 1 ? "#f7f7f7" : "var(--accent2)", overflow: "hidden" }}>
             <TopBar left={`Round ${host.round}`} right={`${host.players.length} ${host.settings.mode == "Teams" ? "Teams" : "Players"} Remain`} muted={muted} changeMuted={changeMuted} />
-            {host.matches.length !== 1 ? <div className="hostRegularBody" style={{ backgroundColor: "3907c0" }}>
+            {host.matches.length !== 1 ? <div className="hostRegularBody" style={{ backgroundColor: "#3907c0" }}>
                 <img src={royale.wavyBg} alt="Waves" className="preview_wavesBg" />
                 <div className="preview_header">Starting In {timer}</div>
                 <ScrollElement className="preview_matchArray" id="matches">
                     {host.matches.map((match, i) => {
-                        <Match match={match} key={i} />
+                        return <Match match={match} key={i} />
                     })}
                 </ScrollElement>
             </div> : <div className="hostRegularBody">
@@ -666,7 +666,6 @@ export function RoyaleFinal() {
                     } else results[client].corrects = user.c;
                 }
             });
-            window.dispatchEvent(new Event('resize')); // Fix React-Textfit not sizing right
             waitTimeout.current = setTimeout(function () {
                 if (!standings.length) return;
                 if (hostCopy.settings.mode == "Teams") post("https://play.blooket.com/api/history", {
@@ -725,7 +724,7 @@ export function RoyaleFinal() {
         await liveGameController.removeVal("c");
         liveGameController.setStage({ stage: "join" }, () => navigate("/host/join"));
     }, []);
-    if (host?.standings?.[0] || state.standings?.[0]) return <div className="body" style={{ overflowY: state.ready ? "auto" : "hidden" }}>
+    if (host?.standings?.[0] || state.standings?.[0]) return <div className="hostBody" style={{ overflowY: state.ready ? "auto" : "hidden" }}>
         {state.standings.length > 0 && <Standings
             standings={state.standings.map(x => ({ ...x, b: x.blook, n: x.name, p: x.place }))}
             stats={state.standings.map(e => formatNumber(e.wins) + (e.wins == 1 ? " Win" : " Wins"))}
