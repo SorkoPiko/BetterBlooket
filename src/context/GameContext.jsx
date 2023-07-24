@@ -141,7 +141,7 @@ export const GameProvider = ({ children }) => {
     }, []);
 
     const setRoyaleResults = useCallback((clientAnswers, matches, players, numClients, dead, forDead, safe) => {
-        host.current = { ...host.current, clientAnswers, matches, players, numClients, dead, forDead, safe };
+        host.current = { ...host.current, clientAnswers, matches, players, numClients, dead, forDead, safe, safes: safe ? [...(host.current.safes || []), host.round] : host.current.safes };
     }, []);
 
     return (

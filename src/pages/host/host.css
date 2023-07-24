@@ -219,6 +219,19 @@
     background-color: #f7f7f7;
 }
 
+.hostBody {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100vw;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color: var(--accent2);
+}
+
 .hostRegularBody {
     width: 100%;
     height: calc(100% - 65px);
