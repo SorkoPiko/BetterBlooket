@@ -81,7 +81,7 @@
 .spookyLeft {
     box-sizing: border-box;
     width: 100%;
-    height: calc(100% - 2vw);
+    height: calc(100% - 4.5vw);
     position: absolute;
     top: 1.25vw;
     left: 0;

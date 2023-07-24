@@ -30,5 +30,13 @@ export const audios = {
         "https://ac.blooket.com/play/60cffe6f4ff3840c00b6e68b42663c08.mp3",
         "https://ac.blooket.com/play/4477601a5244d54e3fedbdaa78294b9a.mp3"
     ],
-    blookRush: "https://ac.blooket.com/play/e8bdfd5b84ec78a046dd9111d1503cc6.mp3"
+    blookRush: "https://ac.blooket.com/play/e8bdfd5b84ec78a046dd9111d1503cc6.mp3",
+    battleRoyale: "https://ac.blooket.com/play/fceda506acdd4985212dba69fb6c98d7.mp3",
+    questionMusic: [
+        "https://ac.blooket.com/play/c47cc991b973572938813e3c2d7e5ce6.mp3",
+        "https://ac.blooket.com/play/2f36115e50cfcd113d21b3759166f2a9.mp3",
+        "https://ac.blooket.com/play/c790189d2da82699c9984a0ac2562292.mp3"
+    ],
+    questionResults: "https://ac.blooket.com/play/da4d7999a5f6a3ad2f17db2f21ef92ae.mp3",
+    royaleResults: "https://ac.blooket.com/play/d0768411f06dacca0b25e7159d395419.mp3"
 }

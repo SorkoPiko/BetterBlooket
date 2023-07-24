@@ -100,19 +100,21 @@ export const GameProvider = ({ children }) => {
                 op: w.name
             }
         }
-        for (let _ = 0; _ < s.length; _ += 2) matches.unshift([
-            { ...s[_], time: 0, correct: false },
-            { ...s[_ + 1], time: 0, correct: false }
-        ]);
-        dbPlayers[s[_].name] = {
-            b: s[_].blook,
-            e: s[_].energy,
-            op: s[_ + 1].name
-        }
-        dbPlayers[s[_ + 1].name] = {
-            b: s[_ + 1].blook,
-            e: s[_ + 1].energy,
-            op: s[_].name
+        for (let _ = 0; _ < s.length; _ += 2) {
+            matches.unshift([
+                { ...s[_], time: 0, correct: false },
+                { ...s[_ + 1], time: 0, correct: false }
+            ]);
+            dbPlayers[s[_].name] = {
+                b: s[_].blook,
+                e: s[_].energy,
+                op: s[_ + 1].name
+            }
+            dbPlayers[s[_ + 1].name] = {
+                b: s[_ + 1].blook,
+                e: s[_ + 1].energy,
+                op: s[_].name
+            }
         }
         for (let t in dead)
             for (let o of dead[t]) dbPlayers[o.name] = { b: o.blook, e: 0 };
@@ -134,8 +136,16 @@ export const GameProvider = ({ children }) => {
         return { question, usedQuestions, questionsPlayed, matches, answerString, dbPlayers };
     }, []);
 
+    const prepareRoyale = useCallback((round, usedQuestions, questionsPlayed, questionString, question, matches) => {
+        host.current = { ...host.current, round, usedQuestions, questionsPlayed, questionString, question, matches };
+    }, []);
+
+    const setRoyaleResults = useCallback((clientAnswers, matches, players, numClients, dead, forDead, safe) => {
+        host.current = { ...host.current, clientAnswers, matches, players, numClients, dead, forDead, safe, safes: safe ? [...(host.current.safes || []), host.round] : host.current.safes };
+    }, []);
+
     return (
-        <GameContext.Provider value={{ liveGameController, host, client, addGameId, setSettings, addHostQuestions, deleteHost, hostId, setHostId, updateHost, setPlayers, updateStandings, standings, nextRoyale }}>
+        <GameContext.Provider value={{ liveGameController, host, client, addGameId, setSettings, addHostQuestions, deleteHost, hostId, setHostId, updateHost, setPlayers, updateStandings, standings, nextRoyale, prepareRoyale, setRoyaleResults }}>
             {!loading && children}
         </GameContext.Provider>
     )

@@ -18,7 +18,8 @@ import { colorBlooks, freeBlooks } from "../../blooks/allBlooks";
 import { random } from "../../utils/questions";
 
 export default function HostLobby() {
-    const { host: { current: host }, liveGameController, deleteHost, hostId, setPlayers, updateHost } = useGame();
+    const { host: hostRef, liveGameController, hostId, setPlayers, updateHost, nextRoyale, prepareRoyale } = useGame();
+    const { current: host } = hostRef;
     const { http: { get, post }, userData } = useAuth();
     const navigate = useNavigate();
     const [game, setGame] = useState({
@@ -180,13 +181,20 @@ export default function HostLobby() {
                     } else if (host.settings.instruct) liveGameController.setStage({ stage: "inst" }, () => navigate("/host/rush/instructions"));
                     else navigate("/host/rush");
                     break;
-                // default: BATTLE ROYALE
-                //     setPlayers(Object.entries(clients).map(([name, { b: blook }]) => ({ name, blook, energy: host.settings.energy })));
-                //     if (host.settings.mode == "Teams") liveGameController.setStage({ stage: "team" }, () => navigate("/host/teams"));
-                //     else if (host.settings.instruct) liveGameController.setStage({ stage: "inst" }, () => navigate("/host/battle-royale/instructions"));
-                //     else {
-
-                //     }
+                default:
+                    setPlayers(Object.entries(clients).map(([name, { b: blook }]) => ({ name, blook, energy: host.settings.energy })));
+                    if (host.settings.mode == "Teams") liveGameController.setStage({ stage: "team" }, () => navigate("/host/teams"));
+                    else if (host.settings.instruct) liveGameController.setStage({ stage: "inst" }, () => navigate("/host/battle-royale/instructions"));
+                    else {
+                        let royale = nextRoyale(hostRef.current.players, host.settings.mode == "Teams", host.usedQuestions, host.questionsPlayed, host.questions, host.dead);
+                        prepareRoyale(1, royale.usedQuestions, royale.questionsPlayed, `q-${royale.question.stdNumber}-${answerString}`, royale.question, royale.matches);
+                        liveGameController.setVal({
+                            path: "c",
+                            val: royale.dbPlayers
+                        }, function () {
+                            liveGameController.setStage({ stage: "prv" }, () => navigate("/host/battle-royale/match/preview"))
+                        })
+                    }
             }
         });
     }, [game, host]);

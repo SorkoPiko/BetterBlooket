@@ -124,6 +124,9 @@ export default function HostSettings() {
                 opts.instruct = settings.instruct;
                 opts.amount = settings.amount;
                 break;
+            default:
+                opts.instruct = settings.instruct;
+                opts.energy = settings.energy;
         }
         addSettings(opts);
         navigate("/host/join");

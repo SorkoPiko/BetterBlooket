@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Textfit } from "react-textfit";
 import "./playAudio.css";
 
-export default function PlayAudio({ autoplay, audioUrl, width }) {
+export default function PlayAudio({ autoplay, audioUrl, width, onEnd, onStart }) {
     const [audioDuration, setAudioDuration] = useState(0);
     const [playingAudio, setPlayingAudio] = useState(false);
     const audio = useRef();
@@ -12,6 +12,7 @@ export default function PlayAudio({ autoplay, audioUrl, width }) {
     const playAudio = useCallback(() => {
         if (playingAudio) {
             audio.current.pause();
+            onEnd?.();
             setPlayingAudio(false);
         } else if (audioDuration) setPlayingAudio(true);
         else if (aaudioDuration.current) {
@@ -34,6 +35,7 @@ export default function PlayAudio({ autoplay, audioUrl, width }) {
                 setPlayingAudio(true);
             });
             audio.current.addEventListener("ended", () => {
+                onEnd?.();
                 setPlayingAudio(false);
                 setAudioDuration(0);
             }, false);
@@ -41,7 +43,10 @@ export default function PlayAudio({ autoplay, audioUrl, width }) {
 
     }, [playingAudio]);
     useEffect(() => {
-        if (playingAudio) audio.current.play();
+        if (playingAudio) {
+            onStart?.();
+            audio.current.play();
+        }
     }, [playingAudio]);
     useEffect(() => {
         if (autoplay) delayTimeout.current = setTimeout(() => {
