@@ -77,7 +77,6 @@
     left: 5vw;
     width: 30vw;
     height: 90%;
-    font-family: Nunito, sans-serif;
     text-align: center;
     overflow: hidden;
     align-content: center;
@@ -107,7 +106,6 @@
     left: 5vw;
     width: 60vw;
     height: 85%;
-    font-family: Nunito, sans-serif;
     align-content: center;
     flex-direction: column;
     float: left;
@@ -146,7 +144,7 @@
 }
 
 .hostquestion_nextText {
-    font-family: Titan One, sans-serif;
+    font-family: Adventure;
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none
@@ -174,7 +172,7 @@
     left: 50%;
     top: calc(23.5vh - 19.5px + 3.75vw);
     transform: translate(-50%, -50%);
-    font-family: Titan One, sans-serif;
+    font-family: Adventure;
     z-index: 4
 }
 
@@ -206,7 +204,7 @@
     height: 100%;
     width: 100%;
     line-height: 7.5vw;
-    font-family: Titan One, sans-serif;
+    font-family: Adventure;
     text-shadow: 2px 2px 8px grey;
     z-index: 4
 }
@@ -380,7 +378,6 @@
     padding: 0 7px;
     height: 40px;
     font-size: 22px;
-    font-family: Nunito, sans-serif;
     color: #fff;
     border-radius: 5px;
     background-color: rgba(0, 0, 0, .2);
@@ -430,7 +427,6 @@
     color: #fff;
     height: 80%;
     width: 80%;
-    font-family: Nunito, sans-serif;
     text-align: center;
     overflow: hidden;
     float: left;

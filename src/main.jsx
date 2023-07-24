@@ -3,11 +3,13 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import { addStyles } from "react-mathquill";
-import "./styles.css";
+import { Chart, ArcElement } from 'chart.js'
+Chart.register(ArcElement);
 
 import { fetch } from "@tauri-apps/api/http";
 window.tfetch = fetch;
 
+import "./styles.css";
 addStyles();
 
 Object.defineProperty(window, "className", {

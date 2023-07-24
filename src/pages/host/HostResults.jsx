@@ -5,6 +5,7 @@ import PlayAudio from "../../components/PlayAudio";
 import { StaticMathField } from "react-mathquill";
 import { Textfit } from "react-textfit";
 import { imageUrl, questionColors } from "../../utils/questions";
+import { getDimensions } from "../../utils/numbers";
 
 export default function HostResults({ next, time, question, clientAnswers, numClients, transitioning, muted, canSkip, theme }) {
     const [timer, setTimer] = useState(time);
@@ -117,6 +118,7 @@ export default function HostResults({ next, time, question, clientAnswers, numCl
     }, []);
     useEffect(() => { audio.muted = muted });
     let isSpooky = theme == "spooky";
+    console.log(question)
     return <div className={transitioning ? "hostresults_invisible" : null}>
         <div className="hostresults_transition">
             <div className="hostresults_upperContainer">
@@ -186,16 +188,16 @@ export default function HostResults({ next, time, question, clientAnswers, numCl
                                 </div>
                             </>
                             : <>
-                                {question.answers[0] && <div className={className(question.answers.length == 2 ? "hostresults_boxOneTwo" : "hostresults_boxOneThreeFour", ready && !question.correctAnswers.include(question.answers[0]) && "hostresults_faded")} style={{ backgroundColor: questionColors[isSpooky ? "spooky" : "default"].answers[0].background }}>
+                                {question.answers[0] && <div className={className(question.answers.length == 2 ? "hostresults_boxOneTwo" : "hostresults_boxOneThreeFour", ready && !question.correctAnswers.includes(question.answers[0]) && "hostresults_faded")} style={{ backgroundColor: questionColors[isSpooky ? "spooky" : "default"].answers[0].background }}>
                                     <div className="hostresults_amountText">{answerAmounts[3]}</div>
                                 </div>}
-                                {question.answers[1] && <div className={className(question.answers.length == 4 ? "hostresults_boxTwoFour" : "hostresults_boxTwoTwoThree", ready && !question.correctAnswers.include(question.answers[1]) && "hostresults_faded")} style={{ backgroundColor: questionColors[isSpooky ? "spooky" : "default"].answers[1].background }}>
+                                {question.answers[1] && <div className={className(question.answers.length == 4 ? "hostresults_boxTwoFour" : "hostresults_boxTwoTwoThree", ready && !question.correctAnswers.includes(question.answers[1]) && "hostresults_faded")} style={{ backgroundColor: questionColors[isSpooky ? "spooky" : "default"].answers[1].background }}>
                                     <div className="hostresults_amountText">{answerAmounts[0]}</div>
                                 </div>}
-                                {question.answers[2] && <div className={className("hostresults_boxThree", ready && !question.correctAnswers.include(question.answers[2]) && "hostresults_faded")} style={{ backgroundColor: questionColors[isSpooky ? "spooky" : "default"].answers[2].background }}>
+                                {question.answers[2] && <div className={className("hostresults_boxThree", ready && !question.correctAnswers.includes(question.answers[2]) && "hostresults_faded")} style={{ backgroundColor: questionColors[isSpooky ? "spooky" : "default"].answers[2].background }}>
                                     <div className="hostresults_amountText">{answerAmounts[2]}</div>
                                 </div>}
-                                {question.answers[3] && <div className={className("hostresults_boxFour", ready && !question.correctAnswers.include(question.answers[1]) && "hostresults_faded")} style={{ backgroundColor: questionColors[isSpooky ? "spooky" : "default"].answers[3].background }}>
+                                {question.answers[3] && <div className={className("hostresults_boxFour", ready && !question.correctAnswers.includes(question.answers[1]) && "hostresults_faded")} style={{ backgroundColor: questionColors[isSpooky ? "spooky" : "default"].answers[3].background }}>
                                     <div className="hostresults_amountText">{answerAmounts[1]}</div>
                                 </div>}
                             </>}

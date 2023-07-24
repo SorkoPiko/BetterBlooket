@@ -40,7 +40,6 @@
 }
 
 .hostresults_mediaText {
-    font-family: Nunito, sans-serif;
     padding-left: 1vw;
     font-size: 3.7vh
 }
@@ -103,7 +102,6 @@
     padding: 2vh 2vw;
     width: 26vw;
     height: calc(46.5vh - 65px);
-    font-family: Nunito, sans-serif;
     text-align: center;
     overflow: hidden;
     display: flex;
@@ -140,7 +138,7 @@
 .hostresults_upperCenterText {
     width: 100%;
     text-align: center;
-    font-family: Titan One, sans-serif;
+    font-family: Adventure;
     font-size: 6.5vh;
     line-height: calc(9.1875vh - 8.53125px);
     padding-top: calc(1.3125vh - 1.21875px)
@@ -164,7 +162,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-family: Titan One, sans-serif;
+    font-family: Adventure;
     text-align: center;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -183,7 +181,7 @@
     text-align: center;
     top: 50%;
     left: 50%;
-    font-family: Titan One, sans-serif;
+    font-family: Adventure;
     transform: translate(-50%, -50%);
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -329,7 +327,7 @@
     height: 100%;
     width: 100%;
     line-height: 7.5vw;
-    font-family: Titan One, sans-serif;
+    font-family: Adventure;
     text-shadow: 2px 2px 8px grey;
     z-index: 4
 }
@@ -509,7 +507,6 @@
     flex-direction: row;
     margin: 5px 0;
     font-size: 22px;
-    font-family: Nunito, sans-serif;
     color: #fff;
     text-align: center
 }
@@ -550,7 +547,6 @@
     color: #fff;
     height: 80%;
     width: 80%;
-    font-family: Nunito, sans-serif;
     text-align: center;
     overflow: hidden;
     display: flex;

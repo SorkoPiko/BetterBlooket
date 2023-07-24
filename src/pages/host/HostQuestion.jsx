@@ -2,8 +2,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { audios } from "../../utils/config";
 import PlayAudio from "../../components/PlayAudio";
 import { StaticMathField } from "react-mathquill";
-import { imageUrl, questionColors } from "../../utils/questions";
+import { imageUrl, questionColors, random } from "../../utils/questions";
 import { Textfit } from "react-textfit";
+import { getDimensions } from "../../utils/numbers";
+
+import "./hostQuestion.css";
 
 export default function HostQuestion({ next, question, numAnswers, numClients, transitioning, muted, theme }) {
     const [timer, setTimer] = useState(question.timeLimit);
@@ -113,7 +116,7 @@ export default function HostQuestion({ next, question, numAnswers, numClients, t
                     </div>
                 </div>
             </div>
-            : <div className="hostquestion_answerHolder">
+            : <div className="hostquestion_answersHolder">
                 {question.answers.map((answer, i) => {
                     return <div className={className("hostquestion_answerContainer", { hostquestion_answerTwo: question.answers.length == 2, hostquestion_answerThree: question.answers.length == 3 && i == 2 })} style={{
                         backgroundColor: questionColors[isSpooky ? "spooky" : "default"].answers[i].background

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { audios } from "../../../utils/config";
 import TopBar from "../TopBar";
 import { Textfit } from "react-textfit";
-import { getDimensions } from "../../../utils/numbers";
+import { formatNumber, getDimensions } from "../../../utils/numbers";
 import Blook from "../../../blooks/Blook";
 import { animateScroll, Element as ScrollElement } from "react-scroll";
 import { royale } from "../../../utils/images";
@@ -16,6 +16,8 @@ import HostQuestion from "../HostQuestion";
 import HostResults from "../HostResults";
 
 import "./royale.css";
+import { useAuth } from "../../../context/AuthContext";
+import Modal from "../../../components/Modal";
 
 const timeouts = [4200, 2850, 7150, 8150, 8150, 8150, 2575];
 
@@ -279,7 +281,7 @@ export function RoyalePreview() {
 }
 
 export function RoyaleQuestion() {
-    const { host: hostRef, liveGameController } = useGame();
+    const { host: hostRef, liveGameController, setRoyaleResults } = useGame();
     const { current: host } = hostRef;
     const [numAnswers, setNumAnswers] = useState(0);
     const [numClients, setNumClients] = useState(0);
@@ -353,7 +355,6 @@ export function RoyaleQuestion() {
 
         let f = numClients - times.length;
         for (let h = 0; h < f; h++) times.push(1000 * host.question.timeLimit + 1);
-        let setRoyaleResults = () => { };
         transitionTimeout.current = setTimeout(() => {
             setRoyaleResults(Object.values(answerObj.current).map(x => x.a), matchesCopy, alive, numClients, dead, times, revive);
             if (host.settings.mode == "Teams") {
@@ -378,14 +379,11 @@ export function RoyaleQuestion() {
         answerObj.current = val;
         setNumAnswers(answers.length);
         if (answers.length == numClients && numClients !== 0) next();
-    }, numClients);
+    }, [numClients]);
     const transitionTimeout = useRef();
     useEffect(() => {
-        return (async () => {
-            if (!host?.question || !host.matches) {
-                navigate("/sets");
-                return () => {};
-            }
+        if (!hostRef.current?.question || !host.matches) return navigate("/sets");
+        (async () => {
             if (host.settings.mode == "Teams") setNumClients(Object.values(host.players).reduce((a, b) => a + Object.keys(b.players).length, 0));
             else liveGameController.getDatabaseVal("c", (val) => {
                 setNumClients(Object.keys(val || {}).length);
@@ -393,14 +391,14 @@ export function RoyaleQuestion() {
             setPlayers(host.players.length);
             dbRef.current = await liveGameController.getDatabaseRef("a");
             dbRef.current.on("value", dbRefValue);
-            return () => {
-                clearTimeout(transitionTimeout.current);
-                if (Object.keys(dbRef).length) dbRef.off("value");
-            }
         })();
+        return () => {
+            clearTimeout(transitionTimeout.current);
+            if (Object.keys(dbRef.current).length) dbRef.current.off("value");
+        }
     }, []);
 
-    if (!host?.question || host.matches) return navigate("/sets");
+    if (!host?.question || !host.matches) return navigate("/sets");
     return <div className="body">
         <TopBar left={`Round ${host.round}`} right={`${players || host.players.length} ${host.settings.mode == "Teams" ? "Teams" : "Players"} Remain`} muted={muted} changeMuted={changeMuted} />
         <HostQuestion next={next} question={host.question} numAnswers={numAnswers} numClients={numClients} transitioning={transitioning} muted={muted} />
@@ -431,7 +429,7 @@ export function RoyaleQuestionResults() {
     }, []);
     if (!host?.question) return navigate("/sets");
     return <div className="body">
-        <TopBar left={`Round ${host.round}`} right={`${host.players.length + (host.dead[host.round] ? host.dead[host.round].length : 0)} ${host.settings.mode == "Teams" ? "Teams" : "Players"} Remain`} muted={muted} changeMuted={changeMuted} />
+        <TopBar left={`Round ${host.round}`} right={`${host.players.length + (host.dead?.[host.round]?.length || 0)} ${host.settings.mode == "Teams" ? "Teams" : "Players"} Remain`} muted={muted} changeMuted={changeMuted} />
         <HostResults next={next} time={7} question={hostRef.current.question} clientAnswers={hostRef.current.clientAnswers} numClients={hostRef.current.numClients} transitioning={transitioning} muted={muted} canSkip={true} />
     </div>
 }
@@ -508,7 +506,7 @@ function RoyaleStandings({ winner, loser, bothWin, bothLose, win, safe, isPlayer
 }
 
 export function RoyaleMatchResults() {
-    const { host: hostRef } = useGame();
+    const { host: hostRef, updateStandings, nextRoyale, prepareRoyale, liveGameController } = useGame();
     const navigate = useNavigate();
     const [winner, setWinner] = useState({});
     const [loser, setLoser] = useState({});
@@ -525,7 +523,7 @@ export function RoyaleMatchResults() {
     const readyTimeout = useRef();
     const timeout = useRef();
     useEffect(() => {
-        const { current: host, updateStandings, nextRoyale, prepareRoyale } = hostRef;
+        const { current: host } = hostRef;
         if (!host?.round || !host.matches) return navigate("/sets");
         audio.muted = muted;
         let r = Math.max(10500, 6000 + 500 * host.matches.length);
@@ -548,6 +546,7 @@ export function RoyaleMatchResults() {
         setBothLose(!firstWon && !secondWon);
         setBothWin(firstWon && secondWon);
         timeout.current = setTimeout(() => {
+            let host = hostRef.current;
             if (host.players.length == 1) {
                 let standings = [],
                     r = host.dead,
@@ -558,7 +557,7 @@ export function RoyaleMatchResults() {
                 for (let a = n; a <= host.round; a++) if (r[a]) {
                     i -= r[a].length;
                     let s = a - n;
-                    if (o[0] && o[0] < a) for (let c = 0; c < o.length; c++) if (o[c] < a) a--;
+                    if (o?.[0] && o[0] < a) for (let c = 0; c < o.length; c++) if (o[c] < a) a--;
                     for (let u = 0; u < r[a].length; u++) standings.push(host.settings.mode == "Teams" ? {
                         name: r[a][u].name,
                         blook: r[a][u].blook,
@@ -571,18 +570,19 @@ export function RoyaleMatchResults() {
                         place: i,
                         wins: s
                     });
+                    console.log({ r, n, o, i, a, s });
                 }
                 standings.push(host.settings.mode == "Teams" ? {
                     name: host.players[0].name,
                     blook: host.players[0].blook,
                     players: host.players[0].players,
                     place: 1,
-                    wins: standings.length > 0 ? [standings.length - 1].wins + host.players[0].energy : host.players[0].energy
+                    wins: standings.length > 0 ? standings[standings.length - 1].wins + host.players[0].energy : host.players[0].energy
                 } : {
                     name: host.players[0].name,
                     blook: host.players[0].blook,
                     place: 1,
-                    wins: standings.length > 0 ? [standings.length - 1].wins + host.players[0].energy : host.players[0].energy
+                    wins: standings.length > 0 ? standings[standings.length - 1].wins + host.players[0].energy : host.players[0].energy
                 });
                 standings.reverse();
                 updateStandings(standings);
@@ -727,7 +727,7 @@ export function RoyaleFinal() {
     }, []);
     if (host?.standings?.[0] || state.standings?.[0]) return <div className="body" style={{ overflowY: state.ready ? "auto" : "hidden" }}>
         {state.standings.length > 0 && <Standings
-            standings={state.standings}
+            standings={state.standings.map(x => ({ ...x, b: x.blook, n: x.name, p: x.place }))}
             stats={state.standings.map(e => formatNumber(e.wins) + (e.wins == 1 ? " Win" : " Wins"))}
             gameId={hostCopy.setId}
             historyId={state.historyId}
