@@ -107,7 +107,8 @@ export function imageUrl(url, auto) {
     return -1 === a || url.includes("images.unsplash.com") ? url : (a += 7, "".concat(url.slice(0, a)).concat(auto ? "f_auto" : "c_limit,f_auto,h_250,fl_lossy,q_auto:low").concat(url.slice(a - 1, url.length)))
 }
 
-export function shuffleArray(array) {
+export function shuffleArray(arr) {
+    let array = [...arr];
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];

@@ -40,3 +40,88 @@ export const audios = {
     questionResults: "https://ac.blooket.com/play/da4d7999a5f6a3ad2f17db2f21ef92ae.mp3",
     royaleResults: "https://ac.blooket.com/play/d0768411f06dacca0b25e7159d395419.mp3"
 }
+
+const loadingMessages = {
+    "Get Ready": 33,
+    "Ready Up": 11,
+    "Getting Ready...": 7,
+    "Get Set": 6,
+    "On Your Mark": 6,
+    "Loading...": 5,
+    "Dusting Off Question...": 3,
+    "Focus": 3,
+    "Generating Question...": 2,
+    "Initializing...": 2,
+    "Ready Your Cannons": 2,
+    "Start Your Engines": 2,
+    "Activate Focus Mode": 1,
+    "Activating Cheat Codes...": 1,
+    "Anyone Reading This?": 1,
+    "Baking a Cake...": 1,
+    "Brushing Off Cobwebs...": 1,
+    "Checking Stats...": 1,
+    "Coding...": 1,
+    "Collecting Prizes...": 1,
+    "Counting Down From 3...": 1,
+    "Doing a Barrel Roll...": 1,
+    "Eating Pi...": 1,
+    "Encrypting the Question...": 1,
+    "Entering Warp Drive...": 1,
+    "Finding the Integral...": 1,
+    "Get Ready to Win": 1,
+    "Get Your Game Face On": 1,
+    "Googling Answers...": 1,
+    "Hacking Into The System...": 1,
+    "Is this thing on...?": 1,
+    "Learning Chinese...": 1,
+    "Learning French...": 1,
+    "Learning German...": 1,
+    "Learning Japanese...": 1,
+    "Learning Sign Language...": 1,
+    "Learning Spanish...": 1,
+    "Loading Questions in 2022 LUL": 1,
+    "Looking For My Keys...": 1,
+    "Looking for Lost Question...": 1,
+    "Losing the Clicker...": 1,
+    "Making Toast...": 1,
+    "Maybe Loading...": 1,
+    "Mining Tokens...": 1,
+    "Not Crashing...": 1,
+    "Ordering Pizza...": 1,
+    "Playing Fortnite...": 1,
+    "Prepare for Battle": 1,
+    "Prepare for Victory": 1,
+    "Pressing Random Buttons...": 1,
+    "Probably Not Loading...": 1,
+    "Reacting Chemicals...": 1,
+    "Reading a Book...": 1,
+    "Reading the Textbook...": 1,
+    "Ready Player One": 1,
+    "Ready Your Mouse": 1,
+    "Ready Your Pointer": 1,
+    "Searching for Question...": 1,
+    "Spinning to Win...": 1,
+    "Studying Blooks...": 1,
+    "Taking a Nap...": 1,
+    "Taking the Derivative...": 1,
+    "Time to Pop Off": 1,
+    "Typing Question...": 1,
+    "Waiting for Brian...": 1,
+    "Waiting for Question...": 1,
+    "Waiting for You...": 1,
+    "Waiting for the Weekend...": 1,
+    "Waiting in Line...": 1,
+    "Writing an Essay...": 1,
+    "Writing the Question...": 1,
+}
+
+export function getLoadingMessage() {
+    let totalWeight = 0;
+    for (const msg in loadingMessages) totalWeight += loadingMessages[msg];
+    const choice = Math.random() * totalWeight;
+    let count = 0;
+    for (let msg in loadingMessages) {
+        count += loadingMessages[msg];
+        if (count >= choice) return msg;
+    }
+}
