@@ -1861,3 +1861,118 @@ export default {
         }
     },
 }
+
+export const hwGamemodes = {
+    Factory: {
+        name: "Factory",
+        modes: {
+            Time: {
+                title: "Time",
+                desc: "The game ends after the set time has passed",
+                icon: "fas fa-stopwatch",
+                amount: 7,
+                input: "Time (minutes)",
+                inputIcon: "fa-regular fa-clock"
+            },
+            Cash: {
+                title: "Cash",
+                desc: "The game ends after a player reaches the set cash amount",
+                icon: "fas fa-dollar-sign",
+                amount: 1e6,
+                input: "Cash Goal ($)",
+                inputIcon: "fa-regular fa-money-bill-alt"
+            }
+        },
+        settings: {
+            allowAccounts: {
+                title: "Allow Student Accounts",
+                desc: "Disabling this option will hide account creation options from students (enabled is recommended)"
+            }
+        }
+    },
+    Cafe: {
+        name: "Caf\xe9",
+        desc: "\n                      In Caf\xe9 homework mode, students run a Caf\xe9 and serve customers by answering questions.\n                      The game is broken into days, and each day the student will have to serve so\n                      many customers before they are able to upgrade their Caf\xe9. If they fail to serve\n                      3 customers in a day, their game is over. The setting below changes how many\n                      days they should try to keep their Caf\xe9 open, but it doesn't have a real effect on the game.\n                    ",
+        settings: {
+            amount: {
+                icon: "fa-regular fa-calendar-alt",
+                title: "Day Goal",
+                desc: "(7 days is about 50 questions)",
+                min: 1
+            },
+            allowAccounts: {
+                title: "Allow Student Accounts",
+                desc: "Disabling this option will hide account creation options from students (enabled is recommended)"
+            }
+        }
+    },
+    Defense: {
+        name: "Tower Defense",
+        settings: {
+            amount: {
+                icon: "fas fa-hashtag",
+                title: "Round Goal",
+                min: 1
+            },
+            allowAccounts: {
+                title: "Allow Student Accounts",
+                desc: "Disabling this option will hide account creation options from students (enabled is recommended)"
+            }
+        }
+    },
+    Defense2: {
+        name: "Tower Defense 2",
+        settings: {
+            amount: {
+                icon: "fas fa-hashtag",
+                title: "Round Goal",
+                min: 1
+            },
+            allowAccounts: {
+                title: "Allow Student Accounts",
+                desc: "Disabling this option will hide account creation options from students (enabled is recommended)"
+            }
+        }
+    },
+    Kingdom: {
+        name: "Crazy Kingdom",
+        desc: "\n                    In Crazy Kingdom, students are put in charge of ruling over a kingdom. Guests will\n                    show up to their castle and make requests. By answering questions correctly, they’ll\n                    be able to answer these guests. However, they have to make smart decisions to manage\n                    their kingdom’s resources, and answer guests accordingly. When they run out of\n                    resources, their game is over.\n                    ",
+        settings: {
+            amount: {
+                icon: "fas fa-users",
+                title: "Guests Goal",
+                desc: "(About 1 question per quest)",
+                min: 1
+            },
+            allowAccounts: {
+                title: "Allow Student Accounts",
+                desc: "Disabling this option will hide account creation options from students (enabled is recommended)"
+            }
+        }
+    },
+    Brawl: {
+        name: "Monster Brawl",
+        settings: {
+            amount: {
+                img: basic.xp,
+                title: "Level Goal",
+                desc: "(1 correct answer per level)",
+                min: 1
+            },
+            allowAccounts: {
+                title: "Allow Student Accounts",
+                desc: "Disabling this option will hide account creation options from students (enabled is recommended)"
+            }
+        }
+    },
+    Tower: {
+        name: "Tower of Doom",
+        desc: "\n                    For Tower of Doom, there are no extra settings.\n                    You'll just be able to see students progress on the Tower and their question accuracy.\n                  ",
+        settings: {
+            allowAccounts: {
+                title: "Allow Student Accounts",
+                desc: "Disabling this option will hide account creation options from students (enabled is recommended)"
+            }
+        }
+    }
+}

@@ -35,6 +35,7 @@ import RushHost, { RushFinal, RushInstruct } from "./pages/host/gamemodes/Rush";
 import HostTeams from "./pages/host/Teams";
 import { RoyaleFinal, RoyaleInstruct, RoyaleMatchResults, RoyalePreview, RoyaleQuestion, RoyaleQuestionResults } from "./pages/host/gamemodes/Royale";
 import { ClassicFinal, ClassicGetReady, ClassicQuestion, ClassicResults, ClassicStandings } from "./pages/host/gamemodes/Classic";
+import HW from "./pages/host/HW";
 
 function App() {
     return <AuthProvider>
@@ -54,6 +55,7 @@ function App() {
                 <Route element={<GameLayout />}>
                     <Route path="/play" element={<Play />}></Route>
                     <Route path="/host" element={<AuthRoute><Host /></AuthRoute>}></Route>
+                    <Route path="/hw" element={<AuthRoute><HW /></AuthRoute>}></Route>
                     <Route path="/host/assign" element={<AuthRoute><Assign /></AuthRoute>}></Route>
                     <Route path="/host/landing/:gameMode" element={<AuthRoute><Landing /></AuthRoute>}></Route>
                     <Route path="/host/settings" element={<AuthRoute><HostSettings /></AuthRoute>}></Route>

@@ -74,8 +74,8 @@
 }
 
 #hostSettingsModes>div:hover {
-    background-color: var(--highlight2);
-    scale: 1.05
+    /* background-color: var(--highlight2); */
+    scale: 0.95
 }
 
 #hostSettingsModes>div i,
