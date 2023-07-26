@@ -1,3 +1,11 @@
+.sidebarTooltip {
+    font-size: 15px !important;
+    line-height: 17px !important;
+    padding: 6px 13px !important;
+    max-width: 185px;
+    text-align: center;
+}
+
 #sidebar {
     position: fixed;
     top: 0;
@@ -22,6 +30,40 @@
     display: table;
     table-layout: fixed;
     height: 100%;
+    transition: height 0.2s
+}
+
+#sidebar:hover>ul {
+    height: calc(100% - 50px);
+}
+
+#sidebar .bottomRow a {
+    color: var(--accent1);
+    font-size: 20px;
+    transition: color 0.2s;
+    padding: 10px;
+}
+
+#sidebar .bottomRow a:hover {
+    color: var(--highlight1);
+}
+
+#sidebar .bottomRow {
+    position: absolute;
+    bottom: 25px;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 0%;
+    overflow: hidden;
+    height: 50px;
+    transition: width 0.2s;
+}
+
+#sidebar:hover .bottomRow {
+    width: 100%;
 }
 
 #sidebar li {
