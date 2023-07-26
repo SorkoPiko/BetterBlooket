@@ -1,10 +1,20 @@
 import { Link } from "react-router-dom";
 import "./sidebar.css";
 import { Tooltip } from "react-tooltip";
+import { useState } from "react";
+import { useRef } from "react";
+import { useEffect } from "react";
 function Sidebar({ children }) {
+    const [hovering, setHovering] = useState(true);
+    const sidebar = useRef();
+    useEffect(() => { sidebar.current.classList.toggle("hover", hovering) }, [hovering]);
+    useEffect(() => {
+        sidebar.current.onpointerenter = () => setHovering(true);
+        sidebar.current.onpointerleave = () => setHovering(false);
+    }, []);
     return (<>
         <div id="sidebarWrapper">
-            <div id="sidebar">
+            <div id="sidebar" ref={sidebar} className={hovering ? "hover" : null}>
                 <ul>
                     <li>
                         <Link style={{ position: "relative" }} to="/">

@@ -33,7 +33,7 @@
     transition: height 0.2s
 }
 
-#sidebar:hover>ul {
+#sidebar.hover>ul {
     height: calc(100% - 50px);
 }
 
@@ -62,7 +62,7 @@
     transition: width 0.2s;
 }
 
-#sidebar:hover .bottomRow {
+#sidebar.hover .bottomRow {
     width: 100%;
 }
 
@@ -99,14 +99,14 @@
     transition: 0.2s;
 }
 
-#sidebar:hover li a .page {
+#sidebar.hover li a .page {
     display: inline;
     margin-left: 25px;
     opacity: 1;
     transition: 0.2s;
 }
 
-#sidebar:hover {
+#sidebar.hover {
     right: calc(100% - 300px);
 }
 
@@ -139,7 +139,7 @@
     z-index: 0;
 }
 
-#sidebarWrapper:has(#sidebar:hover) #shade {
+#sidebarWrapper:has(#sidebar.hover) #shade {
     opacity: 0.35;
     z-index: 2;
 }
@@ -149,6 +149,6 @@
     transition: 0.2s;
 }
 
-#sidebar:hover #title {
+#sidebar.hover #title {
     opacity: 1;
 }
