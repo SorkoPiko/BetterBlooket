@@ -15,6 +15,7 @@ import Favorites from "./pages/dashboard/Favorites";
 import Settings from "./pages/dashboard/Settings";
 import Play from "./pages/play/Play";
 import GameSet from "./pages/dashboard/GameSet";
+import Homework from "./pages/dashboard/Homework";
 import Host from "./pages/host/Host";
 import Landing from "./pages/host/Landing";
 import Assign from "./pages/host/Assign";
@@ -35,6 +36,7 @@ import RushHost, { RushFinal, RushInstruct } from "./pages/host/gamemodes/Rush";
 import HostTeams from "./pages/host/Teams";
 import { RoyaleFinal, RoyaleInstruct, RoyaleMatchResults, RoyalePreview, RoyaleQuestion, RoyaleQuestionResults } from "./pages/host/gamemodes/Royale";
 import { ClassicFinal, ClassicGetReady, ClassicQuestion, ClassicResults, ClassicStandings } from "./pages/host/gamemodes/Classic";
+import HW from "./pages/host/HW";
 
 function App() {
     return <AuthProvider>
@@ -50,10 +52,12 @@ function App() {
                 <Route path="/create" element={<AuthRoute><SetCreator /></AuthRoute>}></Route>
                 <Route path="/sets" element={<AuthRoute><Sets /></AuthRoute>}></Route>
                 <Route path="/favorites" element={<AuthRoute><Favorites /></AuthRoute>}></Route>
+                <Route path="/homework" element={<AuthRoute><Homework /></AuthRoute>}></Route>
                 <Route path="/settings" element={<AuthRoute><Settings /></AuthRoute>}></Route>
                 <Route element={<GameLayout />}>
                     <Route path="/play" element={<Play />}></Route>
                     <Route path="/host" element={<AuthRoute><Host /></AuthRoute>}></Route>
+                    <Route path="/hw" element={<AuthRoute><HW /></AuthRoute>}></Route>
                     <Route path="/host/assign" element={<AuthRoute><Assign /></AuthRoute>}></Route>
                     <Route path="/host/landing/:gameMode" element={<AuthRoute><Landing /></AuthRoute>}></Route>
                     <Route path="/host/settings" element={<AuthRoute><HostSettings /></AuthRoute>}></Route>

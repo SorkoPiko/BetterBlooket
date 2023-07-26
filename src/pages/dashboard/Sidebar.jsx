@@ -1,9 +1,20 @@
 import { Link } from "react-router-dom";
 import "./sidebar.css";
+import { Tooltip } from "react-tooltip";
+import { useState } from "react";
+import { useRef } from "react";
+import { useEffect } from "react";
 function Sidebar({ children }) {
+    const [hovering, setHovering] = useState(true);
+    const sidebar = useRef();
+    useEffect(() => { sidebar.current.classList.toggle("hover", hovering) }, [hovering]);
+    useEffect(() => {
+        sidebar.current.onpointerenter = () => setHovering(true);
+        sidebar.current.onpointerleave = () => setHovering(false);
+    }, []);
     return (<>
         <div id="sidebarWrapper">
-            <div id="sidebar">
+            <div id="sidebar" ref={sidebar} className={hovering ? "hover" : null}>
                 <ul>
                     <li>
                         <Link style={{ position: "relative" }} to="/">
@@ -14,61 +25,94 @@ function Sidebar({ children }) {
                             <div className="page" style={{ opacity: "0" }}>Home</div>
                         </Link>
                     </li>
-                    <li><Link to="/play">
-                        <div className="icon">
-                            <i className="fa-solid fa-play"></i>
-                        </div>
-                        <div className="page">Play</div></Link>
+                    <li>
+                        <Link to="/play">
+                            <div className="icon">
+                                <i className="fa-solid fa-play"></i>
+                            </div>
+                            <div className="page">Play</div>
+                        </Link>
                     </li>
-                    <li><Link to="/stats">
-                        <div className="icon">
-                            <i className="fa-solid fa-chart-column"></i>
-                        </div>
-                        <div className="page">Stats</div></Link>
+                    <li>
+                        <Link to="/stats">
+                            <div className="icon">
+                                <i className="fa-solid fa-chart-column"></i>
+                            </div>
+                            <div className="page">Stats</div>
+                        </Link>
                     </li>
-                    <li><Link to="/blooks">
-                        <div className="icon">
-                            <i className="fa-solid fa-suitcase"></i>
-                        </div>
-                        <div className="page">Blooks</div></Link>
+                    <li>
+                        <Link to="/blooks">
+                            <div className="icon">
+                                <i className="fa-solid fa-suitcase"></i>
+                            </div>
+                            <div className="page">Blooks</div>
+                        </Link>
                     </li>
-                    <li><Link to="/market">
-                        <div className="icon">
-                            <i className="fa-solid fa-store"></i>
-                        </div>
-                        <div className="page">Market</div></Link>
+                    <li>
+                        <Link to="/market">
+                            <div className="icon">
+                                <i className="fa-solid fa-store"></i>
+                            </div>
+                            <div className="page">Market</div>
+                        </Link>
                     </li>
-                    <li><Link to="/discover">
-                        <div className="icon">
-                            <i className="fa-regular fa-compass"></i>
-                        </div>
-                        <div className="page">Discover</div></Link>
+                    <li>
+                        <Link to="/discover">
+                            <div className="icon">
+                                <i className="fa-regular fa-compass"></i>
+                            </div>
+                            <div className="page">Discover</div>
+                        </Link>
                     </li>
-                    <li><Link to="/create">
-                        <div className="icon">
-                            <i className="fa-solid fa-pen-to-square"></i>
-                        </div>
-                        <div className="page">Set Creator</div></Link>
+                    <li>
+                        <Link to="/create">
+                            <div className="icon">
+                                <i className="fa-solid fa-pen-to-square"></i>
+                            </div>
+                            <div className="page">Set Creator</div>
+                        </Link>
                     </li>
-                    <li><Link to="/sets">
-                        <div className="icon">
-                            <i className="fa-solid fa-list"></i>
-                        </div>
-                        <div className="page">Sets</div></Link>
+                    <li>
+                        <Link to="/sets">
+                            <div className="icon">
+                                <i className="fa-solid fa-list"></i>
+                            </div>
+                            <div className="page">Sets</div>
+                        </Link>
                     </li>
-                    <li><Link to="/favorites">
-                        <div className="icon">
-                            <i className="fa-solid fa-star"></i>
-                        </div>
-                        <div className="page">Favorites</div></Link>
+                    <li>
+                        <Link to="/favorites">
+                            <div className="icon">
+                                <i className="fa-solid fa-star"></i>
+                            </div>
+                            <div className="page">Favorites</div>
+                        </Link>
                     </li>
-                    <li><Link to="/settings">
-                        <div className="icon">
-                            <i className="fa-solid fa-gear"></i>
-                        </div>
-                        <div className="page">Settings</div></Link>
-                    </li>
+                    {/* <li>
+                        <Link to="/settings">
+                            <div className="icon">
+                                <i className="fa-solid fa-gear"></i>
+                            </div>
+                            <div className="page">Settings</div>
+                        </Link>
+                    </li> */}
                 </ul>
+                <Tooltip id="bottom-icon" children place="top" className="sidebarTooltip" />
+                <div className="bottomRow">
+                    <Link data-tooltip-id="bottom-icon" data-tooltip-content="History" to="/history">
+                        <i className="fas fa-history"></i>
+                    </Link>
+                    <Link data-tooltip-id="bottom-icon" data-tooltip-content="Homework" to="/homework">
+                        <i className="fas fa-file-alt"></i>
+                    </Link>
+                    <Link data-tooltip-id="bottom-icon" data-tooltip-content="Settings" to="/settings">
+                        <i className="fas fa-cog"></i>
+                    </Link>
+                    <Link data-tooltip-id="bottom-icon" data-tooltip-content="News" to="/news">
+                        <i className="fas fa-newspaper"></i>
+                    </Link>
+                </div>
             </div>
             <div id="shade"></div>
         </div>

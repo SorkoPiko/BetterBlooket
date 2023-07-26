@@ -1,14 +1,12 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getParam } from "../../utils/location";
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { useState } from "react";
 import { imageUrl } from "../../utils/questions";
 import "./host.css";
-import { useCallback } from "react";
 import { setActivity } from "../../utils/discordRPC";
 
-export default function Host() {
+export default function HW() {
     const [selected, setSelected] = useState(null);
     const [gameModes, setGameModes] = useState([]);
     const navigate = useNavigate();
@@ -16,7 +14,7 @@ export default function Host() {
     const { http: { get, post } } = useAuth();
     useEffect(() => {
         if (!/^[a-f0-9]{24}$/i.test(id)) return navigate("/sets");
-        get("https://play.blooket.com/api/gamemodes/forhostpage").then(({ data }) => {
+        get("https://play.blooket.com/api/gamemodes/forhwpage").then(({ data }) => {
             if (!data.gameModes || !Array.isArray(data.gameModes) || data.gameModes.length == 0) return navigate("/sets");
             let preferred = data.gameModes.find(x => x.isPreferred);
             setSelected(preferred || data.gameModes[0]);
@@ -27,12 +25,12 @@ export default function Host() {
             timestampStart: Date.now()
         });
     }, []);
-    const onHost = useCallback(async () => {
-        const { data: { id: gid } } = await post("https://play.blooket.com/api/hostedgames", {
+    const onAssign = useCallback(async () => {
+        const { data: { id: hwId } } = await post("https://play.blooket.com/api/homeworks", {
             gameMode: selected.slug,
             setId: id
         }).catch(console.error);
-        navigate(`/host/landing/${selected.slug}?gid=${gid}`);
+        navigate(`/host/landing/${selected.slug}?hwId=${hwId}`);
     }, [selected]);
     if (getParam("id")) return <div>
         <div id="hostPageBackground" style={{
@@ -60,7 +58,7 @@ export default function Host() {
             }}></div>
         </div>
         <div id="hostPageLeft">
-            <div id="gameModesHeader">Select Live Game Mode</div>
+            <div id="gameModesHeader">Select HW Game Mode</div>
             <div id="gameModesContainer">
                 {gameModes.map(mode => {
                     return <div key={mode.slug} className="gameMode" onClick={() => setSelected(mode)}>
@@ -94,13 +92,13 @@ export default function Host() {
                 </div>
             </div>
             <div id="playButtonContainer">
-                <div style={{ width: "70%" }} onClick={onHost}>Host Game</div>
+                {selected.methods.includes("assign") && <div style={{ width: "70%" }} onClick={onAssign}>Assign HW</div>}
             </div>
             <div id="playButtonContainer">
                 <Link style={{
                     color: "#fff",
                     cursor: "pointer"
-                }} to={`/hw?id=${id}`}>Looking for Homework Game Modes?</Link>
+                }} to={`/host?id=${id}`}>Looking for Live Game Modes?</Link>
             </div>
         </div>}
     </div>

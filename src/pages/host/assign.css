@@ -1,0 +1,322 @@
+.assign_center {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%
+}
+
+.assign_header {
+    color: #fff;
+    text-align: center;
+    font-size: 50px;
+    margin: 25px auto;
+    font-family: Adventure;
+    text-shadow: 2px 2px 8px grey
+}
+
+.assign_mainContainer {
+    width: 850px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 10px;
+    padding-bottom: 7px;
+    box-shadow: inset 0 -7px rgba(0, 0, 0, .2), 0 0 4px rgba(0, 0, 0, .15);
+    margin-bottom: 50px
+}
+
+.assign_setTitleText {
+    color: #fff;
+    text-align: center;
+    font-size: 54px;
+    font-weight: 700;
+    padding: 25px 50px;
+    width: 100%;
+    box-sizing: border-box;
+    text-shadow: 0 4px rgba(0, 0, 0, .2);
+    background-color: #783b9a;
+    box-shadow: 0 6px rgba(0, 0, 0, .2);
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px
+}
+
+.assign_assignButton {
+    font-family: Adventure;
+    text-shadow: 2px 2px rgba(0, 0, 0, .2);
+    color: #fff;
+    width: 80%;
+    height: 60px;
+    background-color: #0bc2cf;
+    border-radius: 7px;
+    padding-bottom: 12px;
+    box-shadow: inset 0 -7px rgba(0, 0, 0, .2), 0 0 4px rgba(0, 0, 0, .15);
+    margin-top: 35px;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    transition: .2s
+}
+
+.assign_assignButton:focus,
+.assign_assignButton:hover {
+    transform: scale(.95)
+}
+
+.assign_assignText {
+    font-size: 45px;
+    margin: 25px 50px;
+    color: #fff;
+    text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none
+}
+
+.assign_modeContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+    margin: 25px auto 0
+}
+
+.assign_descText {
+    font-size: 20px
+}
+
+.assign_dateText,
+.assign_descText {
+    color: #3a3a3a;
+    text-align: center;
+    margin-top: 35px;
+    padding: 0 40px;
+    min-width: 600px;
+}
+
+.assign_dateText,
+.assign_settingsText {
+    font-size: 40px;
+    font-weight: 700
+}
+
+.assign_settingsText {
+    color: #3a3a3a;
+    text-align: center;
+    margin-top: 20px;
+    padding: 0 50px;
+    text-decoration: underline
+}
+
+.assign_amountContainer {
+    width: 80%;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(0, 0, 0, .05);
+    border-radius: 6px;
+    margin: 25px auto 0
+}
+
+.assign_amountIcon {
+    font-size: 32px;
+    line-height: 70px;
+    color: #3a3a3a;
+    margin: 0 5px 0 20px
+}
+
+.assign_amountImg {
+    width: 32px;
+    margin: 0 5px 0 20px
+}
+
+.assign_amountColumn {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    color: #3a3a3a;
+    margin: 0 5px 0 10px;
+    text-align: left
+}
+
+.assign_amountHeader {
+    font-weight: 700;
+    font-size: 28px
+}
+
+.assign_amountDesc {
+    font-size: 15px
+}
+
+.assign_amountInput {
+    border: 2px solid rgba(0, 0, 0, .17);
+    border-radius: 6px;
+    margin: auto 20px;
+    padding: 5px 15px;
+    width: 200px;
+    height: 35px;
+    line-height: 35px;
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    color: #3a3a3a;
+    outline: none
+}
+
+.assign_amountInput:focus {
+    border-color: #0bc2cf
+}
+
+.assign_classButton {
+    border: 2px solid rgba(0, 0, 0, .17);
+    border-radius: 6px;
+    margin: auto 20px;
+    padding: 5px 10px;
+    width: 260px;
+    height: 35px;
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    color: #3a3a3a;
+    background-color: #fff;
+    outline: none;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    position: relative
+}
+
+.assign_classesArrow {
+    font-size: 16px
+}
+
+.assign_classesDropdown {
+    display: none;
+    width: 100%;
+    padding: 5px 0;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, .1);
+    position: absolute;
+    top: 100%;
+    left: 0
+}
+
+.assign_classButton:focus {
+    border-color: #0bc2cf
+}
+
+.assign_classButton:focus>.assign_classesDropdown,
+.assign_classesDropdown:hover {
+    display: flex
+}
+
+.assign_classOption {
+    width: 100%;
+    height: 30px;
+    font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    outline: none;
+    cursor: pointer;
+    transition: .2s
+}
+
+.assign_classOption:hover {
+    background-color: #f2f2f2
+}
+
+.assign_textInput {
+    border: 2px solid rgba(0, 0, 0, .17);
+    border-radius: 6px;
+    margin: auto;
+    padding: 5px 15px;
+    width: calc(90% - 30px);
+    height: 35px;
+    line-height: 35px;
+    font-size: 26px;
+    font-weight: 700;
+    text-align: left;
+    color: #3a3a3a;
+    outline: none
+}
+
+.assign_textInput:focus {
+    border-color: #0bc2cf
+}
+
+.assign_settingDivider {
+    height: 3px;
+    width: calc(100% - 100px);
+    margin: 10px auto;
+    background-color: #e0e0e0;
+    border-radius: 3px
+}
+
+.assign_nothingContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    text-align: center
+}
+
+.assign_nothingText {
+    margin: 155px 5% 20px
+}
+
+.assign_linkText,
+.assign_nothingText {
+    font-size: 40px;
+    font-weight: 700;
+    width: 90%;
+    text-align: center;
+    color: #fff
+}
+
+.assign_linkText {
+    margin: 20px 5% 50px
+}
+
+.assign_background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: linear-gradient(#0bc2cf, #349aef);
+    overflow: hidden
+}
+
+.assign_blooksBackground {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: 50%;
+    left: 50%;
+    background-size: 1000px;
+    background-position: -100px -100px;
+    opacity: .1;
+    transform: translate(-50%, -50%) rotate(15deg)
+}

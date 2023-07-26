@@ -67,7 +67,7 @@ export const GameProvider = ({ children }) => {
 
     const setHostId = useCallback(id => {
         hostId.current = id;
-    }, [standings]);
+    }, []);
 
     const nextRoyale = useCallback((players, isTeams, used, played, questions, dead) => {
         let a = copy(players || []),

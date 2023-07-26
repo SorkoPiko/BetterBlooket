@@ -23,7 +23,7 @@
     left: 0;
     box-sizing: border-box;
     top: 30px;
-    width: calc(80% - 400px);
+    width: calc(80% - 200px);
     min-width: 700px;
     height: 90px;
     font-size: 56px;
