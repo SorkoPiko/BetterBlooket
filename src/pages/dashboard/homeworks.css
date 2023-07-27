@@ -1,0 +1,80 @@
+.homeworkHeader {
+    font-size: 3.5rem;
+    padding-inline: 5%;
+    margin-block: 20px;
+}
+
+.homeworks, .endedHw {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.homeworkWrapper {
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 80%;
+    height: 100%;
+    gap: 10px;
+    overflow: hidden;
+    --border-radius: 10px;
+    clip-path: polygon(0 var(--border-radius),
+            var(--border-radius) 0,
+            calc(100% - var(--border-radius)) 0,
+            100% var(--border-radius),
+            100% calc(100% - var(--border-radius)),
+            calc(100% - var(--border-radius)) 100%,
+            var(--border-radius) 100%,
+            0 calc(100% - var(--border-radius)));
+}
+
+.homeworkContainer {
+    height: 100%;
+    flex: 1;
+    text-decoration: none;
+    background-color: var(--main2);
+    display: flex;
+    flex-direction: column;
+    padding: 10px 15px;
+}
+
+.homeworkTitle {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.homeworkInfo {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px
+        /* justify-content: space-evenly; */
+}
+
+.homeworkInfo .info {
+    margin-right: 20px
+}
+
+.homeworkInfo .info i {
+    margin-right: 5px;
+}
+
+.deleteGame {
+    background-color: var(--main2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 5rem;
+    /* height: 100%; */
+    /* flex: 1 / 1; */
+    font-size: 2.5rem;
+    cursor: pointer;
+    transition: color 0.2s, font-size 0.2s;
+    box-sizing: border-box;
+}
+
+.deleteGame:hover {
+    color: red;
+    font-size: 2.25rem;
+}
