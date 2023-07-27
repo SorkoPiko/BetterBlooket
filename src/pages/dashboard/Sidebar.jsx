@@ -11,6 +11,7 @@ function Sidebar({ children }) {
     useEffect(() => {
         sidebar.current.onpointerenter = () => setHovering(true);
         sidebar.current.onpointerleave = () => setHovering(false);
+        setHovering(sidebar.current.matches(":hover"));
     }, []);
     return (<>
         <div id="sidebarWrapper">
@@ -89,16 +90,8 @@ function Sidebar({ children }) {
                             <div className="page">Favorites</div>
                         </Link>
                     </li>
-                    {/* <li>
-                        <Link to="/settings">
-                            <div className="icon">
-                                <i className="fa-solid fa-gear"></i>
-                            </div>
-                            <div className="page">Settings</div>
-                        </Link>
-                    </li> */}
                 </ul>
-                <Tooltip id="bottom-icon" children place="top" className="sidebarTooltip" />
+                <Tooltip id="bottom-icon" place="top" className="sidebarTooltip" />
                 <div className="bottomRow">
                     <Link data-tooltip-id="bottom-icon" data-tooltip-content="History" to="/history">
                         <i className="fas fa-history"></i>

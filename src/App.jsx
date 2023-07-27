@@ -15,7 +15,7 @@ import Favorites from "./pages/dashboard/Favorites";
 import Settings from "./pages/dashboard/Settings";
 import Play from "./pages/play/Play";
 import GameSet from "./pages/dashboard/GameSet";
-import Homework from "./pages/dashboard/Homework";
+import Homeworks, { Homework } from "./pages/dashboard/Homework";
 import Host from "./pages/host/Host";
 import Landing from "./pages/host/Landing";
 import Assign from "./pages/host/Assign";
@@ -52,7 +52,8 @@ function App() {
                 <Route path="/create" element={<AuthRoute><SetCreator /></AuthRoute>}></Route>
                 <Route path="/sets" element={<AuthRoute><Sets /></AuthRoute>}></Route>
                 <Route path="/favorites" element={<AuthRoute><Favorites /></AuthRoute>}></Route>
-                <Route path="/homework" element={<AuthRoute><Homework /></AuthRoute>}></Route>
+                <Route path="/homework" element={<AuthRoute><Homeworks /></AuthRoute>}></Route>
+                <Route path="/homework/:id" element={<AuthRoute><Homework /></AuthRoute>}></Route>
                 <Route path="/settings" element={<AuthRoute><Settings /></AuthRoute>}></Route>
                 <Route element={<GameLayout />}>
                     <Route path="/play" element={<Play />}></Route>
