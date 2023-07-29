@@ -9,7 +9,6 @@ import { getOrdinal } from '../../utils/numbers';
 import "./assign.css";
 import { hwGamemodes } from "../../utils/gameModes";
 import { Fragment } from "react";
-import InputSlider from "react-input-slider";
 
 function parseDate(minutes) {
     const date = new Date();

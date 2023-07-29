@@ -1,16 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useGame } from "../../context/GameContext"
 import { useNavigate } from "react-router-dom";
 import QRCode from "react-qr-code";
-import { useState } from "react";
-import { useCallback } from "react";
 import banners from "../../blooks/banners";
 import { Textfit } from "react-textfit";
 import { getDimensions } from "../../utils/numbers";
 import Blook from "../../blooks/Blook";
 import "./join.css";
 import { audios, holidays } from "../../utils/config";
-import { useRef } from "react";
 import { useAuth } from "../../context/AuthContext";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
