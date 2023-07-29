@@ -206,7 +206,7 @@ function Stats() {
                 <div id="gameHistory">
                     <div id="historyHeader">Game History</div>
                     <div id="historyWrapper">
-                        {stats.gameHistory?.length ? stats.gameHistory.map(({ blookUsed, name, place }, i) => {
+                        {stats.gameHistory?.length ? stats.gameHistory.slice().reverse().map(({ blookUsed, name, place }, i, gameHistory) => {
                             return <div key={i} className="pastGame">
                                 {allBlooks[blookUsed] ? <img className="pastBlook" src={allBlooks[blookUsed].url} alt={blookUsed} /> : <CustomBlook className="pastBlook" blookClassName="pastCustomBlook" code={blookUsed} />}
                                 <div className="pastInfo">
@@ -214,22 +214,22 @@ function Stats() {
                                         <div className="pastName">{name}</div>
                                         <div className="pastPlace">{place + getOrdinal(place)}</div>
                                     </div>
-                                    {stats.gameHistory[i].candy != null ? formatBigNumber(stats.gameHistory[i].candy)
-                                        : stats.gameHistory[i].gold != null ? formatBigNumber(stats.gameHistory[i].gold)
-                                            : stats.gameHistory[i].xp != null ? formatBigNumber(stats.gameHistory[i].xp)
-                                                : stats.gameHistory[i].toys != null ? formatBigNumber(stats.gameHistory[i].toys)
-                                                    : stats.gameHistory[i].shamrocks != null ? formatBigNumber(stats.gameHistory[i].shamrocks)
-                                                        : stats.gameHistory[i].snow != null ? formatBigNumber(stats.gameHistory[i].snow)
-                                                            : stats.gameHistory[i].cash != null ? `$${formatBigNumber(stats.gameHistory[i].cash)}`
-                                                                : stats.gameHistory[i].crypto != null ? `₿ ${formatBigNumber(stats.gameHistory[i].crypto)}`
-                                                                    : stats.gameHistory[i].weight != null ? `${formatBigNumber(stats.gameHistory[i].weight)} lbs`
-                                                                        : stats.gameHistory[i].classicPoints != null ? formatNumber(stats.gameHistory[i].classicPoints)
-                                                                            : stats.gameHistory[i].wins != null ? `${stats.gameHistory[i].wins} ${1 === stats.gameHistory[i].wins ? "Win" : "Wins"}`
-                                                                                : stats.gameHistory[i].result != null ? stats.gameHistory[i].result
-                                                                                    : stats.gameHistory[i].guests != null ? formatNumber(stats.gameHistory[i].guests)
-                                                                                        : stats.gameHistory[i].dmg != null ? formatNumber(stats.gameHistory[i].dmg)
-                                                                                            : stats.gameHistory[i].numBlooks != null ? formatNumber(stats.gameHistory[i].numBlooks)
-                                                                                                : stats.gameHistory[i].fossils != null ? formatNumber(stats.gameHistory[i].fossils)
+                                    {gameHistory[i].candy != null ? formatBigNumber(gameHistory[i].candy)
+                                        : gameHistory[i].gold != null ? formatBigNumber(gameHistory[i].gold)
+                                            : gameHistory[i].xp != null ? formatBigNumber(gameHistory[i].xp)
+                                                : gameHistory[i].toys != null ? formatBigNumber(gameHistory[i].toys)
+                                                    : gameHistory[i].shamrocks != null ? formatBigNumber(gameHistory[i].shamrocks)
+                                                        : gameHistory[i].snow != null ? formatBigNumber(gameHistory[i].snow)
+                                                            : gameHistory[i].cash != null ? `$${formatBigNumber(gameHistory[i].cash)}`
+                                                                : gameHistory[i].crypto != null ? `₿ ${formatBigNumber(gameHistory[i].crypto)}`
+                                                                    : gameHistory[i].weight != null ? `${formatBigNumber(gameHistory[i].weight)} lbs`
+                                                                        : gameHistory[i].classicPoints != null ? formatNumber(gameHistory[i].classicPoints)
+                                                                            : gameHistory[i].wins != null ? `${gameHistory[i].wins} ${1 === gameHistory[i].wins ? "Win" : "Wins"}`
+                                                                                : gameHistory[i].result != null ? gameHistory[i].result
+                                                                                    : gameHistory[i].guests != null ? formatNumber(gameHistory[i].guests)
+                                                                                        : gameHistory[i].dmg != null ? formatNumber(gameHistory[i].dmg)
+                                                                                            : gameHistory[i].numBlooks != null ? formatNumber(gameHistory[i].numBlooks)
+                                                                                                : gameHistory[i].fossils != null ? formatNumber(gameHistory[i].fossils)
                                                                                                     : null}
                                 </div>
                             </div>

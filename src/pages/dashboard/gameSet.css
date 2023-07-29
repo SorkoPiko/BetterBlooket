@@ -274,7 +274,6 @@
 }
 
 .questionText {
-    font-family: Nunito, sans-serif;
     font-size: 18px;
     /* color: #3a3a3a; */
     word-wrap: break-word;
@@ -317,8 +316,8 @@
     -moz-user-select: none;
     user-select: none;
     cursor: default !important;
-    color: #3a3a3a;
-    border-color: #3a3a3a;
+    color: white;
+    border-color: white;
     font-size: 16px !important;
 }
 

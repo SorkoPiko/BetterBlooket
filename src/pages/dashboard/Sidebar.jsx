@@ -1,12 +1,21 @@
+import { useCallback, useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import "./sidebar.css";
 import { Tooltip } from "react-tooltip";
-import { useState } from "react";
-import { useRef } from "react";
-import { useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
+import "./sidebar.css";
+import { relativeTime } from "../../utils/numbers";
+
 function Sidebar({ children }) {
+    const { http } = useAuth();
     const [hovering, setHovering] = useState(true);
+    const [showNews, setShowNews] = useState(false);
+    const [news, setNews] = useState();
     const sidebar = useRef();
+    const getNews = useCallback(async (open) => {
+        const { data } = await http.get("https://dashboard.blooket.com/api/news");
+        setNews(data.filter(x => x.date).sort((a, b) => new Date(b.date) - new Date(a.date)));
+    }, []);
+    useEffect(() => { if (showNews) getNews() }, [showNews]);
     useEffect(() => { sidebar.current.classList.toggle("hover", hovering) }, [hovering]);
     useEffect(() => {
         sidebar.current.onpointerenter = () => setHovering(true);
@@ -102,12 +111,26 @@ function Sidebar({ children }) {
                     <Link data-tooltip-id="bottom-icon" data-tooltip-content="Settings" to="/settings">
                         <i className="fas fa-cog"></i>
                     </Link>
-                    <Link data-tooltip-id="bottom-icon" data-tooltip-content="News" to="/news">
+                    <a data-tooltip-id="bottom-icon" data-tooltip-content="News" style={{ cursor: "pointer" }} onClick={() => setShowNews(s => !s)}>
                         <i className="fas fa-newspaper"></i>
-                    </Link>
+                    </a>
                 </div>
             </div>
-            <div id="shade"></div>
+            <div id="shade" onClick={showNews ? () => setShowNews(false) : null}></div>
+            <div id="news" className={className({ showNews })}>
+                {news?.map(news => {
+                    return <div className="newsPost" key={news._id}>
+                        <div className="newsTag">{news.tag}</div>
+                        <div className="newsHeader">{news.header}</div>
+                        <img src={news.image} alt={news.imageAlt} className="newsImage" />
+                        <div className="newsText">{news.text}</div>
+                        <div className="newsDate">
+                            <i className="fas fa-calendar-alt"></i>
+                            {relativeTime(new Date(news.date))}
+                        </div>
+                    </div>
+                })}
+            </div>
         </div>
         <div id="content">
             {children}
