@@ -4,7 +4,7 @@ import { setActivity } from "../../utils/discordRPC";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { hwGamemodes } from "../../utils/gameModes.js";
 import { relativeTime, DateFormat, formatNumber, getDimensions } from "../../utils/numbers.js";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Modal from "../../components/Modal.jsx";
 import QRCode from "react-qr-code";
 import { freeBlooks } from "../../blooks/allBlooks.js";
@@ -124,6 +124,7 @@ function listAnswers(answers, color, size) {
 export function Homework() {
     const { id } = useParams();
     const { http } = useAuth();
+    const navigate = useNavigate();
     const [game, setGame] = useState({});
     const [results, setResults] = useState([]);
     const [justCopied, setJustCopied] = useState(false);
@@ -132,13 +133,16 @@ export function Homework() {
     const [loading, setLoading] = useState(true);
     const [response, setResponse] = useState(null);
     const [deleteStanding, setDeleteStanding] = useState(null);
+    const [extending, setExtending] = useState(false);
+    const [extendAmount, setExtendAmount] = useState(0);
+    const [deleting, setDeleting] = useState(false);
     const copyTimeout = useRef();
     useEffect(() => {
         if (justCopied) copyTimeout.current = setTimeout(() => setJustCopied(false), 1500);
     }, [justCopied])
     const refresh = useCallback(() => {
         setLoading(true);
-        http.get("https://dashboard.blooket.com/api/homeworks/byid/results", { params: { id: "64c167ef4696624c6984233f" || id } }).then(({ data }) => {
+        http.get("https://dashboard.blooket.com/api/homeworks/byid/results", { params: { id: "" || id } }).then(({ data }) => {
             console.log(window.hw = data);
             let totalCorrect = 0, totalIncorrect = 0;
             let blooks = shuffleArray(freeBlooks).slice(0, data.results.length);
@@ -176,10 +180,11 @@ export function Homework() {
                 }
                 return res;
             }).sort((a, b) => b.data.amount - a.data.amount));
+            let endDate = new Date(new Date(data.metaData.startTime).getTime() + data.metaData.duration * 60000);
             setGame({
                 ...data.metaData,
                 date: new DateFormat(new Date(data.metaData.startTime)).format("MM/DD/YY"),
-                endDate: new Date(new Date(data.metaData.startTime).getTime() + data.metaData.duration * 60000)
+                endDate, isEnded: endDate < new Date(), daysLeft: Math.floor((endDate.getTime() - Date.now()) / (24 * 3600000))
             });
             setTotals({ correct: totalCorrect, incorrect: totalIncorrect, total: totalCorrect + totalIncorrect });
             setLoading(false);
@@ -204,7 +209,32 @@ export function Homework() {
             setDeleteStanding(null);
             refresh();
         });
-    }, [deleteStanding])
+    }, [deleteStanding]);
+    const onExtend = useCallback(() => {
+        if (extendAmount <= 0) return setExtending(false);
+        setLoading(true);
+        http.put('https://dashboard.blooket.com/api/homeworks/extend', {
+            hwId: id,
+            minutes: 24 * extendAmount * 60,
+            plus: true,
+        }).then(() => {
+            setExtending(false)
+            refresh()
+        }).catch((err) => {
+            setExtending(false)
+            console.error(err)
+        });
+    }, [extendAmount]);
+    const onDelete = useCallback(() => {
+        setLoading(true);
+        http.delete('https://dashboard.blooket.com/api/homeworks', { params: { id } })
+            .then(() => {
+                navigate("/homework", { replace: true });
+            }).catch((err) => {
+                setDeleting(false);
+                console.error(err);
+            });
+    }, [extendAmount]);
     useEffect(() => {
         refresh();
         return () => {
@@ -214,7 +244,6 @@ export function Homework() {
     useEffect(() => { window.response = response }, [response]);
     return <Sidebar>
         <div className="hwInfo">
-            <div className="hwDate">{game.date}</div>
             <div className="hwTitle">{game.title}</div>
             <div className="hwLink" onClick={onCopy}>
                 {justCopied && <div className="hwCopiedNotification">Copied!</div>}
@@ -224,9 +253,11 @@ export function Homework() {
                 <QRCode size={1000} bgColor="white" fgColor="black" value={new URL(`https://play.blooket.com/play?hwId=${game._id}`).href}></QRCode>
             </div>
             <div className="hwCloses">HW Closes At: {new DateFormat(game.endDate).format("MM/DD/YY - hh:mm A")}</div>
+            {game.daysLeft}
         </div>
         <div className="hwResults">
             <div className="hwResultsTitle">{game.title}</div>
+            <div className="hwDate">{game.date}</div>
             <div className="hwResultsData">
                 <div className="chartContainer">
                     <Doughnut data={{
@@ -261,11 +292,11 @@ export function Homework() {
                 </div>
             </div>
             <div className="resultsButtons">
-                <div className="deleteHw" style={{ backgroundColor: "var(--red)" }}>
+                <div className="deleteHw" style={{ backgroundColor: "var(--red)" }} onClick={() => setDeleting(true)}>
                     <i className="far fa-trash-alt"></i>
                     Delete
                 </div>
-                <div className="extendHw" style={{ backgroundColor: "var(--accent1)" }}>
+                <div className="extendHw" style={{ backgroundColor: "var(--accent1)" }} onClick={() => (setExtendAmount(1), setExtending(true))}>
                     <i className="fas fa-history"></i>
                     Extend
                 </div>
@@ -319,9 +350,9 @@ export function Homework() {
                         </div>
                         {question.audio
                             ? <div className="hw_questionFunc"><PlayAudio audioUrl={question.audio} width="45%" /></div>
-                            : question.text.includes("`*`") && <div className="hw_questionFunc">
+                            : question.text.includes("`*`") && <Textfit className="hw_questionFunc" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("1vw")}>
                                 <StaticMathField className="hw_qMathField">{question.text.slice(question.text.indexOf("`*`") + 3, question.text.length - 3)}</StaticMathField>
-                            </div>}
+                            </Textfit>}
                         <div className={className("hw_questionBox", { hw_questionWithFunc: question.text.includes("`*`") || question.audio })}>
                             <div className="hw_questionText">
                                 {question.text.includes("`*`")
@@ -347,6 +378,7 @@ export function Homework() {
                                 tooltips: { enabled: false },
                                 animation: { duration: 0 },
                                 layout: { padding: 2 },
+                                borderColor: "hsl(210, 8%, 5%)"
                             }} />
                             <div className="hw_statsText">
                                 {question.corrects}/{question.corrects + question.incorrects}
@@ -363,7 +395,9 @@ export function Homework() {
                 objectFit: "contain"
             }} onError={e => e.target.src = imageUrl(zoomedImage, true)} />
         </div>}
-        {response && <div className="hwModal" onClick={(e) => setResponse(null)}>
+        {response && <div className="hwModal" onClick={(e) => {
+            if (e.target.className == "hwModal") setResponse(null)
+        }}>
             <div className="hwStanding">
                 <div className="standingTop">
                     <Blook name={response.blook} className="hwStandingBlook" />
@@ -385,6 +419,7 @@ export function Homework() {
                             tooltips: { enabled: false },
                             animation: { duration: 0 },
                             layout: { padding: 2 },
+                            borderColor: "hsl(210, 8%, 5%)"
                         }} />
                         <div className="hwStandingGrade">{Math.round(response.data.correctAnswers * 100 / (response.data.totalAnswers))}%</div>
                     </div>
@@ -400,9 +435,9 @@ export function Homework() {
                                 </div>
                                 {question.audio
                                     ? <div className="hw_questionFunc"><PlayAudio audioUrl={question.audio} width="45%" /></div>
-                                    : question.text.includes("`*`") && <div className="hw_questionFunc">
+                                    : question.text.includes("`*`") && <Textfit className="hwStandingQuestionFunc" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("3vw")}>
                                         <StaticMathField className="hw_qMathField">{question.text.slice(question.text.indexOf("`*`") + 3, question.text.length - 3)}</StaticMathField>
-                                    </div>}
+                                    </Textfit>}
                                 <div className={className("hw_questionBox", { hw_questionWithFunc: question.text.includes("`*`") || question.audio })}>
                                     <div className="hwStandingQuestionText">
                                         <span style={{ fontWeight: "700" }}>{question.number}.</span> {question.text.includes("`*`")
@@ -427,6 +462,7 @@ export function Homework() {
                                         tooltips: { enabled: false },
                                         animation: { duration: 0 },
                                         layout: { padding: 2 },
+                                        borderColor: "hsl(210, 8%, 5%)"
                                     }} />
                                     <div className="hw_statsText" style={{ fontSize: "1vw" }}>
                                         {response.data.corrects[question.number] || 0}/{(response.data.corrects[question.number] || 0) + (response.data.incorrects[question.number] || 0)}
@@ -441,6 +477,16 @@ export function Homework() {
         {deleteStanding && <Modal text={`Do you want to delete "${deleteStanding.name}"?`}
             buttonOne={{ text: "Yes", click: onDeleteStanding, color: "var(--red)" }}
             buttonTwo={{ text: "No", click: () => setDeleteStanding(null) }} />}
+        {extending && <Modal text={!game.isEnded && 365 - game.daysLeft <= 0
+            ? `Homework is already open for the max time (365 days).`
+            : `How long would you like to ${game.isEnded ? 'reopen' : 'extend'} this homework for (in days)?`}
+            timeValue={!game.isEnded && 365 - game.daysLeft <= 0 ? null : extendAmount}
+            timeChange={(e) => setExtendAmount(Math.min(365 - (game.isEnded ? 0 : game.daysLeft), Math.max(0, Math.round(e.target.value))))}
+            buttonOne={{ text: "Confirm", click: onExtend }}
+            buttonTwo={{ text: "Cancel", click: () => setExtending(null) }} />}
+        {deleting && <Modal text={`Do you really want to delete this HW?`}
+            buttonOne={{ text: "Yes", click: onDelete, color: "var(--red)" }}
+            buttonTwo={{ text: "No", click: () => setDeleting(false) }} />}
         {/* {JSON.stringify(game, null, 4).split("\n").map((x, i) => {
             return <div key={i} style={{ paddingLeft: (x.split("  ").length - 1) * 16 }}>{x}</div>
         })}
