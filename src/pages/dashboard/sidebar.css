@@ -157,7 +157,7 @@
 }
 
 #news {
-    position: absolute;
+    position: fixed;
     z-index: 5;
     top: 0;
     right: 0;
@@ -235,6 +235,7 @@
 
 .newsText {
     padding: 5px;
+    padding-bottom: 0;
 }
 
 .newsDate {

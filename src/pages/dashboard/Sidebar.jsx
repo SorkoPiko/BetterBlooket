@@ -9,9 +9,10 @@ function Sidebar({ children }) {
     const { http } = useAuth();
     const [hovering, setHovering] = useState(true);
     const [showNews, setShowNews] = useState(false);
-    const [news, setNews] = useState();
+    const [news, setNews] = useState("loading");
     const sidebar = useRef();
     const getNews = useCallback(async (open) => {
+        setNews("loading");
         const { data } = await http.get("https://dashboard.blooket.com/api/news");
         setNews(data.filter(x => x.date).sort((a, b) => new Date(b.date) - new Date(a.date)));
     }, []);
@@ -118,12 +119,17 @@ function Sidebar({ children }) {
             </div>
             <div id="shade" onClick={showNews ? () => setShowNews(false) : null}></div>
             <div id="news" className={className({ showNews })}>
-                {news?.map(news => {
+                {news != "loading" && news.map(news => {
                     return <div className="newsPost" key={news._id}>
                         <div className="newsTag">{news.tag}</div>
                         <div className="newsHeader">{news.header}</div>
                         <img src={news.image} alt={news.imageAlt} className="newsImage" />
-                        <div className="newsText">{news.text}</div>
+                        <div className="newsText">{news.text.split("***").map((x, i) => {
+                            return <>
+                                <div key={i}>{x}</div>
+                                <br />
+                            </>
+                        })}</div>
                         <div className="newsDate">
                             <i className="fas fa-calendar-alt"></i>
                             {relativeTime(new Date(news.date))}

@@ -243,21 +243,19 @@ export function Homework() {
     }, []);
     useEffect(() => { window.response = response }, [response]);
     return <Sidebar>
-        <div className="hwInfo">
-            <div className="hwTitle">{game.title}</div>
-            <div className="hwLink" onClick={onCopy}>
+        {!game.isEnded && <div className="hwInfo">
+            <div className="hwJoin">
                 {justCopied && <div className="hwCopiedNotification">Copied!</div>}
-                https://play.blooket.com/play?hwId={game._id}
+                <div className="hwLink" onClick={onCopy}>Click to copy and share the link</div>
+                OR<br/>
+                Scan the QR code to join
             </div>
-            <div>
-                <QRCode size={1000} bgColor="white" fgColor="black" value={new URL(`https://play.blooket.com/play?hwId=${game._id}`).href}></QRCode>
-            </div>
-            <div className="hwCloses">HW Closes At: {new DateFormat(game.endDate).format("MM/DD/YY - hh:mm A")}</div>
-            {game.daysLeft}
-        </div>
+            <QRCode className="hwQrCode" size={1000} bgColor="white" fgColor="black" value={new URL(`https://play.blooket.com/play?hwId=${game._id}`).href}></QRCode>
+        </div>}
         <div className="hwResults">
             <div className="hwResultsTitle">{game.title}</div>
             <div className="hwDate">{game.date}</div>
+            {game.isEnded ? "Closed On" : "Closes At"}: {new DateFormat(game.endDate).format("MM/DD/YY - hh:mm A")}
             <div className="hwResultsData">
                 <div className="chartContainer">
                     <Doughnut data={{

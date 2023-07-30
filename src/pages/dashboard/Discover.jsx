@@ -53,9 +53,12 @@ function Discover() {
                 minPlays: filter.minPlays
             }
         }).then(function ({ data }) {
-            setHasMore(data.length >= 8);
+            setFeatured([]);
+            setDiscovery([]);
+            setHasMore(data.length == 24);
             setPageIndex(page);
             if (0 === page) {
+                console.log(page, data[0]);
                 setSearched(true);
                 setSets(data);
             } else setSets(sets.concat(data));
