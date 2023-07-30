@@ -235,6 +235,7 @@
 
 .newsText {
     padding: 5px;
+    padding-bottom: 0;
 }
 
 .newsDate {
