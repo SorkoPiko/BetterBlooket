@@ -157,7 +157,7 @@ function Market() {
                 <img className="blookBackground" src={packs[selected].setBackground} alt="" />
                 <div id="blookContainer" className="unlockedBlookImage">
                     {amount == 1 ? <img src={allBlooks[blooks[showing]]?.url} alt={blooks[showing]} /> : <>
-                        {showing > 0 && <img style={{ position: "absolute", animation: "slideUp .5s linear forwards", zIndex: "11" }} key={`bulkOpen${showing - 1}`} src={allBlooks[blooks[showing - 1]].url} alt={blooks[showing - 1]} />}
+                        {showing > 0 && <img style={{ position: "absolute", animation: "market_slideUp .5s linear forwards", zIndex: "11" }} key={`bulkOpen${showing - 1}`} src={allBlooks[blooks[showing - 1]].url} alt={blooks[showing - 1]} />}
                         <img style={blooks[showing] ? {} : { filter: "brightness(0)" }} src={allBlooks[blooks[showing] || "Light Blue"].url} alt={blooks[showing] || "Light Blue"} />
                         {!blooks[showing] && <i style={{ position: "absolute", left: "50%", top: "60%", transform: "translate(-50%, -60%)", fontSize: "5rem" }} className="fas fa-question" />}
                     </>}
