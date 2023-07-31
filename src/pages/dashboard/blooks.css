@@ -282,7 +282,8 @@ img[data-locked="true"] {
 
 .packContainer {
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
 }
 
 .packTop {
