@@ -23,6 +23,8 @@ function Sidebar({ children }) {
         sidebar.current.onpointerleave = () => setHovering(false);
         setHovering(sidebar.current.matches(":hover"));
     }, []);
+    const [bro, setBro] = useState(false);
+    window.updateB = useCallback(() => setBro(b => !b), []);
     return (<>
         <div id="sidebarWrapper">
             <div id="sidebar" ref={sidebar} className={hovering ? "hover" : null}>
@@ -32,14 +34,31 @@ function Sidebar({ children }) {
                             <div className="icon">
                                 {/* Adventure ReQuest */}
                                 <div style={{ backgroundColor: "var(--accent1)", mask: "url(/b.svg)", WebkitMask: "url(/b.svg)", height: "30px", aspectRatio: "26 / 30" }}></div>
+                                
                                 {/* Titan One */}
                                 {/* <div style={{
                                     height: "30px",
-                                    aspectRatio: "26 / 30",
-                                    fontFamily: "Adventure",
-                                    fontSize: "42px",
-                                    marginTop: "-22px"
-                                }}>B</div> */}
+                                    display: "flex",
+                                    justifyContent: "center"
+                                }}>
+                                    <div style={{
+                                        backgroundColor: "var(--accent1)",
+                                        height: "30px",
+                                        aspectRatio: "26 / 30",
+                                        fontFamily: "Adventure",
+                                        fontSize: "39px",
+                                        WebkitBackgroundClip: "text",
+                                        color: "transparent",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        lineHeight: "30px",
+                                        // marginTop: "-4px"
+                                        paddingLeft: "4px",
+                                        paddingBottom: "1px",
+                                        fontWeight: "400"
+                                    }}>B</div>
+                                </div> */}
                             </div>
                             <div id="title" style={{ position: "absolute", fontFamily: "Adventure", fontSize: "39px", top: "calc(50% - 2px)", left: "43px", transform: "translateY(-50%)", color: "var(--accent1)" }}>looket</div>
                             <div className="page" style={{ opacity: "0" }}>Home</div>
