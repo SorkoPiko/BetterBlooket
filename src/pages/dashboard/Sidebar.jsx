@@ -123,13 +123,14 @@ function Sidebar({ children }) {
                     return <div className="newsPost" key={news._id}>
                         <div className="newsTag">{news.tag}</div>
                         <div className="newsHeader">{news.header}</div>
-                        <img src={news.image} alt={news.imageAlt} className="newsImage" />
-                        <div className="newsText">{news.text.split("***").map((x, i) => {
+                        {news.image && <img src={news.image} alt={news.imageAlt} className="newsImage" />}
+                        <div className="newsText">{news.text.split("***").map((x, i, a) => {
                             return <>
                                 <div key={i}>{x}</div>
-                                <br />
+                                {i + 1 != a.length && <br />}
                             </>
                         })}</div>
+                        {!news.link && (news.link?.startsWith("http") ? <a className="newsLink" href={news.link} target="_blank">Learn more...</a> : <Link className="newsLink" to={news.link}>Learn more...</Link>)}
                         <div className="newsDate">
                             <i className="fas fa-calendar-alt"></i>
                             {relativeTime(new Date(news.date))}
