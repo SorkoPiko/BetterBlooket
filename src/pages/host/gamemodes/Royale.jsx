@@ -476,10 +476,10 @@ function RoyaleStandings({ winner, loser, bothWin, bothLose, win, safe, isPlayer
             {playerWin.name}{playerWin.clone ? ' \uD83D\uDC7E' : ""}
         </Textfit>
 
-        <Blook name={playerLose.blook} className="standings_LoserBlookShadow3" />
+        <Blook name={playerLose.blook} className="standings_loserBlookShadow3" />
         <img src={royale.victoryDefeatBg} alt="Nameplate" className="standings_defeatTextBg" />
         <img src={(bothWin || (!win && isPlayer)) && !bothLose ? royale.victoryText : royale.defeatedText} alt={(bothWin || (!win && isPlayer)) && !bothLose ? "Victory" : "Defeat"} className="standings_defeatText" />
-        <div className="standings_LoserBlookContainer">
+        <div className="standings_loserBlookContainer">
             <div className="standings_loserCorrectContainer">
                 <img src={royale.energyBg} alt="Nameplate" className="standings_loserCorrectBg" />
                 <img src={playerLose.correct ? royale.greenCheck : royale.redX} alt={playerLose.correct ? "Correct" : "Incorrect"} className="standings_loserCheck" />

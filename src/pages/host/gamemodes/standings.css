@@ -137,10 +137,10 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
-    animation: slideUp .35s linear 4.75s forwards
+    animation: standings_slideUp .35s linear 4.75s forwards
 }
 
-@keyframes slideUp {
+@keyframes standings_slideUp {
     0% {
         transform: translateY(0)
     }
@@ -217,7 +217,7 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
-    animation: slideUp .35s linear 2.75s forwards
+    animation: standings_slideUp .35s linear 2.75s forwards
 }
 
 .standings_nameTextTwo {
@@ -287,7 +287,7 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
-    animation: slideUp .35s linear 1.5s forwards
+    animation: standings_slideUp .35s linear 1.5s forwards
 }
 
 .standings_nameTextThree {
