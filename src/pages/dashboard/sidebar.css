@@ -86,7 +86,7 @@
     transition: 0.2s;
 }
 
-#sidebar li a:hover * {
+#sidebar li a:not(#sidebarB):hover * {
     color: var(--highlight1);
 }
 
