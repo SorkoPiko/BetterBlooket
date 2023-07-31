@@ -95,10 +95,12 @@ export default function HW() {
                 {selected.methods.includes("assign") && <div style={{ width: "70%" }} onClick={onAssign}>Assign HW</div>}
             </div>
             <div id="playButtonContainer">
-                <Link style={{
+                <div style={{
+                    width: "70%",
                     color: "#fff",
-                    cursor: "pointer"
-                }} to={`/host?id=${id}`}>Looking for Live Game Modes?</Link>
+                    cursor: "pointer",
+                    textDecoration: "none"
+                }} onClick={() => navigate(`/host?id=${id}`, { replace: true })}>Host Gamemodes</div>
             </div>
         </div>}
     </div>

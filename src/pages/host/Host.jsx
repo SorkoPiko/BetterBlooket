@@ -97,10 +97,12 @@ export default function Host() {
                 <div style={{ width: "70%" }} onClick={onHost}>Host Game</div>
             </div>
             <div id="playButtonContainer">
-                <Link style={{
+                <div style={{
+                    width: "70%",
                     color: "#fff",
-                    cursor: "pointer"
-                }} to={`/hw?id=${id}`}>Looking for Homework Game Modes?</Link>
+                    cursor: "pointer",
+                    textDecoration: "none"
+                }} onClick={() => navigate(`/hw?id=${id}`, { replace: true })}>HW Gamemodes</div>
             </div>
         </div>}
     </div>

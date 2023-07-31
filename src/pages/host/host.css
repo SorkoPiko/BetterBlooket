@@ -181,7 +181,7 @@
     margin-top: 20px;
 }
 
-#playButtonContainer div {
+#playButtonContainer > * {
     height: 3.125vw;
     box-sizing: border-box;
     font-family: Adventure;
@@ -201,7 +201,7 @@
     transition: scale 0.2s;
 }
 
-#playButtonContainer div:hover {
+#playButtonContainer > *:hover {
     background-color: var(--highlight5);
     scale: 1.05
 }

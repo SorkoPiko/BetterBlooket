@@ -250,3 +250,8 @@
     object-fit: cover;
     margin: 0 5px;
 }
+
+.newsLink {
+    padding: 5px;
+    /* font-weight: 700; */
+}

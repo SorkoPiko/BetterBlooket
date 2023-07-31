@@ -543,6 +543,7 @@
             0 calc(100% - var(--border-radius)));
     display: flex;
     flex-direction: column;
+    cursor: default;
 }
 
 .standingTop {
