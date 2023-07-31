@@ -43,7 +43,8 @@ function Stats() {
         getExtraBlooks().then(setExtraBlooks);
         get("https://dashboard.blooket.com/api/users/stats").then(({ data }) => {
             setStats(data);
-            setCustomBlooks(data.customBlooks || ["", "", "", "", ""]);
+            console.log(data.custom)
+            setCustomBlooks(data.customBlooks.concat(Array(5 - data.customBlooks.length).fill("")));
         });
         setActivity({
             state: "Stats",
