@@ -171,11 +171,11 @@ export default function HostTeams() {
         </div>
         <div className={`hostRegularBody${transition ? " invisible" : ""}`} style={{ zIndex: 1 }}>
             <div className="buttonContainer">
-                <div className="button" onClick={shuffleTeams}>
+                <div className="teams_button" onClick={shuffleTeams}>
                     <i className="fas fa-redo-alt" style={{ fontSize: 36 }}></i>
                     {"\xa0 Shuffle"}
                 </div>
-                <div className="button" onClick={startGame}>
+                <div className="teams_button" onClick={startGame}>
                     <i className="fas fa-play" style={{ fontSize: 33 }}></i>
                     {"\xa0 Start"}
                 </div>

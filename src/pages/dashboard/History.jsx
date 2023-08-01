@@ -35,7 +35,7 @@ function Game({ game, onDelete, ended }) {
                         <i className="fas fa-users"></i>{game.settings?.mode == "Teams" ? game.standings.reduce((a, b) => (a + b.players.length), 0) : game.standings?.length || 0}
                     </div>
                     <div className="info">
-                        <i className="far fa-clock"></i>{new DateFormat(new Date(game.date)).format("hh:mm a, MM/DD/YY")}
+                        <i className="far fa-clock"></i>{new DateFormat(new Date(game.date)).format("MM/DD/YY, hh:mm a")}
                     </div>
                 </div>
             </div>

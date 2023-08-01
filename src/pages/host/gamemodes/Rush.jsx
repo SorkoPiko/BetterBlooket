@@ -134,7 +134,7 @@ function RushBox({ name, blook, numBlooks, numDefense, bigBox, letMove, onClick 
     const canvasParentRef = useRef();
     const blooks = useRef([]);
     let pack = rushBoxes[allBlooks[blook]?.realSet || allBlooks[blook]?.set] || rushBoxes.Classic;
-    return <div className={`wrapper${bigBox ? " bigBox" : ""}${!letMove && onClick ? " hoverButton" : ""}`} style={{ backgroundColor: pack.base }} onClick={onClick}>
+    return <div className={`rush_wrapper${bigBox ? " bigBox" : ""}${!letMove && onClick ? " hoverButton" : ""}`} style={{ backgroundColor: pack.base }} onClick={onClick}>
         <div className="fenceContainer" style={{ backgroundColor: pack.fence }}>
             <div className={`topWall${bigBox ? " bigTopWall" : ""}`} style={{ backgroundColor: pack.top }}></div>
             <div className={`container${bigBox ? " bigContainer" : ""}`} style={{

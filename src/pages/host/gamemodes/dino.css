@@ -1,4 +1,4 @@
-.wrapper {
+.dino_wrapper {
     position: relative;
     overflow: hidden;
     -webkit-user-select: none;
@@ -12,7 +12,7 @@
     color: #f4e1a4
 }
 
-.button {
+.dino_button {
     outline: none;
     cursor: pointer;
     transition: .2s

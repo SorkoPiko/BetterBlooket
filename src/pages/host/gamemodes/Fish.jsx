@@ -92,7 +92,7 @@ const parties = {
 
 export function Party({ fish }) {
     console.log(parties, parties[fish], fish)
-    return <div className="wrapper">
+    return <div className="fish_wrapper">
         {Array(parties[fish]?.num || 0).fill(parties[fish]).map((party, i) =>
             <Blook key={i} name={fish} className={`${party.className} ${party.className}${i + 1}`} blookClassName={party.blookClassName ? `${party.blookClassName}${party.dontNumber ? "" : (i % 4) + 1}` : null} />
         )}

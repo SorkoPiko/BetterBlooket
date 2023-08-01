@@ -18,7 +18,7 @@ function Panel({ content, onClick, className, style }) {
         import("./dino.css");
     }, [])
     const backgroundImage = `radial-gradient(rgba(220, 184, 86, 0), rgba(220, 184, 86, 0.2)), url(${dino.paperTexture})`;
-    return <div className={`wrapper ${className}${onClick ? " button" : ""}`} style={style} onClick={onClick}>
+    return <div className={`dino_wrapper ${className}${onClick ? " dino_button" : ""}`} style={style} onClick={onClick}>
         <div className="inside">
             <div className="corner1" style={{ backgroundImage }}></div>
             <div className="corner2" style={{ backgroundImage }}></div>
