@@ -22,9 +22,8 @@ function Sidebar({ children }) {
         sidebar.current.onpointerenter = () => setHovering(true);
         sidebar.current.onpointerleave = () => setHovering(false);
         setHovering(sidebar.current.matches(":hover"));
+        http.get("https://dashboard.blooket.com/api/users/allsets").then(({ data: { news } }) => news && setShowNews(true));
     }, []);
-    const [bro, setBro] = useState(false);
-    window.updateB = useCallback(() => setBro(b => !b), []);
     return (<>
         <div id="sidebarWrapper">
             <div id="sidebar" ref={sidebar} className={hovering ? "hover" : null}>
@@ -34,7 +33,7 @@ function Sidebar({ children }) {
                             <div className="icon">
                                 {/* Adventure ReQuest */}
                                 <div style={{ backgroundColor: "var(--accent1)", mask: "url(/b.svg)", WebkitMask: "url(/b.svg)", height: "30px", aspectRatio: "26 / 30" }}></div>
-                                
+
                                 {/* Titan One */}
                                 {/* <div style={{
                                     height: "30px",
