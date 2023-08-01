@@ -9,6 +9,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 30px;
 }
 
 .homeworkWrapper {
@@ -121,6 +122,10 @@
             var(--border-radius) 100%,
             0 calc(100% - var(--border-radius)));
     transition: 0.2s;
+}
+
+.resultWrapper.teamPlayer {
+    width: 90%;
 }
 
 .resultWrapper:hover {
@@ -656,4 +661,34 @@
     left: 50%;
     top: -2vw;
     translate: -50%;
+}
+
+.resultStats {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: calc(7vw - 20px);
+    height: 1.25vw;
+    padding-inline: 10px;
+}
+
+.resultStatText {
+    text-align: center;
+    /* font-size: 1.25vw; */
+    width: calc(100% - 30px);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.resultStats img {
+    width: 30px;
+    max-height: 30px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.hwStandingData {
+    padding-bottom: 30px;
 }

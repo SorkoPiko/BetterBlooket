@@ -247,10 +247,10 @@
 
 .tdParticles {
     opacity: 0;
-    animation: fadeIn .5s linear 1s forwards
+    animation: defense_fadeIn .5s linear 1s forwards
 }
 
-@keyframes fadeIn {
+@keyframes defense_fadeIn {
     0% {
         opacity: 0
     }

@@ -11,7 +11,7 @@ export default function Standings({ muted, theme, historyId, gameId, standings, 
     const { current: classes } = useRef(({
         spooky: { standing: "standings_spookyContainer", container: ["standings_spookyContainer"], inside: ["standings_spookyInside"], place: ["standings_spookyContainer"] },
         winter: { standing: "", container: ["standings_winterContainer1", "standings_winterContainer2", "standings_winterContainer3"], inside: ["standings_winterInside1", "standings_winterInside2", "standings_winterInside3"], place: [""] },
-        royal: { standing: "standings_royalContainer", container: ["standings_royaleContainer"], inside: ["standings_royaleInside"], place: [""] },
+        royal: { standing: "standings_royalContainer", container: ["standings_royalContainer"], inside: ["standings_royalInside"], place: [""] },
         shamrock: { standing: "standings_shamrockContainer", container: ["standings_shamrockContainer"], inside: ["standings_shamrockInside"], place: [""] },
         cafe: { standing: "", container: ["standings_cafeContainer"], inside: [""], place: [""] },
         hack: { standing: "standings_hackContainer", container: ["standings_hackContainer"], inside: [""], place: ["standings_hackContainer"] },

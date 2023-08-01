@@ -173,7 +173,8 @@ function RushBox({ name, blook, numBlooks, numDefense, bigBox, letMove, onClick 
 }
 
 export default function RushHost() {
-    const { host: { current: host }, liveGameController, updateHost, updateStandings } = useGame();
+    const { host: hostRef, liveGameController, updateHost, updateStandings } = useGame();
+    const { current: host } = hostRef;
     const [timer, setTimer] = useState("00:00");
     const [players, setPlayers] = useState([]);
     const [muted, setMuted] = useState(!!host && host.muted);
@@ -209,6 +210,7 @@ export default function RushHost() {
         });
     }, [players]);
     const goNext = useCallback(() => {
+        const host = hostRef.current;
         let val = [], place = 0, lowest = Number.MAX_SAFE_INTEGER;
         for (let i = 0; i < players.length; i++) {
             if (players[i].numBlooks < lowest) {
@@ -222,7 +224,7 @@ export default function RushHost() {
                 p: place
             });
         }
-        updateStandings(val.map(x => ({ ...x, players: host.players.find(e => e.name == x.n).players })));
+        updateStandings(host.settings.mode == "Teams" ? val.map(x => ({ ...x, players: host.players.find(e => e.name == x.n).players })) : val);
         liveGameController.setVal({
             path: "st", val
         }, () => liveGameController.setStage({ stage: "fin" }, () => navigate("/host/rush/final")));

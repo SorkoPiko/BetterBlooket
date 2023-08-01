@@ -141,10 +141,10 @@
     display: flex;
     flex-flow: row wrap;
     opacity: 0;
-    animation: fadeIn .4s linear .75s forwards
+    animation: teams_fadeIn .4s linear .75s forwards
 }
 
-@keyframes fadeIn {
+@keyframes teams_fadeIn {
     0% {
         opacity: 0
     }
@@ -168,7 +168,7 @@
     justify-content: space-around;
     align-items: center;
     opacity: 0;
-    animation: fadeIn .4s linear .75s forwards
+    animation: teams_fadeIn .4s linear .75s forwards
 }
 
 .button {

@@ -48,34 +48,34 @@
 }
 
 .n1 {
-    animation: fadeIn .15s linear 0ms forwards, fadeOut .15s linear 3s forwards
+    animation: rush_fadeIn .15s linear 0ms forwards, fadeOut .15s linear 3s forwards
 }
 
 .n2 {
-    animation: fadeIn .15s linear 3s forwards, fadeOut .15s linear 6.5s forwards
+    animation: rush_fadeIn .15s linear 3s forwards, fadeOut .15s linear 6.5s forwards
 }
 
 .n3 {
-    animation: fadeIn .15s linear 6.5s forwards, fadeOut .15s linear 10s forwards
+    animation: rush_fadeIn .15s linear 6.5s forwards, fadeOut .15s linear 10s forwards
 }
 
 .n4 {
-    animation: fadeIn .15s linear 10s forwards, fadeOut .15s linear 13.5s forwards
+    animation: rush_fadeIn .15s linear 10s forwards, fadeOut .15s linear 13.5s forwards
 }
 
 .n5 {
-    animation: fadeIn .15s linear 13.5s forwards, fadeOut .15s linear 17s forwards
+    animation: rush_fadeIn .15s linear 13.5s forwards, fadeOut .15s linear 17s forwards
 }
 
 .n6 {
-    animation: fadeIn .15s linear 17s forwards, fadeOut .15s linear 20s forwards
+    animation: rush_fadeIn .15s linear 17s forwards, fadeOut .15s linear 20s forwards
 }
 
 .n7 {
-    animation: fadeIn .15s linear 20s forwards, fadeOut .15s linear 22s forwards
+    animation: rush_fadeIn .15s linear 20s forwards, fadeOut .15s linear 22s forwards
 }
 
-@keyframes fadeIn {
+@keyframes rush_fadeIn {
     0% {
         opacity: 0;
         transform: scale(.5) translateY(-50%)

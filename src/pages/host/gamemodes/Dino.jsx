@@ -350,8 +350,8 @@ function DinoStandings({ muted, historyId, gameId, standings, stats, ready }) {
                     <Blook className="secondBlook" name={standings[1].b} />
                 </>} />
                 <div className="placeTwo">
-                    <Textfit className="placeText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5.5vw")}>2</Textfit>
-                    <Textfit className="superPlaceText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("2.5vw")}>nd</Textfit>
+                    <Textfit className="placeText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5.5vw")}>{standings[1].p}</Textfit>
+                    <Textfit className="superPlaceText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("2.5vw")}>{getOrdinal(standings[1].p)}</Textfit>
                 </div>
             </div>}
             {standings[2] && <div className="containerThree">
@@ -361,16 +361,16 @@ function DinoStandings({ muted, historyId, gameId, standings, stats, ready }) {
                     <Blook className="thirdBlook" name={standings[2].b} />
                 </>} />
                 <div className="placeThree">
-                    <Textfit className="placeText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5.5vw")}>3</Textfit>
-                    <Textfit className="superPlaceText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("2.5vw")}>rd</Textfit>
+                    <Textfit className="placeText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5.5vw")}>{standings[2].p}</Textfit>
+                    <Textfit className="superPlaceText" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("2.5vw")}>{getOrdinal(standings[2].p)}</Textfit>
                 </div>
             </div>}
             {standings[3] && <div className="standingsArray">
                 {standings.slice(3, standings.length).map(standing => {
                     return <Panel key={standing.n} className="standingHolder" content={
                         <div className={`standingContainer`}>
-                            <div className="standingPlaceText">{standing.place}</div>
-                            <div className="standingSuperPlaceText">{getOrdinal(standing.place)}</div>
+                            <div className="standingPlaceText">{standing.p}</div>
+                            <div className="standingSuperPlaceText">{getOrdinal(standing.p)}</div>
                             <Blook name={standing.b} className="standingBlook" />
                             <div className="standingNameText">{standing.n}</div>
                             <div className="standingStatText">{stats[standings.indexOf(standing)]}</div>

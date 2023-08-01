@@ -359,14 +359,14 @@
     user-select: none;
     opacity: 0;
     transition: transform .4s cubic-bezier(.39, .5, .15, 1.36);
-    animation: fadeIn .5s linear 5.5s forwards
+    animation: dino_fadeIn .5s linear 5.5s forwards
 }
 
 .again:hover {
     transform: scale(1.05)
 }
 
-@keyframes fadeIn {
+@keyframes dino_fadeIn {
     0% {
         opacity: 0
     }
@@ -477,7 +477,7 @@
     color: #fff;
     background-color: #ffe900;
     box-shadow: 0 0 8px 3px rgba(0, 0, 0, .2);
-    animation: fadeIn .25s linear 5.1s forwards
+    animation: dino_fadeIn .25s linear 5.1s forwards
 }
 
 .containerTwo {
@@ -537,7 +537,7 @@
     color: #fff;
     background-color: #818181;
     box-shadow: 0 0 8px 3px rgba(0, 0, 0, .2);
-    animation: fadeIn .25s linear 3.1s forwards
+    animation: dino_fadeIn .25s linear 3.1s forwards
 }
 
 .containerThree {
@@ -597,7 +597,7 @@
     color: #fff;
     background-color: #cd7f32;
     box-shadow: 0 0 8px 3px rgba(0, 0, 0, .2);
-    animation: fadeIn .25s linear 1.9s forwards
+    animation: dino_fadeIn .25s linear 1.9s forwards
 }
 
 .standingsArray {
@@ -608,7 +608,7 @@
     padding: 1vh 0 4vh;
     justify-content: center;
     opacity: 0;
-    animation: fadeIn .4s linear 5.5s forwards
+    animation: dino_fadeIn .4s linear 5.5s forwards
 }
 
 .standingHolder,

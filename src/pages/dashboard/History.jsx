@@ -3,7 +3,7 @@ import Sidebar from "./Sidebar.jsx";
 import { setActivity } from "../../utils/discordRPC";
 import { useAuth } from "../../context/AuthContext.jsx";
 import gameModes, { hwGamemodes } from "../../utils/gameModes.js";
-import { relativeTime, DateFormat, formatNumber, getDimensions } from "../../utils/numbers.js";
+import { relativeTime, DateFormat, formatNumber, getDimensions, getOrdinal } from "../../utils/numbers.js";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Modal from "../../components/Modal.jsx";
 import QRCode from "react-qr-code";
@@ -15,22 +15,28 @@ import { Doughnut } from "react-chartjs-2";
 import "./homeworks.css";
 import PlayAudio from "../../components/PlayAudio.jsx";
 import { StaticMathField } from "react-mathquill";
+import { basic, shamrock } from "../../utils/images.js";
+import { holidays } from "../../utils/config.js";
+import { Fragment } from "react";
 
 function Game({ game, onDelete, ended }) {
     return <div className="homeworkWrapper">
-        <Link to={`/history/game/${game._id}`} className={className("homeworkContainer", { ended })}>
-            <div className="homeworkTitle">
-                {game.set}
-            </div>
-            <div className="homeworkInfo">
-                <div className="info">
-                    <i className="fas fa-gamepad"></i>{gameModes[game.settings.type].name}
+        <Link style={{ display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }} to={`/history/game/${game._id}`} className={className("homeworkContainer", { ended })}>
+            <Blook style={{ width: "65px" }} name={game.standings[0].blook} />
+            <div>
+                <div className="homeworkTitle">
+                    {game.set}
                 </div>
-                <div className="info">
-                    <i className="fas fa-users"></i>{game.standings?.length || 0}
-                </div>
-                <div className="info">
-                    <i className="far fa-clock"></i>{new DateFormat(new Date(game.date)).format("hh:mm a, MM/DD/YY")}
+                <div className="homeworkInfo">
+                    <div className="info">
+                        <i className="fas fa-gamepad"></i>{gameModes[game.settings.type].name}
+                    </div>
+                    <div className="info">
+                        <i className="fas fa-users"></i>{game.settings?.mode == "Teams" ? game.standings.reduce((a, b) => (a + b.players.length), 0) : game.standings?.length || 0}
+                    </div>
+                    <div className="info">
+                        <i className="far fa-clock"></i>{new DateFormat(new Date(game.date)).format("hh:mm a, MM/DD/YY")}
+                    </div>
                 </div>
             </div>
         </Link>
@@ -64,7 +70,7 @@ export default function History() {
             //     else hws.push({ ...hw, ends, isEnded });
             // }
             console.log(data)
-            setHistory(data.sort((a,b) => new Date(b.date) - new Date(a.date)));
+            setHistory(data.sort((a, b) => new Date(b.date) - new Date(a.date)));
             // setEnded(ended);
             // window.homeworks = { hws, ended };
         });
@@ -72,7 +78,7 @@ export default function History() {
     useEffect(() => {
         getHistory();
         setActivity({
-            state: "Homework",
+            state: "History",
             timestampStart: Date.now(),
         });
     }, []);
@@ -82,10 +88,17 @@ export default function History() {
             {history.length > 0
                 ? <div className="homeworks">
                     {/* {JSON.stringify(history)} */}
-                    {history.map(game => <Game game={game} onDelete={() => setToDelete(game)} />)}
+                    {history.map(game => <Game key={game._id} game={game} onDelete={() => setToDelete(game)} />)}
                 </div>
                 : <div style={{ textAlign: "center" }}>You haven't hosted a game yet
-                    <Link to="/discover">Discover Sets</Link>
+                    <Link style={{
+                        display: "block",
+                        textAlign: "center",
+                        padding: "5px 10px 5px 10px",
+                        margin: "auto",
+                        width: "fit-content",
+                        fontSize: "1vw",
+                    }} to="/discover">Discover Sets</Link>
                 </div>}
             {toDelete && <Modal text={`Do you really want to delete homework "${toDelete.title}"?`} buttonOne={{ text: "Yes", click: onDelete, color: "red" }} buttonTwo={{ text: "No", click: () => setToDelete(null) }} />}
         </Sidebar>
@@ -139,32 +152,104 @@ export function GameHistory() {
                 data.questions[i].incorrects = 0;
             }
             setResults(data.standings.map((res, i) => {
-                for (let key in res) if (["stage", "cash", "day", "round", "guests", "level"].includes(key)) {
-                    let amount = res[key];
-                    switch (key) {
-                        case "stage": res.statText = amount == 34 ? "Ascended the Tower!" : `Cleared ${amount} Stage${amount == 1 ? "" : "s"}`; break;
-                        case "cash": res.statText = `$${formatNumber(amount)}`; break;
-                        case "day": res.statText = `Day ${amount}`; break;
-                        case "round": res.statText = `Round ${amount - 1}`; break;
-                        case "guests": res.statText = <>{amount}<i className="fas fa-users"></i></>; break;
-                        case "level": res.statText = `Level ${amount}`; break;
-                    }
-                    res.amount = amount;
+                switch (data.settings.type) {
+                    case "Racing":
+                        res.amount = formatNumber(res.progress);
+                        res.statText = `${res.amount}`; break;
+                    case "Royale":
+                        res.amount = formatNumber(res.wins);
+                        res.statText = `${res.amount} Win${res.amount == 1 ? "" : "s"}`; break;
+                    case "Classic":
+                        res.amount = formatNumber(res.points);
+                        res.statText = `${res.amount} Points${res.amount == 1 ? "" : "s"}`; break;
+                    case "Factory":
+                    case "Cafe":
+                        res.amount = formatNumber(res.cash);
+                        res.statText = `$${res.amount}`; break;
+                    case "Hack":
+                        res.amount = formatNumber(res.crypto);
+                        res.statText = `\u20BF ${res.amount}`; break;
+                    case "Fish":
+                        res.amount = formatNumber(res.weight);
+                        res.statText = `${res.amount} lbs`; break;
+                    case "Defense":
+                        res.amount = formatNumber(res.dmg);
+                        res.statText = res.amount;
+                        res.statEl = <i style={{ lineHeight: "50px", marginLeft: "5px" }} className="fas fa-splotch" />; break;
+                    case "Defense2":
+                        res.amount = formatNumber(res.dmg);
+                        res.statText = res.amount;
+                        res.statEl = <img src={basic.DamageIcon} alt="Damage" />; break;
+                    case "Snow":
+                        res.amount = formatNumber(res.health);
+                        res.statText = res.amount;
+                        res.statEl = <i style={{ lineHeight: "50px", marginLeft: "5px" }} className="far fa-snowflake" />; break;
+                    case "Dino":
+                        res.amount = formatNumber(res.fossils);
+                        res.statText = res.amount;
+                        res.statEl = <i style={{ lineHeight: "50px", transform: "rotate(-45deg)", marginLeft: "5px" }} className="fas fa-bone" />; break;
+                    case "Shamrock":
+                        res.amount = formatNumber(res.shamrocks);
+                        res.statText = res.amount;
+                        res.statEl = <img src={shamrock.shamrockWhite} alt="Shamrock" />; break;
+                    case "Gold":
+                        res.amount = formatNumber(res.gold);
+                        res.statText = res.amount;
+                        res.statEl = <img src={holidays.halloween ? basic.candy : basic.gold} alt="Gold" />; break;
+                    case "Brawl":
+                        res.amount = formatNumber(res.xp);
+                        res.statText = res.amount;
+                        res.statEl = <img src={basic.xp} alt="Xp" />; break;
+                    case "Toy":
+                        res.amount = formatNumber(res.toys);
+                        res.statText = res.amount;
+                        res.statEl = <img src={basic.toy} alt="Toy" />; break;
+                    case "Rush":
+                        res.amount = formatNumber(res.numBlooks);
+                        res.statText = res.amount;
+                        res.statEl = <Blook style={{ width: "65px", marginInline: "5px 15px" }} name={res.blook} className="standingBlook" />; break;
+                    default:
+                        res.amount = formatNumber(res.candy);
+                        res.statText = res.amount
+                        res.statEl = <img style={{ filter: "brightness(0) invert(1)" }} src={basic.candyDark} alt="Candy" />;
                 }
                 res.totalAnswers = 0;
                 res.correctAnswers = 0;
                 res.incorrects ||= {};
                 res.corrects ||= {};
-                for (let incorrect in res.incorrects) {
-                    res.totalAnswers += res.incorrects[incorrect];
-                    totalIncorrect += res.incorrects[incorrect];
-                    data.questions[incorrect - 1].incorrects += res.incorrects[incorrect]
-                }
-                for (let correct in res.corrects) {
-                    res.totalAnswers += res.corrects[correct];
-                    res.correctAnswers += res.corrects[correct];
-                    totalCorrect += res.corrects[correct];
-                    data.questions[correct - 1].corrects += res.corrects[correct]
+                if (data.settings.mode != "Teams") {
+                    for (let incorrect in res.incorrects) {
+                        res.totalAnswers += res.incorrects[incorrect];
+                        totalIncorrect += res.incorrects[incorrect];
+                        data.questions[incorrect - 1].incorrects += res.incorrects[incorrect]
+                    }
+                    for (let correct in res.corrects) {
+                        res.totalAnswers += res.corrects[correct];
+                        res.correctAnswers += res.corrects[correct];
+                        totalCorrect += res.corrects[correct];
+                        data.questions[correct - 1].corrects += res.corrects[correct]
+                    }
+                } else for (let player of res.players) {
+                    player.totalAnswers = 0;
+                    player.correctAnswers = 0;
+                    player.incorrects ||= {};
+                    player.corrects ||= {};
+                    for (let incorrect in player.incorrects) {
+                        res.incorrects[incorrect] = (res.incorrects[incorrect] || 0) + player.incorrects[incorrect];
+                        player.totalAnswers += player.incorrects[incorrect];
+                        res.totalAnswers += player.incorrects[incorrect];;
+                        totalIncorrect += player.incorrects[incorrect];
+                        data.questions[incorrect - 1].incorrects += player.incorrects[incorrect]
+                    }
+                    for (let correct in player.corrects) {
+                        res.corrects[correct] = (res.corrects[correct] || 0) + player.corrects[correct];
+                        player.totalAnswers += player.corrects[correct];
+                        player.correctAnswers += player.corrects[correct];
+                        res.totalAnswers += player.corrects[correct];
+                        res.correctAnswers += player.corrects[correct];
+                        totalCorrect += player.corrects[correct];
+                        data.questions[correct - 1].corrects += player.corrects[correct]
+                    }
                 }
                 return res;
             }))//.sort((a, b) => b.data.amount - a.data.amount));
@@ -172,7 +257,7 @@ export function GameHistory() {
             setTotals({ correct: totalCorrect, incorrect: totalIncorrect, total: totalCorrect + totalIncorrect });
             setLoading(false);
             setActivity({
-                state: `Homework "${data.title}"`,
+                state: `"${data.set}" History`,
                 timestampStart: Date.now(),
             });
         });
@@ -200,8 +285,7 @@ export function GameHistory() {
     return <Sidebar>
         <div className="hwResults">
             <div className="hwResultsTitle">{game.set}</div>
-            <div className="hwDate">{new DateFormat(game.date).format("MM/DD/YY")}</div>
-            {game.isEnded ? "Closed On" : "Closes At"}: {new DateFormat(game.date).format("MM/DD/YY - hh:mm A")}
+            <div className="hwDate">{new DateFormat(game.date).format("M/DD/YY")}</div>
             <div className="hwResultsData">
                 <div className="chartContainer">
                     <Doughnut data={{
@@ -230,7 +314,7 @@ export function GameHistory() {
                     </div>
                 </div>
                 <div className="resultsRight">
-                    <div className="resultsPlayers">{results.length} Players</div>
+                    <div className="resultsPlayers">{game.settings?.mode == "Teams" ? results.reduce((a, b) => (a + b.players.length), 0) : results?.length} Players</div>
                     <div className="resultsCorrect">{totals.correct} Correct</div>
                     <div className="resultsincorrect">{totals.incorrect} Incorrect</div>
                 </div>
@@ -246,28 +330,60 @@ export function GameHistory() {
             {results.length > 0 &&
                 <div className="hwLeaderboard">
                     {results.map(result => {
-                        return <div key={result._id} className="resultWrapper">
-                            <div className="resultContainer" onClick={() => result.totalAnswers > 0 && setResponse(result)}>
-                                {result.totalAnswers > 0
-                                    ? <div className="hwProgress">
-                                        <div className="hwResultPercent">
-                                            {Math.round(result.correctAnswers * 100 / result.totalAnswers)}%
+                        return <Fragment>
+                            <div key={result.name} className="resultWrapper">
+                                <div className="resultContainer" onClick={() => result.totalAnswers > 0 && setResponse(result)}>
+                                    {result.totalAnswers > 0
+                                        ? <div className="hwProgress">
+                                            <div className="hwResultPercent">
+                                                {Math.round(result.correctAnswers * 100 / result.totalAnswers)}%
+                                            </div>
+                                            Correct
                                         </div>
-                                        Correct
+                                        : <div className="hwProgress">Left Early</div>}
+                                    <Blook style={{ maxWidth: "3.5vw", margin: "15px 5px" }} name={result.blook} />
+                                    <Textfit mode="single" forceSingleModeWidth={false} min={1} max={26} className="hwPlayer">{result.name}</Textfit>
+                                    <div className="progressBarContainer">
+                                        <div className="progressCorrect">{result.correctAnswers}</div>
+                                        <div className="progressBar" style={{ width: "100%", height: "100%", backgroundColor: "var(--red)" }}>
+                                            <div className="barFill" style={{ width: `${result.correctAnswers * 100 / result.totalAnswers}%`, height: "100%", backgroundColor: result.totalAnswers == 0 ? '#737373' : "var(--green)" }}></div>
+                                        </div>
+                                        <div className="progressIncorrect">{result.totalAnswers - result.correctAnswers}</div>
                                     </div>
-                                    : <div className="hwProgress">Left Early</div>}
-                                <Blook style={{ maxWidth: "3.5vw", margin: "15px 5px" }} name={result.blook} />
-                                <Textfit mode="single" forceSingleModeWidth={false} min={1} max={26} className="hwPlayer">{result.name}</Textfit>
-                                <div className="progressBarContainer">
-                                    <div className="progressCorrect">{result.correctAnswers}</div>
-                                    <div className="progressBar" style={{ width: "100%", height: "100%", backgroundColor: "var(--red)" }}>
-                                        <div className="barFill" style={{ width: `${result.correctAnswers * 100 / result.totalAnswers}%`, height: "100%", backgroundColor: result.totalAnswers == 0 ? '#737373' : "var(--green)" }}></div>
+                                    <div className="resultStats">
+                                        <Textfit mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("1.25vw")} className="resultStatText">{result.statText}</Textfit>
+                                        {result.statEl}
                                     </div>
-                                    <div className="progressIncorrect">{result.totalAnswers - result.correctAnswers}</div>
                                 </div>
-                                <Textfit mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("1.25vw")} className="statText">{result.statText}</Textfit>
                             </div>
-                        </div>
+                            {game.settings.mode == "Teams" && result.players.map((result) => {
+                                return <div key={result.name} className="resultWrapper teamPlayer">
+                                    <div className="resultContainer" onClick={() => result.totalAnswers > 0 && setResponse(result)}>
+                                        {result.totalAnswers > 0
+                                            ? <div className="hwProgress">
+                                                <div className="hwResultPercent">
+                                                    {Math.round(result.correctAnswers * 100 / result.totalAnswers)}%
+                                                </div>
+                                                Correct
+                                            </div>
+                                            : <div className="hwProgress">Left Early</div>}
+                                        <Blook style={{ maxWidth: "2vw", margin: "15px 5px" }} name={result.blook} />
+                                        <Textfit mode="single" forceSingleModeWidth={false} min={1} max={26} className="hwPlayer">{result.name}</Textfit>
+                                        <div className="progressBarContainer">
+                                            <div className="progressCorrect">{result.correctAnswers}</div>
+                                            <div className="progressBar" style={{ width: "100%", height: "100%", backgroundColor: "var(--red)" }}>
+                                                <div className="barFill" style={{ width: `${result.correctAnswers * 100 / result.totalAnswers}%`, height: "100%", backgroundColor: result.totalAnswers == 0 ? '#737373' : "var(--green)" }}></div>
+                                            </div>
+                                            <div className="progressIncorrect">{result.totalAnswers - result.correctAnswers}</div>
+                                        </div>
+                                        <div className="resultStats">
+                                            <Textfit mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("1.25vw")} className="resultStatText">{result.statText}</Textfit>
+                                            {result.statEl}
+                                        </div>
+                                    </div>
+                                </div>
+                            })}
+                        </Fragment>
                     })}
                 </div>}
         </>}
@@ -334,7 +450,7 @@ export function GameHistory() {
             <div className="hwStanding">
                 <div className="standingTop">
                     <Blook name={response.blook} className="hwStandingBlook" />
-                    <Textfit className="hwStandingName" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5vw")}>{response.name}</Textfit>
+                    <Textfit className="hwStandingName" mode="single" forceSingleModeWidth={false} min={1} max={getDimensions("5vw")}>{response.place && `${response.place}${getOrdinal(response.place)}. `}{response.name}</Textfit>
                     <div className="hwStandingChart">
                         <Doughnut data={{
                             datasets: [
@@ -407,7 +523,7 @@ export function GameHistory() {
                 </div>
             </div>
         </div>}
-        {deleting && <Modal text={`Do you really want to delete this HW?`}
+        {deleting && <Modal text={`Do you really want to delete this history?`}
             buttonOne={{ text: "Yes", click: onDelete, color: "var(--red)" }}
             buttonTwo={{ text: "No", click: () => setDeleting(false) }} />}
         {/* {JSON.stringify(game, null, 4).split("\n").map((x, i) => {
