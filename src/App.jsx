@@ -37,6 +37,7 @@ import HostTeams from "./pages/host/Teams";
 import { RoyaleFinal, RoyaleInstruct, RoyaleMatchResults, RoyalePreview, RoyaleQuestion, RoyaleQuestionResults } from "./pages/host/gamemodes/Royale";
 import { ClassicFinal, ClassicGetReady, ClassicQuestion, ClassicResults, ClassicStandings } from "./pages/host/gamemodes/Classic";
 import HW from "./pages/host/HW";
+import History, { GameHistory } from "./pages/dashboard/History";
 
 function App() {
     return <AuthProvider>
@@ -54,6 +55,8 @@ function App() {
                 <Route path="/favorites" element={<AuthRoute><Favorites /></AuthRoute>}></Route>
                 <Route path="/homework" element={<AuthRoute><Homeworks /></AuthRoute>}></Route>
                 <Route path="/homework/:id" element={<AuthRoute><Homework /></AuthRoute>}></Route>
+                <Route path="/history" element={<AuthRoute><History /></AuthRoute>}></Route>
+                <Route path="/history/game/:id" element={<AuthRoute><GameHistory /></AuthRoute>}></Route>
                 <Route path="/settings" element={<AuthRoute><Settings /></AuthRoute>}></Route>
                 <Route element={<GameLayout />}>
                     <Route path="/play" element={<Play />}></Route>

@@ -156,8 +156,8 @@ export class DateFormat {
 
         const MMMM = DateFormat.months[this.date.getMonth()];
         const MMM = DateFormat.shortMonths[this.date.getMonth()];
-        const MM = this.date.getMonth() + 1;
-        const M = MM;
+        const M = this.date.getMonth() + 1;
+        const MM = String(M).padStart(2, "0");
 
         const DDDD = Math.round((this.startOf('day') - this.startOf('year')) / 864e5) + 1;
         const DDD = DDDD
