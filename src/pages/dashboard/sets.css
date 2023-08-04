@@ -69,21 +69,26 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    text-decoration: none;
 }
 
-.setsGameEdit:hover {
+.setsGameEdit:hover,
+.setsGameView:hover {
     color: var(--accent2);
 }
 
-.setsGameDelete {
+.setsGameDelete,
+.setsGameView {
     border-inline: 2px solid var(--main1);
 }
 
-.setsGameDelete:hover {
+.setsGameDelete:hover,
+.setsGameUnfavorite:hover {
     color: var(--red);
 }
 
-.setsGameSettings:hover {
+.setsGameSettings:hover,
+.setsGameMove:hover {
     color: var(--accent1);
 }
 

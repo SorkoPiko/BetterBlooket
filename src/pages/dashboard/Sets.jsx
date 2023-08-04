@@ -235,7 +235,7 @@ function Sets() {
                                         setId: game._id
                                     }).then(getSets)}><i className="fas fa-folder-minus"></i></div>}
                                     {game.private || <Link to={`/set/${game._id}`} className="setsGamePrivate"><i className="far fa-eye" /></Link>}
-                                    <div className="setsGameNumQuestions">{game.questions.length} Questions</div>
+                                    <div className="setsGameNumQuestions">{game.questions?.length || 0} Question{game.questions?.length == 1 ? "" : "s"}</div>
                                 </div>
                                 <div className="setsGameBody">
                                     <div className="setsGameInfo">
