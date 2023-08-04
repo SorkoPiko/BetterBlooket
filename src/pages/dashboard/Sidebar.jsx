@@ -22,7 +22,11 @@ function Sidebar({ children }) {
         sidebar.current.onpointerenter = () => setHovering(true);
         sidebar.current.onpointerleave = () => setHovering(false);
         setHovering(sidebar.current.matches(":hover"));
-        http.get("https://dashboard.blooket.com/api/users/allsets").then(({ data: { news } }) => news && setShowNews(true));
+        http.get("https://dashboard.blooket.com/api/users/allsets").then(({ data: { news } }) => {
+            if (!news) return
+            setShowNews(true);
+            http.put("https://dashboard.blooket.com/api/users/setnews", { news: false });
+        });
     }, []);
     return (<>
         <div id="sidebarWrapper">

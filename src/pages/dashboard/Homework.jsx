@@ -83,7 +83,7 @@ export default function Homeworks() {
             {homeworks.length > 0 ? <>
                 <div className="homeworkHeader">Homework</div>
                 <div className="homeworks">
-                    {homeworks.map(hw => <HW hw={hw} onDelete={() => setToDelete(hw)} />)}
+                    {homeworks.map(hw => <HW key={hw._id} hw={hw} onDelete={() => setToDelete(hw)} />)}
                 </div>
             </> : ended.length == 0 && <>
                 <div className="homeworkHeader">Homework</div>
@@ -93,7 +93,7 @@ export default function Homeworks() {
             {ended.length > 0 && <>
                 <div className="homeworkHeader">Ended</div>
                 <div className="endedHw">
-                    {ended.map(hw => <HW hw={hw} onDelete={() => setToDelete(hw)} ended={true} />)}
+                    {ended.map(hw => <HW key={hw._id} hw={hw} onDelete={() => setToDelete(hw)} ended={true} />)}
                 </div>
             </>}
             {toDelete && <Modal text={`Do you really want to delete homework "${toDelete.title}"?`} buttonOne={{ text: "Yes", click: onDelete, color: "red" }} buttonTwo={{ text: "No", click: () => setToDelete(null) }} />}

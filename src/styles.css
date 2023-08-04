@@ -40,8 +40,9 @@
     --highlight5: hsl(281, 97.5%, 46.5%);
     --accent6: hsl(279, 45%, 42%);
     --highlight6: hsl(279, 72.5%, 46%);
+    --red: #c43a35;
+    --orange: #ff7b24;
     --green: #4bc22e;
-    --red: #c43a35
 }
 
 body {
