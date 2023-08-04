@@ -519,30 +519,30 @@
 }
 
 .n1 {
-    animation: fadeIn .15s linear 0ms forwards, fadeOut .15s linear 2.5s forwards
+    animation: gold_fadeIn .15s linear 0ms forwards, fadeOut .15s linear 2.5s forwards
 }
 
 .n2 {
-    animation: fadeIn .15s linear 2.5s forwards, fadeOut .15s linear 4.5s forwards
+    animation: gold_fadeIn .15s linear 2.5s forwards, fadeOut .15s linear 4.5s forwards
 }
 
 .n3 {
-    animation: fadeIn .15s linear 4.5s forwards, fadeOut .15s linear 6.5s forwards
+    animation: gold_fadeIn .15s linear 4.5s forwards, fadeOut .15s linear 6.5s forwards
 }
 
 .n4 {
-    animation: fadeIn .15s linear 6.5s forwards, fadeOut .15s linear 9s forwards
+    animation: gold_fadeIn .15s linear 6.5s forwards, fadeOut .15s linear 9s forwards
 }
 
 .n5 {
-    animation: fadeIn .15s linear 9s forwards, fadeOut .15s linear 11.5s forwards
+    animation: gold_fadeIn .15s linear 9s forwards, fadeOut .15s linear 11.5s forwards
 }
 
 .n6 {
-    animation: fadeIn .15s linear 11.5s forwards, fadeOut .15s linear 14s forwards
+    animation: gold_fadeIn .15s linear 11.5s forwards, fadeOut .15s linear 14s forwards
 }
 
-@keyframes fadeIn {
+@keyframes gold_fadeIn {
     0% {
         opacity: 0;
         transform: scale(.5) translateY(-50%)

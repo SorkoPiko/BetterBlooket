@@ -173,7 +173,7 @@
 
 
 
-.wrapper {
+.fish_wrapper {
     top: 0;
     width: 100%;
     height: 100%;
@@ -183,7 +183,7 @@
 }
 
 .crab,
-.wrapper {
+.fish_wrapper {
     position: absolute;
     left: 0
 }

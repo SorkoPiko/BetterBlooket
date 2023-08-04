@@ -134,7 +134,7 @@ function RushBox({ name, blook, numBlooks, numDefense, bigBox, letMove, onClick 
     const canvasParentRef = useRef();
     const blooks = useRef([]);
     let pack = rushBoxes[allBlooks[blook]?.realSet || allBlooks[blook]?.set] || rushBoxes.Classic;
-    return <div className={`wrapper${bigBox ? " bigBox" : ""}${!letMove && onClick ? " hoverButton" : ""}`} style={{ backgroundColor: pack.base }} onClick={onClick}>
+    return <div className={`rush_wrapper${bigBox ? " bigBox" : ""}${!letMove && onClick ? " hoverButton" : ""}`} style={{ backgroundColor: pack.base }} onClick={onClick}>
         <div className="fenceContainer" style={{ backgroundColor: pack.fence }}>
             <div className={`topWall${bigBox ? " bigTopWall" : ""}`} style={{ backgroundColor: pack.top }}></div>
             <div className={`container${bigBox ? " bigContainer" : ""}`} style={{
@@ -173,7 +173,8 @@ function RushBox({ name, blook, numBlooks, numDefense, bigBox, letMove, onClick 
 }
 
 export default function RushHost() {
-    const { host: { current: host }, liveGameController, updateHost, updateStandings } = useGame();
+    const { host: hostRef, liveGameController, updateHost, updateStandings } = useGame();
+    const { current: host } = hostRef;
     const [timer, setTimer] = useState("00:00");
     const [players, setPlayers] = useState([]);
     const [muted, setMuted] = useState(!!host && host.muted);
@@ -209,6 +210,7 @@ export default function RushHost() {
         });
     }, [players]);
     const goNext = useCallback(() => {
+        const host = hostRef.current;
         let val = [], place = 0, lowest = Number.MAX_SAFE_INTEGER;
         for (let i = 0; i < players.length; i++) {
             if (players[i].numBlooks < lowest) {
@@ -222,7 +224,7 @@ export default function RushHost() {
                 p: place
             });
         }
-        updateStandings(val.map(x => ({ ...x, players: host.players.find(e => e.name == x.n).players })));
+        updateStandings(host.settings.mode == "Teams" ? val.map(x => ({ ...x, players: host.players.find(e => e.name == x.n).players })) : val);
         liveGameController.setVal({
             path: "st", val
         }, () => liveGameController.setStage({ stage: "fin" }, () => navigate("/host/rush/final")));

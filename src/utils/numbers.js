@@ -109,22 +109,9 @@ export class DateFormat {
     ];
     static days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     static shortDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    static startOf(unit) {
-        let start = new Date(this.date || Date.now());
-        switch (unit) {
-            case "year": start.setMonth(0);
-            case "month": start.setDate(1);
-            case "day": start.setHours(0);
-            case "hour": start.setMinutes(0);
-            case "minute": start.setSeconds(0);
-        }
-        start.setMilliseconds(0);
-        return start;
-    }
     date;
     constructor(date) {
         this.date = date instanceof Date ? date : typeof date == "number" ? new Date(date) : new Date();
-        this.startOf - DateFormat.startOf.bind(this);
     }
     startOf(unit) {
         let start = new Date(this.date);
@@ -156,8 +143,8 @@ export class DateFormat {
 
         const MMMM = DateFormat.months[this.date.getMonth()];
         const MMM = DateFormat.shortMonths[this.date.getMonth()];
-        const MM = this.date.getMonth() + 1;
-        const M = MM;
+        const M = this.date.getMonth() + 1;
+        const MM = String(M).padStart(2, "0");
 
         const DDDD = Math.round((this.startOf('day') - this.startOf('year')) / 864e5) + 1;
         const DDD = DDDD
