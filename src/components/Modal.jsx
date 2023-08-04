@@ -2,7 +2,7 @@ import { TwitterPicker } from "react-color";
 
 import "./modal.css";
 
-export default function Modal({ text, desc, timeValue, timeChange, buttonOne, buttonTwo, input, colors }) {
+export default function Modal({ text, desc, timeValue, timeChange, buttonOne, buttonTwo, input, colors, folder }) {
     return <div className="modalModal">
         <div className="modalContainer">
             <div className="modalHeader">{text}</div>
@@ -51,6 +51,21 @@ export default function Modal({ text, desc, timeValue, timeChange, buttonOne, bu
                 </div>
             </>
             }
+            {folder && <>
+                <div className="modalFoldersHolder">
+                    {folder.folders.map(f => {
+                        return <div key={f.name} style={{ backgroundColor: f.color }} className="modalFolder" onClick={() => folder.choose(f.name)}>
+                            <div className="modalFolderInside">
+                                <i className="fas fa-folder"></i>
+                                <div style={{ marginRight: "5px" }}>{f.name}</div>
+                            </div>
+                        </div>
+                    })}
+                </div>
+                <div className="modalFolderChoice">
+                    Folder: {folder.chosen ? `"${folder.chosen}"` : "None"}
+                </div>
+            </>}
             <div className="modalButtonContainer">
                 {buttonOne && <div style={{ "--color": buttonOne.color || "var(--accent1)" }} className="modalButton" onClick={buttonOne.click}>
                     {buttonOne.text}

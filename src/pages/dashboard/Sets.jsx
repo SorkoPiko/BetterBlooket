@@ -32,18 +32,20 @@ function Sets() {
     const [folderColor, setFolderColor] = useState("");
     const [creatingFolder, setCreatingFolder] = useState(false);
     const [editingFolder, setEditingFolder] = useState(null);
+    const [movingFolder, setMovingFolder] = useState(null);
     const [mergeGame, setMergeGame] = useState(null);
+    const [moveGame, setMoveGame] = useState(null);
     const [copied, setCopied] = useState(false);
     const copyTimeout = useRef();
     useEffect(() => {
         if (copied) copyTimeout.current = setTimeout(() => setCopied(false), 1500);
     }, [copied]);
     const getSets = useCallback(() => http.get("https://dashboard.blooket.com/api/users/allsets").then(({ data }) => {
-        setFolders(Object.keys(data.folders || []).map(name => ({ ...data.folders[name], name })));
+        setFolders(Object.keys(data.folders || []).map((name, id) => ({ ...data.folders[name], name, id })));
         setAllGames(data.games);
         setGames(data.games.sort(function (a, b) {
             return a.playCount !== b.playCount ? b.playCount - a.playCount : a.title < b.title ? -1 : a.title > b.title ? 1 : 0
-        }).filter(x => folder ? Object.values(data.folders)[folder]?.sets.includes(x._id) : Object.values(data.folders).every(f => !f.sets.includes(x._id))));
+        }).filter(x => typeof folder == "number" ? Object.values(data.folders)[folder]?.sets.includes(x._id) : Object.values(data.folders).every(f => !f.sets.includes(x._id))));
     }), [folder]);
     const onEdit = useCallback((setId) => {
         navigate(`/edit?id=${setId}${folder ? `&f=${folders.findIndex(x => x.name == folder.name)}` : ""}`);
@@ -103,6 +105,24 @@ function Sets() {
         if (await getIsPlus()) return setMergeGame(game);
         plusModal("Merge Sets");
     }, []);
+    const onMove = useCallback(async () => {
+        try {
+            if (typeof folder == "number") await http.put("https://dashboard.blooket.com/api/users/folders/removeset", {
+                folderName: folders[folder].name,
+                setId: moveGame._id
+            });
+            await http.put("https://dashboard.blooket.com/api/users/folders/addsets", {
+                folderName: movingFolder,
+                sets: [moveGame._id]
+            });
+            setMoveGame(null);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setModal(null);
+            await getSets();
+        }
+    }, [moveGame, folder, movingFolder]);
     const onMergeChoose = useCallback(async (mergeWith) => {
         setModal({
             text: `Do you want to merge these two sets?`,
@@ -157,7 +177,7 @@ function Sets() {
     return (<>
         <Sidebar>
             <div className="setsHeader">My Sets</div>
-            {allGames.length > 0
+            {allGames?.length > 0
                 ? <>{folder == null
                     ? <div className="setsFolders">
                         {folders.map((folder, i) => {
@@ -189,7 +209,7 @@ function Sets() {
                                 </div>
                             </div>
                         })}
-                        <div className="setsFolder" style={{ backgroundColor: "var(--accent1)" }} onClick={() => (setFolderName(""), setFolderColor("#1f77b4"), setCreatingFolder(true))}>
+                        <div className="setsFolder" style={{ backgroundColor: "var(--accent1)" }} onClick={() => (setFolderName("New Folder"), setFolderColor("#1f77b4"), setCreatingFolder(true))}>
                             <div className="setsFolderInside" style={{ minWidth: "unset" }}>
                                 <i style={{ fontSize: "22px", margin: "0" }} className="fas fa-folder-plus"></i>
                             </div>
@@ -210,6 +230,10 @@ function Sets() {
                                 <div className="setsGameImage">
                                     <div className="setsGameEmptyImg">Blooket</div>
                                     {game.coverImage && <img onError={e => e.target.style.display = "none"} src={game.coverImage.url} alt="Cover" />}
+                                    {typeof folder == "number" && <div className="setsGameRemoveFolder" onClick={() => http.put("https://dashboard.blooket.com/api/users/folders/removeset", {
+                                        folderName: folders[folder].name,
+                                        setId: game._id
+                                    }).then(getSets)}><i className="fas fa-folder-minus"></i></div>}
                                     {game.private || <Link to={`/set/${game._id}`} className="setsGamePrivate"><i className="far fa-eye" /></Link>}
                                     <div className="setsGameNumQuestions">{game.questions.length} Questions</div>
                                 </div>
@@ -242,7 +266,7 @@ function Sets() {
                                                     <i className="fas fa-file-alt"></i>
                                                     Assign
                                                 </div>
-                                                <div className="setsGameSetting">
+                                                <div className="setsGameSetting" onClick={() => (setMovingFolder(null), setMoveGame(game))}>
                                                     <i className="fas fa-folder"></i>
                                                     Move
                                                 </div>
@@ -334,6 +358,19 @@ function Sets() {
                     change: ({ hex }) => setFolderColor(hex)
                 }}
             />}
+            {moveGame && <Modal text="Choose a folder to move the set into"
+                folder={{ folders, choose: setMovingFolder, chosen: movingFolder }}
+                buttonOne={movingFolder ? {
+                    text: "Move",
+                    click: onMove,
+                } : {
+                    text: "Back",
+                    click: () => setMoveGame(null)
+                }}
+                buttonTwo={movingFolder ? {
+                    text: "Back",
+                    click: () => setMoveGame(null)
+                } : null} />}
         </Sidebar >
     </>);
 }

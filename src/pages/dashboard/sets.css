@@ -181,6 +181,27 @@
     z-index: 2;
 }
 
+.setsGameRemoveFolder {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--accent1);
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 2;
+    height: 20px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.setsGameRemoveFolder:hover {
+    scale: 0.95;
+}
+
 .setsGamePrivate {
     position: absolute;
     bottom: 10px;
@@ -202,6 +223,7 @@
 }
 
 .setsFolder {
+    position: relative;
     /* margin: 7px; */
     padding: 5px;
     border-radius: 5px;
@@ -209,6 +231,7 @@
     transition: 0.2s;
     padding-bottom: 10px;
     box-shadow: inset 0 -5px rgba(0, 0, 0, .2);
+    overflow: hidden;
 }
 
 .setsFolder:hover {
@@ -349,6 +372,10 @@
     opacity: 0;
     background-color: black;
     transition: 0.2s;
+}
+
+.setsFolder .setsGameMergeButton {
+    background-color: white;
 }
 
 .setsGameMergeButton:hover {
