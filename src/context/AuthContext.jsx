@@ -84,13 +84,15 @@ export const AuthProvider = ({ children }) => {
         const account = accounts.current[accountIndex.current];
         const res = await fetch("https://dashboard.blooket.com/api/users/me", { headers: { Cookie: account.bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" } });
         setUserData(res.data);
-        account.blook = res.data.blook;
-        account.name = res.data.name;
-        setAccounts(accounts.current);
-        setProtobuf(Protobuf(account.bisd, account.csrf, c => {
-            account.csrf = c;
+        if (res.data) {
+            account.blook = res.data.blook;
+            account.name = res.data.name;
             setAccounts(accounts.current);
-        }));
+            setProtobuf(Protobuf(account.bisd, account.csrf, c => {
+                account.csrf = c;
+                setAccounts(accounts.current);
+            }));
+        }
         setLoading(false);
     }
 
