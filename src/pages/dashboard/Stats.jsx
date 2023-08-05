@@ -78,13 +78,13 @@ function Stats() {
                         <button onClick={() => setChangingProfile("title")}>Titles</button>
                     </div>
                     <div id="profileChoose">
-                        {changingProfile == "banner" ? stats.banners ? Object.values(stats.banners).map(banner => (<div onClick={async () => {
+                        {changingProfile == "banner" ? stats.banners ? Object.values(stats.banners).map(banner => (banner = banners[banner], <div onClick={async () => {
                             await put("https://dashboard.blooket.com/api/users/change/banner", { banner: banner.slug });
                             setStats(s => ({ ...s, banner: banner.slug }));
                             setChangingProfile("");
                         }} key={banner.slug}>
                             <img src={banner.url} alt={banner.name} />
-                        </div>)) : "No Banners Unlocked" : stats.titles ? Object.entries(titles).filter(([title]) => "newbie" === title || stats.titles?.includes(t)).map(([title, { name }]) => (<div onClick={async () => {
+                        </div>)) : "No Banners Unlocked" : stats.titles ? Object.entries(titles).filter(([title]) => "newbie" === title || stats.titles?.includes(title)).map(([title, { name }]) => (<div onClick={async () => {
                             await put("https://dashboard.blooket.com/api/users/change/title", { title });
                             setStats(s => ({ ...s, title }));
                             setChangingProfile("");

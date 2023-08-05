@@ -9,6 +9,7 @@ import { Textfit } from "react-textfit";
 import { Game, Scale, WEBGL } from "phaser";
 import Particles from "../../blooks/Particles";
 import { useRef } from "react";
+import { formatNumber } from "../../utils/numbers.js";
 function imgUrl(url) {
     if (!url) return url;
     let i = url.indexOf("upload/");
@@ -73,7 +74,7 @@ function Market() {
             <div id="marketHeader">Market</div>
             <div id="tokens">
                 <img id="balanceIcon" src={token} alt="Tokens"></img>
-                {tokens}
+                {formatNumber(tokens)}
             </div>
             <div id="packsWrapper">
                 {Object.keys(market).map(pack => {
@@ -122,13 +123,13 @@ function Market() {
                     }
                 }}>
                     <div>
-                        <input type="number" onChange={({ target: { value } }) => setAmount(parseInt(value))} defaultValue={0} min={0} max={Math.floor(tokens / market[selected]?.price)} /> / {Math.floor(tokens / market[selected]?.price)}
+                        <input type="number" onChange={({ target: { value } }) => setAmount(parseInt(value))} defaultValue={0} min={0} max={Math.floor(tokens / market[selected]?.price)} /> / {formatNumber(Math.floor(tokens / market[selected]?.price))}
                     </div>
                     <div>
                         <input type="submit" value="Open" />
                         <span style={{ position: "absolute", top: "100%", left: "0", right: "0", lineHeight: "4rem", opacity: "0.5", textAlign: "center" }}>
                             <img style={{ height: "1.75rem", marginBottom: "-2px", marginRight: "10px" }} src={token} alt=""></img>
-                            {tokens} - {market[selected]?.price}x{amount} = {tokens - market[selected]?.price * amount}
+                            {formatNumber(tokens)} - {market[selected]?.price}x{formatNumber(amount)} = {formatNumber(tokens - market[selected]?.price * amount)}
                         </span>
                     </div>
                 </form>
