@@ -2,11 +2,10 @@ header {
     position: absolute;
     top: 10px;
     left: 30px;
-    font-family: Rubik;
     display: flex;
 }
 
-header > div {
+header>div {
     user-select: none;
     font-size: 75px;
     font-family: Adventure;
@@ -66,7 +65,8 @@ header > div {
     left: 5.5vw;
 }
 
-#github, #discord {
+#github,
+#discord {
     margin: 10px;
     font-size: 40px;
     text-decoration: none;
@@ -78,7 +78,8 @@ header > div {
     transition: 0.2s;
 }
 
-#github:hover, #discord:hover {
+#github:hover,
+#discord:hover {
     border: 2px solid var(--highlight1);
     color: var(--highlight1);
 }
