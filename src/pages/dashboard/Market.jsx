@@ -122,7 +122,7 @@ function Market() {
                     }
                 }}>
                     <div>
-                        <input type="number" onChange={({ target: { value } }) => setAmount(parseInt(value))} defaultValue={1} min={0} max={Math.floor(tokens / market[selected]?.price)} /> / {Math.floor(tokens / market[selected]?.price)}
+                        <input type="number" onChange={({ target: { value } }) => setAmount(parseInt(value))} defaultValue={0} min={0} max={Math.floor(tokens / market[selected]?.price)} /> / {Math.floor(tokens / market[selected]?.price)}
                     </div>
                     <div>
                         <input type="submit" value="Open" />

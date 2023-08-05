@@ -4,14 +4,19 @@ import { Tooltip } from "react-tooltip";
 import { useAuth } from "../../context/AuthContext";
 import "./sidebar.css";
 import { relativeTime } from "../../utils/numbers";
+import { Textfit } from "react-textfit";
+import Modal from "../../components/Modal";
+import AccountSwitcher from "./AccountSwitcher";
+import { Fragment } from "react";
 
 function Sidebar({ children }) {
-    const { http } = useAuth();
+    const { http, userData, accounts, accountIndex } = useAuth();
     const [hovering, setHovering] = useState(true);
     const [showNews, setShowNews] = useState(false);
+    const [showAccounts, setShowAccounts] = useState(false);
     const [news, setNews] = useState("loading");
     const sidebar = useRef();
-    const getNews = useCallback(async (open) => {
+    const getNews = useCallback(async () => {
         setNews("loading");
         const { data } = await http.get("https://dashboard.blooket.com/api/news");
         setNews(data.filter(x => x.date).sort((a, b) => new Date(b.date) - new Date(a.date)));
@@ -33,8 +38,8 @@ function Sidebar({ children }) {
             <div id="sidebar" ref={sidebar} className={hovering ? "hover" : null}>
                 <ul>
                     <li>
-                        <Link style={{ position: "relative" }} id="sidebarB" to="/">
-                            <div className="icon">
+                        <div style={{ position: "relative" }} id="sidebarB">
+                            <Link className="icon" to="/">
                                 {/* Adventure ReQuest */}
                                 <div style={{ backgroundColor: "var(--accent1)", mask: "url(/b.svg)", WebkitMask: "url(/b.svg)", height: "30px", aspectRatio: "26 / 30" }}></div>
 
@@ -62,10 +67,11 @@ function Sidebar({ children }) {
                                         fontWeight: "400"
                                     }}>B</div>
                                 </div> */}
-                            </div>
-                            <div id="title" style={{ position: "absolute", fontFamily: "Adventure", fontSize: "39px", top: "calc(50% - 2px)", left: "43px", transform: "translateY(-50%)", color: "var(--accent1)" }}>looket</div>
-                            <div className="page" style={{ opacity: "0" }}>Home</div>
-                        </Link>
+                            </Link>
+                            {/* <div id="title" style={{ position: "absolute", fontFamily: "Adventure", fontSize: "39px", top: "calc(50% - 2px)", left: "43px", transform: "translateY(-50%)", color: "var(--accent1)" }}>looket</div> */}
+                            {/* <div className="page">Home</div> */}
+                            <Textfit style={{ cursor: "pointer", userSelect: "none" }} mode="single" forceSingleModeWidth={false} min={1} max={30} className="page" onClick={() => setShowAccounts(true)}>{userData.name}</Textfit>
+                        </div>
                     </li>
                     <li>
                         <Link to="/play">
@@ -156,10 +162,10 @@ function Sidebar({ children }) {
                         <div className="newsHeader">{news.header}</div>
                         {news.image && <img src={news.image} alt={news.imageAlt} className="newsImage" />}
                         <div className="newsText">{news.text.split("***").map((x, i, a) => {
-                            return <>
-                                <div key={i}>{x}</div>
+                            return <Fragment key={i}>
+                                <div>{x}</div>
                                 {i + 1 != a.length && <br />}
-                            </>
+                            </Fragment>
                         })}</div>
                         {!news.link && (news.link?.startsWith("http") ? <a className="newsLink" href={news.link} target="_blank">Learn more...</a> : <Link className="newsLink" to={news.link}>Learn more...</Link>)}
                         <div className="newsDate">
@@ -169,6 +175,7 @@ function Sidebar({ children }) {
                     </div>
                 })}
             </div>
+            {showAccounts && <AccountSwitcher accounts={accounts.current} ind={accountIndex.current} back={() => setShowAccounts(false)} />}
         </div>
         <div id="content">
             {children}

@@ -7,7 +7,7 @@
 }
 
 #sidebar {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
@@ -74,37 +74,44 @@
     font-size: 30px;
 }
 
-#sidebar li a {
+#sidebar li a, #sidebar li>div {
     display: flex;
     align-items: center;
     text-decoration: none;
     height: 100%;
 }
 
-#sidebar li a * {
+#sidebar li>* * {
     color: var(--accent1);
-    transition: 0.2s;
+    transition: color 0.2s;
 }
 
-#sidebar li a:not(#sidebarB):hover * {
+#sidebar li>*:hover * {
     color: var(--highlight1);
 }
 
-#sidebar li a .page {
+/* #sidebar li a:not(#sidebarB):hover * {
+    color: var(--highlight1);
+} */
+
+#sidebar li a .page, #sidebar li div .page {
     margin-left: 25px;
-    width: max-content;
+    width: 180px;
+    /* width: max-content; */
     opacity: 0;
     transition: opacity 0.2s;
-    display: inline;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 36px;
 }
 
-#sidebar.hover li a .page {
-    display: inline;
-    margin-left: 25px;
+#sidebar.hover li a .page, #sidebar.hover li div .page {
     opacity: 1;
 }
 
 #sidebar.hover {
+    /* right: 0; */
     right: calc(100% - 300px);
 }
 
@@ -254,4 +261,19 @@
 .newsLink {
     padding: 5px;
     /* font-weight: 700; */
+}
+
+.sidebarAccount {
+    position: absolute;
+    left: 75px;
+    /* right: 0; */
+    width: 160px;
+    /* bottom: 0; */
+    top: 0;
+    height: 30px;
+    background-color: red;
+}
+
+.accountName {
+    width: 160px;
 }
