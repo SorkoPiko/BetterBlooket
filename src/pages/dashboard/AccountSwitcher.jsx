@@ -9,11 +9,14 @@ export default function AccountSwitcher({ ind, back }) {
     const { switchAccount, removeAccount, accounts: accountsRef } = useAuth();
     const [accounts, setAccounts] = useState(accountsRef.current);
     const getAccs = useCallback(async () => {
-        setAccounts(await Promise.all(accountsRef.current.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0).map(async (acc, i) => {
+        let accs = [];
+        for (let i = 0; i < accountsRef.current.length; i++) {
+            const acc = accountsRef.current[i];
             let current = ind == i;
-            let signedIn = current || await fetch("https://dashboard.blooket.com/api/users/me", { headers: { Cookie: acc.bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" } }).then(x => !!x.data?.blook);
-            return { ...acc, signedIn, current };
-        })));
+            let blook = await fetch("https://dashboard.blooket.com/api/users/me", { headers: { Cookie: acc.bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" } }).then(x => x.data?.blook);
+            accs.push({ ...acc, signedIn: current || !!blook, current, blook });
+        }
+        setAccounts(accs.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0));
     }, []);
     useEffect(() => {
         getAccs();
