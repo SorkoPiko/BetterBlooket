@@ -7,7 +7,7 @@
 }
 
 #sidebar {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
@@ -261,19 +261,4 @@
 .newsLink {
     padding: 5px;
     /* font-weight: 700; */
-}
-
-.sidebarAccount {
-    position: absolute;
-    left: 75px;
-    /* right: 0; */
-    width: 160px;
-    /* bottom: 0; */
-    top: 0;
-    height: 30px;
-    background-color: red;
-}
-
-.accountName {
-    width: 160px;
 }
