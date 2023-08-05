@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from "r
 import { fetch, Body } from "@tauri-apps/api/http";
 import Fetch from "../utils/Fetch.js";
 import Protobuf from "../utils/protobuf.js";
+import { DateFormat } from "../utils/numbers.js";
 const AuthContext = createContext();
 
 export function useAuth() {
@@ -59,7 +60,7 @@ export const AuthProvider = ({ children }) => {
             if (!res.data.success) {
                 error = res.data.msg;
                 if ("name" === res.data.errType) {
-                    if (res.data.suspensionEnd) error = `${error} Suspension ends: ${res.data.suspensionEnd}`;
+                    if (res.data.suspensionEnd) error = `${error} Suspension ends: ${new DateFormat(res.data.suspensionEnd).format("MMMM/DD/YYYY - hh:mm a")}`;
                     if (res.data.suspendedReason) error = `${error} Reason: ${res.data.suspendedReason} `;
                 }
             } else {
