@@ -20,7 +20,7 @@
     padding: 10px;
     padding-top: 0;
     gap: 10px;
-    max-height: 400px;
+    height: 300px;
     overflow-y: scroll;
 }
 
