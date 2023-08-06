@@ -10,7 +10,7 @@ import AccountSwitcher from "./AccountSwitcher";
 import { Fragment } from "react";
 
 function Sidebar({ children }) {
-    const { http, userData, accounts, accountIndex } = useAuth();
+    const { http, userData, accounts, accountId } = useAuth();
     const [hovering, setHovering] = useState(true);
     const [showNews, setShowNews] = useState(false);
     const [showAccounts, setShowAccounts] = useState(false);
@@ -175,7 +175,7 @@ function Sidebar({ children }) {
                     </div>
                 })}
             </div>
-            {showAccounts && <AccountSwitcher accounts={accounts.current} ind={accountIndex.current} back={() => setShowAccounts(false)} />}
+            {showAccounts && <AccountSwitcher accounts={accounts.current} ind={accountId.current} back={() => setShowAccounts(false)} />}
         </div>
         <div id="content">
             {children}

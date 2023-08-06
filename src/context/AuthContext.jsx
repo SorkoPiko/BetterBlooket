@@ -26,13 +26,14 @@ function useUpdate(init) {
 export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [userData, setUserData] = useState(null);
-    const [accounts, setAccounts] = useLocalStorage("accounts", []);
-    const [accountIndex, setAccountIndex] = useLocalStorage("index", 0);
+    const [accounts, setAccounts] = useLocalStorage("accounts", {});
+    const [accountId, setAccountId] = useLocalStorage("id", 0);
     const [protobuf, setProtobuf] = useUpdate();
 
     useEffect(() => {
         (async function () {
-            if (accounts.current[accountIndex.current]?.bisd) await getLoggedIn();
+            if (typeof accounts.current != 'object' || Array.isArray(accounts.current) || accounts.current == null) setAccounts({});
+            if (accounts.current[accountId.current]?.bisd) await getLoggedIn();
             setLoading(false);
         })();
     }, []);
@@ -64,14 +65,14 @@ export const AuthProvider = ({ children }) => {
                     if (res.data.suspendedReason) error = `${error} Reason: ${res.data.suspendedReason} `;
                 }
             } else {
-                let account = accounts.current.find(account => account.id == res.data.user.ID);
+                let account = accounts.current[res.data.user.ID];
                 if (account) account.bisd = res.headers['set-cookie'].split(' ')[0];
-                else accounts.current.push({
+                else accounts.current[res.data.user.ID] = {
                     id: res.data.user.ID,
                     bisd: res.headers['set-cookie'].split(' ')[0]
-                });
+                };
                 setAccounts(accounts.current);
-                setAccountIndex(accounts.current.findIndex(account => account.id == res.data.user.ID));
+                setAccountId(res.data.user.ID);
                 await getLoggedIn();
             }
         } catch (e) {
@@ -82,7 +83,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     async function getLoggedIn() {
-        const account = accounts.current[accountIndex.current];
+        const account = accounts.current[accountId.current];
         const res = await fetch("https://dashboard.blooket.com/api/users/me", { headers: { Cookie: account.bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" } });
         setUserData(res.data);
         if (res.data) {
@@ -99,12 +100,12 @@ export const AuthProvider = ({ children }) => {
 
     function switchAccount({ id, adding }) {
         if (adding) {
-            setAccountIndex(accounts.current.length);
+            setAccountId(null);
             setUserData(null);
             return;
         }
         if (id) {
-            setAccountIndex(accounts.current.findIndex(x => x.id == id));
+            setAccountId(id);
             setLoading(true);
             getLoggedIn();
         }
@@ -112,41 +113,41 @@ export const AuthProvider = ({ children }) => {
 
     function removeAccount(id, relog) {
         if (relog) setLoading(true);
-        let curId = accounts.current[accountIndex.current].id;
-        setAccounts(accounts.current.filter(x => x.id !== id));
-        if (curId == id) setAccountIndex(0);
-        else setAccountIndex(accounts.current.findIndex(x => x.id == curId));
+        let curId = accountId;
+        delete accounts.current[id];
+        setAccounts(accounts.current);
+        if (curId == id) setAccountId(null);
         if (relog) getLoggedIn();
     }
 
     const http = {
         async get(url, { params } = {}) {
-            return fetch(`${url}${params ? "?" + new URLSearchParams(params) : ""}`, { headers: { Cookie: accounts.current[accountIndex.current].bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" } });
+            return fetch(`${url}${params ? "?" + new URLSearchParams(params) : ""}`, { headers: { Cookie: accounts.current[accountId.current].bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" } });
         },
         async put(url, body, { params } = {}) {
             return fetch(`${url}${params ? "?" + new URLSearchParams(params) : ""}`, {
-                headers: { Cookie: accounts.current[accountIndex.current].bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" },
+                headers: { Cookie: accounts.current[accountId.current].bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" },
                 method: "PUT",
                 body: Body.json(body)
             });
         },
         async post(url, body, { params } = {}) {
             return fetch(`${url}${params ? "?" + new URLSearchParams(params) : ""}`, {
-                headers: { Cookie: accounts.current[accountIndex.current].bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" },
+                headers: { Cookie: accounts.current[accountId.current].bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" },
                 method: "POST",
                 body: Body.json(body)
             });
         },
         async delete(url, { params } = {}) {
             return fetch(`${url}${params ? "?" + new URLSearchParams(params) : ""}`, {
-                headers: { Cookie: accounts.current[accountIndex.current].bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" },
+                headers: { Cookie: accounts.current[accountId.current].bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" },
                 method: "DELETE"
             });
         },
     }
 
     return (
-        <AuthContext.Provider value={{ login, getLoggedIn, userData, protobuf, http, accounts, accountIndex, switchAccount, removeAccount }}>
+        <AuthContext.Provider value={{ login, getLoggedIn, userData, protobuf, http, accounts, accountId, switchAccount, removeAccount }}>
             {!loading && children}
         </AuthContext.Provider>
     )
