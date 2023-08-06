@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
             if (!res.data.success) {
                 error = res.data.msg;
                 if ("name" === res.data.errType) {
-                    if (res.data.suspensionEnd) error = `${error} Suspension ends: ${new DateFormat(res.data.suspensionEnd).format("MMMM/DD/YYYY - hh:mm a")}`;
+                    if (res.data.suspensionEnd) error = `${error} Suspension ends: ${new DateFormat(new Date(res.data.suspensionEnd)).format("MMMM/DD/YYYY - hh:mm a")}`;
                     if (res.data.suspendedReason) error = `${error} Reason: ${res.data.suspendedReason} `;
                 }
             } else {

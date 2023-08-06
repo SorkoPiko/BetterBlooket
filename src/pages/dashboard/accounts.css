@@ -1,9 +1,5 @@
-.accountSwitcherList {
-    display: flex;
-    flex-direction: column;
-    margin: auto 15px;
+.accountSwitcherWrapper {
     background-color: var(--main2);
-    padding: 10px;
     --border-radius: 10px;
     clip-path: polygon(0 var(--border-radius),
             var(--border-radius) 0,
@@ -13,6 +9,16 @@
             calc(100% - var(--border-radius)) 100%,
             var(--border-radius) 100%,
             0 calc(100% - var(--border-radius)));
+    margin: auto 15px;
+    padding: 5px;
+    padding-top: 15px
+}
+
+.accountSwitcherList {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    padding-top: 0;
     gap: 10px;
     max-height: 400px;
     overflow-y: scroll;

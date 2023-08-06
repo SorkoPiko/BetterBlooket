@@ -100,7 +100,7 @@ export function relativeTime(timestamp) {
 
 export class DateFormat {
     static months = [
-        "January", "Feburary", "March", "April", "May", "June",
+        "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
     static shortMonths = [

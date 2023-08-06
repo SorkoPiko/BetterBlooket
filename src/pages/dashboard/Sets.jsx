@@ -45,7 +45,7 @@ function Sets() {
         setAllGames(data.games);
         setGames(data.games.sort(function (a, b) {
             return a.playCount !== b.playCount ? b.playCount - a.playCount : a.title < b.title ? -1 : a.title > b.title ? 1 : 0
-        }).filter(x => typeof folder == "number" ? Object.values(data.folders)[folder]?.sets.includes(x._id) : Object.values(data.folders).every(f => !f.sets.includes(x._id))));
+        }).filter(x => typeof folder == "number" ? Object.values(data.folders || {})[folder]?.sets.includes(x._id) : Object.values(data.folders || {}).every(f => !f.sets.includes(x._id))));
     }), [folder]);
     const onEdit = useCallback((setId) => {
         navigate(`/edit?id=${setId}${folder ? `&f=${folders.findIndex(x => x.name == folder.name)}` : ""}`);
@@ -298,8 +298,8 @@ function Sets() {
                 : <div className="setsEmpty">
                     <div className="setsEmptyHeader">You Need a Question Set to Host</div>
                     <div className="setsEmptyLinks">
-                        <div style={{ backgroundColor: "var(--accent1)" }} className="setsCreateSet"><i className="fas fa-edit"></i>Create a Set</div>
-                        <div style={{ backgroundColor: "var(--accent2)" }} className="setsDiscoverSet"><i className="far fa-compass"></i>Discover Sets</div>
+                        <Link to="/create" style={{ backgroundColor: "var(--accent1)" }} className="setsCreateSet"><i className="fas fa-edit"></i>Create a Set</Link>
+                        <Link to="/discover" style={{ backgroundColor: "var(--accent2)" }} className="setsDiscoverSet"><i className="far fa-compass"></i>Discover Sets</Link>
                     </div>
                     <div className="setsGettingStarted">
                         <a target="_blank" href="https://www.youtube.com/watch?v=hhn7dAP6BF8">Getting Started Tutorial</a>
