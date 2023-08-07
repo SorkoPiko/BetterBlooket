@@ -27,8 +27,10 @@ const blook = proto3.makeMessageType("dashboardservice.v1.ProfileBlook", () => [
 //     { no: 4, name: 'name', kind: 'scalar', T: ScalarType.STRING },
 //     { no: 5, name: 'created_at', kind: 'scalar', T: ScalarType.STRING }
 // ])
+//
 
-let csrfToken, queue = new Queue(1, 300);
+let csrfToken, queue = new Queue(1, 300), blooketBuild = fetch("https://ac.blooket.com/dashboard/68b1175a04805a7327c6.main~2898eb0e.e649014febe5e77cc3d8.js", { responseType: ResponseType.Text }).then(({ data }) => data.match(/'(bi.+?|[a-zA-Z0-9]{51,51})'/)[1]);
+window.blooketBuild = blooketBuild
 export default (bisd, csrf, cb) => createPromiseClient({
     typeName: "dashboardservice.v1.DashboardService",
     methods: {
@@ -94,11 +96,13 @@ export default (bisd, csrf, cb) => createPromiseClient({
     useBinaryFormat: true,
     fetch: async function (url, options) {
         let res;
+        if (typeof blooketBuild == "object") blooketBuild = await blooketBuild;
         const body = options.body;
         try {
             options.responseType = ResponseType.Binary;
             options.body = Body.bytes(options.body);
             if (!options.headers) options.headers = {};
+            if (blooketBuild) options.headers["X-BLOOKET-BUILD"] = blooketBuild;
             if (csrfToken) options.headers["X-CSRF-Token"] = csrfToken;
             options.headers.cookie = `${bisd} ${csrf}`;
             options.headers["content-length"] = String(body.byteLength);
