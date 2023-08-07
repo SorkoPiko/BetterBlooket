@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
         const res = await fetch("https://id.blooket.com/api/users/login", {
             headers: {
                 Origin: "https://id.blooket.com",
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)"
+                "User-Agent": window.navigator.userAgent
             },
             body: Body.json({ name: name.value, password: password.value }),
             method: "post"
@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }) => {
 
     async function getLoggedIn() {
         const account = accounts.current[accountId.current];
-        const res = await fetch("https://dashboard.blooket.com/api/users/me", { headers: { Cookie: account.bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" } });
+        const res = await fetch("https://dashboard.blooket.com/api/users/me", { headers: { Cookie: account.bisd, "User-Agent": window.navigator.userAgent } });
         setUserData(res.data);
         if (res.data) {
             account.blook = res.data.blook;
@@ -122,25 +122,25 @@ export const AuthProvider = ({ children }) => {
 
     const http = {
         async get(url, { params } = {}) {
-            return fetch(`${url}${params ? "?" + new URLSearchParams(params) : ""}`, { headers: { Cookie: accounts.current[accountId.current].bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" } });
+            return fetch(`${url}${params ? "?" + new URLSearchParams(params) : ""}`, { headers: { Cookie: accounts.current[accountId.current].bisd, "User-Agent": window.navigator.userAgent } });
         },
         async put(url, body, { params } = {}) {
             return fetch(`${url}${params ? "?" + new URLSearchParams(params) : ""}`, {
-                headers: { Cookie: accounts.current[accountId.current].bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" },
+                headers: { Cookie: accounts.current[accountId.current].bisd, "User-Agent": window.navigator.userAgent },
                 method: "PUT",
                 body: Body.json(body)
             });
         },
         async post(url, body, { params } = {}) {
             return fetch(`${url}${params ? "?" + new URLSearchParams(params) : ""}`, {
-                headers: { Cookie: accounts.current[accountId.current].bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" },
+                headers: { Cookie: accounts.current[accountId.current].bisd, "User-Agent": window.navigator.userAgent },
                 method: "POST",
                 body: Body.json(body)
             });
         },
         async delete(url, { params } = {}) {
             return fetch(`${url}${params ? "?" + new URLSearchParams(params) : ""}`, {
-                headers: { Cookie: accounts.current[accountId.current].bisd, "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" },
+                headers: { Cookie: accounts.current[accountId.current].bisd, "User-Agent": window.navigator.userAgent },
                 method: "DELETE"
             });
         },
