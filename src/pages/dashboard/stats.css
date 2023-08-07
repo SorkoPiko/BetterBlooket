@@ -688,3 +688,17 @@
 #profileChoose::-webkit-scrollbar-thumb:hover {
     background-color: hsl(290, 48%, 40%, 75%);
 }
+
+.statsSearch {
+    position: absolute;
+    right: 3vw;
+    top: 45%;
+    transform: translateY(-45%);
+    font-size: 3vw;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.statsSearch:hover {
+    scale: 1.05;
+}

@@ -10,7 +10,10 @@ function SetCreator() {
     }, []);
     return (<>
         <Sidebar>
-            set creator
+            <div className="newSetHeader">Question Set Creator</div>
+            <div className="coverContainer">
+                <input type="file" accept="image/jpeg, image/png, image/gif" />
+            </div>
         </Sidebar>
     </>);
 }
