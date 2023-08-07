@@ -28,7 +28,6 @@ async function getExtraBlooks() {
     }
 }
 function Stats() {
-    let statSearch = new URLSearchParams(window.location.search).get("n");
     const navigate = useNavigate();
     const [stats, setStats] = useState({});
     const [blookUsage, setBlookUsage] = useState([]);
@@ -43,6 +42,7 @@ function Stats() {
     const [query, setQuery] = useState("");
     const [searchError, setSearchError] = useState(null);
     const { http: { get, put }, protobuf: { saveCustomBlook, changeUserBlook } } = useAuth();
+    const currentSearch = useRef();
     const currentPart = useRef();
     const onSearch = useCallback((search) => {
         navigate("/stats?n=" + search);
@@ -52,6 +52,7 @@ function Stats() {
         setIndex(showExtras ? 0 : 2);
     }, [showExtras]);
     const getStats = useCallback(async (search) => {
+        currentSearch.current = search;
         let res;
         if (search) res = await fetch("https://id.blooket.com/api/users?name=" + search);
         if (!res?.ok) res = await get("https://dashboard.blooket.com/api/users/stats");
@@ -62,7 +63,7 @@ function Stats() {
     }, []);
     useEffect(() => {
         getExtraBlooks().then(setExtraBlooks);
-        getStats();
+        getStats(new URLSearchParams(window.location.search).get("n"));
         setActivity({
             state: "Stats",
             timestampStart: Date.now(),
@@ -126,11 +127,11 @@ function Stats() {
                     <div id="profile">
                         <div id="profileWrapper">
                             <div id="blook" className="blookContainer" onClick={() => {
-                                setChangingProfile("blook");
+                                !query && setChangingProfile("blook");
                             }}>
                                 <img src={allBlooks[stats.blook || "Chick"]?.url} alt={(stats.blook || "Chick") + " Blook"} draggable={false} className="blook" />
                             </div>
-                            <div id="banner" onClick={() => setChangingProfile("banner")}>
+                            <div id="banner" onClick={() => !query && setChangingProfile("banner")}>
                                 {stats.banner
                                     ? <img src={banners[stats.banner]?.url} alt={banners[stats.banner]?.name} id="bannerImg" draggable={false} />
                                     : <img src={banners.starter.url} alt="Starter Banner" id="bannerImg" draggable={false} />}
@@ -182,7 +183,7 @@ function Stats() {
                     <div id="customArrowsContainer">
                         <button style={{ position: "absolute", left: "0", aspectRatio: "unset" }} onClick={() => setShowExtras(e => !e)}>{showExtras ? "Hide" : "Show"} Extras</button>
                         <button onClick={() => setIndex(ind => Math.max(0, ind - 1))}>{"<"}</button>
-                        <button onClick={() => setEditing(true)}><i className="fas fa-pencil" /></button>
+                        <button onClick={() => setEditing(true)} disabled={(!showExtras && !!query)}><i className="fas fa-pencil" /></button>
                         <button onClick={async () => {
                             if (showExtras) {
                                 extraBlooks.splice(selectedIndex, 1);
@@ -192,7 +193,7 @@ function Stats() {
                                 await saveCustomBlook({ customCode: "", saveSlotIndex: selectedIndex });
                                 setCustomBlooks(blooks => (blooks[selectedIndex] = "", [...blooks]));
                             }
-                        }} disabled={!(showExtras ? extraBlooks : customBlooks)?.[selectedIndex]}><i className="fa fa-trash" /></button>
+                        }} disabled={(!showExtras && !!query) || !(showExtras ? extraBlooks : customBlooks)?.[selectedIndex]}><i className="fa fa-trash" /></button>
                         <button onClick={() => setIndex(ind => Math.min((showExtras ? extraBlooks : customBlooks).length - 1, ind + 1))}>{">"}</button>
                     </div>
                 </div>
@@ -297,7 +298,7 @@ function Stats() {
                 }}
                 buttonTwo={{
                     text: "Back",
-                    click: () => setSearching(false),
+                    click: () => (setQuery(currentSearch.current), setSearching(false)),
                 }} />}
         </Sidebar>
     </>);
