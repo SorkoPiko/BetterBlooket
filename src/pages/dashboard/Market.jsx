@@ -104,10 +104,11 @@ function Market() {
             <div id="packOpener">
                 <form onSubmit={async e => {
                     e.preventDefault();
-                    if (!amount) return;
+                    let toOpen = Math.min(amount, Math.floor(tokens / market[selected].price))
+                    if (toOpen <= 0) return;
                     setOpening(true);
-                    setBlooks(Array(amount));
-                    setIsNew(Array(amount));
+                    setBlooks(Array(toOpen));
+                    setIsNew(Array(toOpen));
                     setShowing(0);
                     setGame({
                         type: WEBGL, parent: "phaser-market", width: "100%", height: "100%", transparent: true,
@@ -115,7 +116,7 @@ function Market() {
                         physics: { default: "arcade" },
                         scene: new Particles("Uncommon")
                     });
-                    for (let i = 0; i < amount; i++) {
+                    for (let i = 0; i < toOpen; i++) {
                         let { unlockedBlook, tokens, isNewToUser } = await purchaseBlookBox({ boxName: selected });// market[selected].rewards[Math.floor(Math.random() * market[selected].rewards.length)][0] && weighted(market[selected].rewards)
                         setBlooks(b => (b[i] = unlockedBlook, [...b]));
                         setIsNew(n => (n[i] = isNewToUser, [...n]));
@@ -123,7 +124,7 @@ function Market() {
                     }
                 }}>
                     <div>
-                        <input type="number" onChange={({ target: { value } }) => setAmount(parseInt(value))} defaultValue={0} min={0} max={Math.floor(tokens / market[selected]?.price)} /> / {formatNumber(Math.floor(tokens / market[selected]?.price))}
+                        <input type="number" onChange={({ target: { value } }) => setAmount(parseInt(value))} value={amount} min={0} max={Math.floor(tokens / market[selected]?.price)} /> / {formatNumber(Math.floor(tokens / market[selected]?.price))}
                     </div>
                     <div>
                         <input type="submit" value="Open" />

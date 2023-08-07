@@ -62,17 +62,7 @@ export default function History() {
     }, [toDelete]);
     const getHistory = useCallback(() => {
         get("https://dashboard.blooket.com/api/users/histories", { params: { id: userData._id } }).then(({ data }) => {
-            // let hws = [], ended = [];
-            // for (let hw of data.sort((a, b) => new Date(a.startTime) - new Date(b.startTime))) {
-            //     let ends = new Date(hw.startTime).getTime() + hw.duration * 60 * 1000,
-            //         isEnded = ends < Date.now();
-            //     if (isEnded) ended.push({ ...hw, ends, isEnded });
-            //     else hws.push({ ...hw, ends, isEnded });
-            // }
-            console.log(data)
             setHistory(data.sort((a, b) => new Date(b.date) - new Date(a.date)));
-            // setEnded(ended);
-            // window.homeworks = { hws, ended };
         });
     }, []);
     useEffect(() => {

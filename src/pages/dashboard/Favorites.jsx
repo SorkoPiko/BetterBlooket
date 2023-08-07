@@ -183,7 +183,7 @@ function Favorites() {
                 : <div className="setsEmpty">
                     <div className="setsEmptyHeader">You don't have any favorites</div>
                     <div className="setsEmptyLinks">
-                        <div style={{ backgroundColor: "var(--accent2)" }} className="setsDiscoverSet"><i className="far fa-compass"></i>Discover Favorites</div>
+                        <Link to="/discover" style={{ backgroundColor: "var(--accent2)" }} className="setsDiscoverSet"><i className="far fa-compass"></i>Discover Favorites</Link>
                     </div>
                 </div>}
             {modal?.text && <Modal text={modal.text} desc={modal.desc} buttonOne={modal.buttonOne} buttonTwo={modal.buttonTwo} />}

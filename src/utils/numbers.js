@@ -100,7 +100,7 @@ export function relativeTime(timestamp) {
 
 export class DateFormat {
     static months = [
-        "January", "Feburary", "March", "April", "May", "June",
+        "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
     static shortMonths = [
@@ -192,6 +192,7 @@ export class DateFormat {
             .replaceAll("k", k)
             .replaceAll("mm", mm)
             .replaceAll("m", m)
+            .replaceAll("a", a)
             .replaceAll("ss", ss)
             .replaceAll("s", s)
             .replaceAll("ZZ", ZZ)
@@ -201,12 +202,11 @@ export class DateFormat {
             .replaceAll("YY", YY)
             .replaceAll("Y", Y)
             .replaceAll("Q", Q)
+            .replaceAll("A", A)
             .replaceAll("MMMM", MMMM)
             .replaceAll("MMM", MMM)
             .replaceAll("MM", MM)
             .replaceAll("M", M)
-            .replaceAll("A", A)
-            .replaceAll("a", a)
             .replaceAll("DDDD", DDDD)
             .replaceAll("DDD", DDD)
             .replaceAll("DD", DD)

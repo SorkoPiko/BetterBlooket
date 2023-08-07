@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState, useCallback } from "react";
 import CustomBlook from "../../blooks/CustomBlook";
 import banners from "../../blooks/banners";
 import titles from "../../blooks/titles";
@@ -13,6 +13,9 @@ import { getLevel, items } from "../../blooks/classPass";
 import parts from "../../blooks/parts";
 import BlookEditor from "../../blooks/BlookEditor";
 import { readFile, writeFile } from "../../utils/fileSystem";
+import { useNavigate } from "react-router-dom";
+import { fetch } from "@tauri-apps/api/http";
+import Modal from "../../components/Modal";
 async function getExtraBlooks() {
     const data = await readFile("customBlooks.json")
     let result;
@@ -25,6 +28,7 @@ async function getExtraBlooks() {
     }
 }
 function Stats() {
+    const navigate = useNavigate();
     const [stats, setStats] = useState({});
     const [blookUsage, setBlookUsage] = useState([]);
     const [classPass, setClassPass] = useState({ level: 0, xp: 0 });
@@ -34,18 +38,32 @@ function Stats() {
     const [showExtras, setShowExtras] = useState(false);
     const [customBlooks, setCustomBlooks] = useState([]);
     const [changingProfile, setChangingProfile] = useState("");
+    const [searching, setSearching] = useState(false);
+    const [query, setQuery] = useState("");
+    const [searchError, setSearchError] = useState(null);
     const { http: { get, put }, protobuf: { saveCustomBlook, changeUserBlook } } = useAuth();
+    const currentSearch = useRef();
     const currentPart = useRef();
+    const onSearch = useCallback((search) => {
+        navigate("/stats?n=" + search);
+        getStats(search);
+    }, []);
     useEffect(() => {
         setIndex(showExtras ? 0 : 2);
-    }, [showExtras])
+    }, [showExtras]);
+    const getStats = useCallback(async (search) => {
+        currentSearch.current = search;
+        let res;
+        if (search) res = await fetch("https://id.blooket.com/api/users?name=" + search);
+        if (!res?.ok) res = await get("https://dashboard.blooket.com/api/users/stats");
+        if (res.data.name != search && search) return setSearchError("Couldn't find user by that name!");
+        else setSearching(false);
+        setStats(res.data);
+        setCustomBlooks(res.data.customBlooks.concat(Array(5 - res.data.customBlooks.length).fill("")));
+    }, []);
     useEffect(() => {
         getExtraBlooks().then(setExtraBlooks);
-        get("https://dashboard.blooket.com/api/users/stats").then(({ data }) => {
-            setStats(data);
-            console.log(data.custom)
-            setCustomBlooks(data.customBlooks.concat(Array(5 - data.customBlooks.length).fill("")));
-        });
+        getStats(new URLSearchParams(window.location.search).get("n"));
         setActivity({
             state: "Stats",
             timestampStart: Date.now(),
@@ -109,11 +127,11 @@ function Stats() {
                     <div id="profile">
                         <div id="profileWrapper">
                             <div id="blook" className="blookContainer" onClick={() => {
-                                setChangingProfile("blook");
+                                !query && setChangingProfile("blook");
                             }}>
                                 <img src={allBlooks[stats.blook || "Chick"]?.url} alt={(stats.blook || "Chick") + " Blook"} draggable={false} className="blook" />
                             </div>
-                            <div id="banner" onClick={() => setChangingProfile("banner")}>
+                            <div id="banner" onClick={() => !query && setChangingProfile("banner")}>
                                 {stats.banner
                                     ? <img src={banners[stats.banner]?.url} alt={banners[stats.banner]?.name} id="bannerImg" draggable={false} />
                                     : <img src={banners.starter.url} alt="Starter Banner" id="bannerImg" draggable={false} />}
@@ -121,6 +139,9 @@ function Stats() {
                                     <div id="username">{stats.name}</div>
                                     <div id="userTitle">{titles[stats.title]?.name || "Newbie"}</div>
                                 </div>
+                            </div>
+                            <div className="statsSearch" onClick={() => setSearching(true)}>
+                                <i className="fas fa-search"></i>
                             </div>
                         </div>
                     </div>
@@ -162,7 +183,7 @@ function Stats() {
                     <div id="customArrowsContainer">
                         <button style={{ position: "absolute", left: "0", aspectRatio: "unset" }} onClick={() => setShowExtras(e => !e)}>{showExtras ? "Hide" : "Show"} Extras</button>
                         <button onClick={() => setIndex(ind => Math.max(0, ind - 1))}>{"<"}</button>
-                        <button onClick={() => setEditing(true)}><i className="fas fa-pencil" /></button>
+                        <button onClick={() => setEditing(true)} disabled={(!showExtras && !!query)}><i className="fas fa-pencil" /></button>
                         <button onClick={async () => {
                             if (showExtras) {
                                 extraBlooks.splice(selectedIndex, 1);
@@ -172,7 +193,7 @@ function Stats() {
                                 await saveCustomBlook({ customCode: "", saveSlotIndex: selectedIndex });
                                 setCustomBlooks(blooks => (blooks[selectedIndex] = "", [...blooks]));
                             }
-                        }} disabled={!(showExtras ? extraBlooks : customBlooks)?.[selectedIndex]}><i className="fa fa-trash" /></button>
+                        }} disabled={(!showExtras && !!query) || !(showExtras ? extraBlooks : customBlooks)?.[selectedIndex]}><i className="fa fa-trash" /></button>
                         <button onClick={() => setIndex(ind => Math.min((showExtras ? extraBlooks : customBlooks).length - 1, ind + 1))}>{">"}</button>
                     </div>
                 </div>
@@ -265,7 +286,21 @@ function Stats() {
                     })}
                 </div>
             </div>
-        </Sidebar >
+            {searching && <Modal text={"See User's Stats by Name (case sensitive)"} desc={searchError} input={{
+                value: query,
+                placeholder: "Username",
+                change: e => (setSearchError(null), setQuery(e.target.value)),
+                icon: "fas fa-search"
+            }}
+                buttonOne={{
+                    text: "Search",
+                    click: () => onSearch(query),
+                }}
+                buttonTwo={{
+                    text: "Back",
+                    click: () => (setQuery(currentSearch.current), setSearching(false)),
+                }} />}
+        </Sidebar>
     </>);
 }
 export default Stats;
